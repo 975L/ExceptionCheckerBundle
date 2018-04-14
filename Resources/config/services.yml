@@ -4,6 +4,9 @@ services:
         autoconfigure: true
         public: true
 
+    c975L\ExceptionCheckerBundle\Controller\:
+        resource: '../../Controller/*'
+
     c975L\ExceptionCheckerBundle\Listener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }

@@ -11,6 +11,7 @@ namespace c975L\ExceptionCheckerBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,9 +40,24 @@ class ExceptionListener
 
             if ($url !== null) {
                 $folderPath = $this->container->getParameter('kernel.root_dir') . '/ExceptionChecker/';
+
+                //Checks if url has been excluded
+                $excludedUrlsFile = $folderPath . 'excludedUrls.txt';
+                if (is_file($excludedUrlsFile)) {
+                    $excludedUrls = file_get_contents($excludedUrlsFile);
+                    $pattern = '/^' . preg_quote($url, '/') . '$/m';
+                    //Redirects to excluded page
+                    if(preg_match_all($pattern, $excludedUrls, $matches)){
+                        //Updates Response
+                        $redirectUrl = $this->router->generate('exception_checker_excluded');
+                        $response = new RedirectResponse($redirectUrl);
+                        $event->setResponse($response);
+                    }
+                }
+
                 //Checks if url has been deleted
                 $deletedUrlsFile = $folderPath . 'deletedUrls.txt';
-                if (is_file($deletedUrlsFile)) {
+                if (!isset($redirectUrl) && is_file($deletedUrlsFile)) {
                     $deletedUrls = file_get_contents($deletedUrlsFile);
                     $pattern = '/^' . preg_quote($url, '/') . '$/m';
                     //Sends a Gone Exception
@@ -52,7 +68,7 @@ class ExceptionListener
 
                 //Checks if url has been redirected
                 $redirectedUrlsFile = $folderPath . 'redirectedUrls.txt';
-                if (is_file($redirectedUrlsFile)) {
+                if (!isset($redirectUrl) && is_file($redirectedUrlsFile)) {
                     $redirectedUrls = str_replace(array(' #', ' #', '# ', '# '), '#', file_get_contents($redirectedUrlsFile));
                     $pattern = '/^' . preg_quote($url, '/') . '#.*/m';
 
@@ -61,7 +77,7 @@ class ExceptionListener
                         $redirect = explode('#', $matches[0][0]);
                         $redirectData = explode(':', $redirect[1]);
 
-                        //Gets url provided
+                        //Gets url from Url provided
                         if ($redirectData[0] == 'Url') {
                             $redirectUrl = $redirectData[1];
                             //Url is absolute and has been split by explode
