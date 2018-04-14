@@ -1,0 +1,35 @@
+{
+    "name": "c975l/exceptionchecker-bundle",
+    "type": "symfony-bundle",
+    "description": "Listener for Symfony Exceptions in order to redirect to another url, or throw GoneException with a list of urls",
+    "keywords": ["symfony", "bundle", "exception", "redirect"],
+    "homepage": "https://github.com/975L/ExceptionCheckerBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Laurent Marquet",
+            "email": "laurent.marquet@laposte.net",
+            "homepage": "https://github.com/Laurent3170",
+            "role": "Developer"
+        },
+        {
+            "name": "975L Community",
+            "homepage": "https://github.com/975L"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/framework-bundle": "^3",
+        "sensio/framework-extra-bundle": "^3"
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": { "c975L\\ExceptionCheckerBundle\\": ""
+        }
+    },
+    "support": {
+        "email": "contact@975l.com",
+        "source": "https://github.com/975L/ExceptionCheckerBundle",
+        "issues": "https://github.com/975L/ExceptionCheckerBundle/issues"
+    }
+}
