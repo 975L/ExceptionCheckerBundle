@@ -1,0 +1,51 @@
+<script type="text/javascript">
+    $(document).ready(function() {
+{# Disables redirectKind + redirectData #}
+        function disableRedirect() {
+            $('#exception_checker_redirectKind')
+                .val('')
+                .prop('required', false)
+                .prop('disabled', true)
+                ;
+            $("label[for='exception_checker_redirectKind']")
+                .removeClass('required');
+            $('#exception_checker_redirectData')
+                .val('')
+                .prop('required', false)
+                .prop('disabled', true)
+                ;
+            $("label[for='exception_checker_redirectData']")
+                .removeClass('required');
+        };
+{# Enables redirectKind + redirectData #}
+        function enableRedirect() {
+            $('#exception_checker_redirectKind')
+                .prop('required', true)
+                .prop('disabled', false)
+                ;
+            $("label[for='exception_checker_redirectKind']")
+                .addClass('required');
+            $('#exception_checker_redirectData')
+                .prop('required', true)
+                .prop('disabled', false)
+                .addClass('required')
+                ;
+            $("label[for='exception_checker_redirectData']")
+                .addClass('required');
+        };
+{# Initializes redirect fields #}
+        if($('#exception_checker_kind').val() != 'redirected'){
+            disableRedirect();
+        } else {
+            enableRedirect();
+        }
+{# Checks change on kind #}
+        $('#exception_checker_kind').change(function() {
+            if($('#exception_checker_kind').val() != 'redirected'){
+                disableRedirect();
+            } else {
+                enableRedirect();
+            }
+        });
+    });
+</script>

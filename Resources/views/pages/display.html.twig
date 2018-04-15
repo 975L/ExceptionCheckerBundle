@@ -1,0 +1,30 @@
+{% extends "@c975LExceptionChecker/layout.html.twig" %}
+{% trans_default_domain 'exceptionChecker' %}
+{% set title = 'label.display'|trans({}, 'toolbar') ~ ': ' ~ exceptionChecker.id %}
+
+{% block exceptionchecker_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+    <div>
+{# Url #}
+        <p>
+            {{ 'label.url'|trans }} : <strong>{{ exceptionChecker.url }}</strong>
+        </p>
+{# Kind #}
+        <p>
+            {{ 'label.kind'|trans }} : <strong>{{ ('label.' ~ exceptionChecker.kind)|trans }}</strong>
+        </p>
+{# RedirectKind #}
+        <p>
+            {{ 'label.redirect_kind'|trans }} : <strong>{{ exceptionChecker.redirectKind }}</strong>
+        </p>
+{# RedirectData #}
+        <p>
+            {{ 'label.redirect_data'|trans }} : <strong>{{ exceptionChecker.redirectData }}</strong>
+        </p>
+{# Creation #}
+        <p>
+            {{ 'label.creation'|trans }} : <strong>{{ exceptionChecker.creation|localizeddate('medium', 'medium') }}</strong>
+        </p>
+    </div>
+{% endblock %}

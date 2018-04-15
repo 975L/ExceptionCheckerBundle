@@ -1,0 +1,14 @@
+{% extends "@c975LExceptionChecker/layout.html.twig" %}
+{% trans_default_domain 'exceptionChecker' %}
+{% set title = 'label.new'|trans({}, 'toolbar') %}
+
+{% block exceptionchecker_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+{# Form #}
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+{# Javascript #}
+    {{ include('@c975LExceptionChecker/forms/javascript.html.twig') }}
+{% endblock %}

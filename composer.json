@@ -20,7 +20,12 @@
     "require": {
         "php": ">=5.5.9",
         "symfony/framework-bundle": "^3",
-        "sensio/framework-extra-bundle": "^3"
+        "sensio/framework-extra-bundle": "^3",
+        "doctrine/doctrine-bundle": "^1",
+        "doctrine/orm": "^2",
+        "knplabs/knp-paginator-bundle": "^2",
+        "c975l/toolbar-bundle": "^1",
+        "c975l/includelibrary-bundle": "^1"
     },
     "minimum-stability": "dev",
     "autoload": {

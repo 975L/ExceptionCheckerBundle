@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="en" datatype="plaintext" original="events.en.xlf">
+        <body>
+            <trans-unit id="1">
+                <source>label.url</source>
+                <target>Url</target>
+            </trans-unit>
+            <trans-unit id="2">
+                <source>label.kind</source>
+                <target>Kind</target>
+            </trans-unit>
+            <trans-unit id="3">
+                <source>label.redirect_kind</source>
+                <target>Redirect kind</target>
+            </trans-unit>
+            <trans-unit id="4">
+                <source>label.redirect_data</source>
+                <target>Redirect data</target>
+            </trans-unit>
+            <trans-unit id="5">
+                <source>label.deleted</source>
+                <target>Deleted</target>
+            </trans-unit>
+            <trans-unit id="6">
+                <source>label.excluded</source>
+                <target>Excluded</target>
+            </trans-unit>
+            <trans-unit id="7">
+                <source>label.redirected</source>
+                <target>Redirected</target>
+            </trans-unit>
+            <trans-unit id="8">
+                <source>label.creation</source>
+                <target>Creation</target>
+            </trans-unit>
+            <trans-unit id="9">
+                <source>text.list_exception_checkers</source>
+                <target>List of ExceptionCheckers</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

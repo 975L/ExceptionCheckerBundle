@@ -1,0 +1,38 @@
+{% trans_default_domain 'toolbar' %}
+
+{% spaceless %}
+{# Display #}
+{% if type != 'dashboard' and type != 'display' and type != 'help' and type != 'new' %}
+    {{ toolbar_button(path('exceptionchecker_display', {'id': exceptionChecker.id}), 'display') }}
+{% endif %}
+
+{# New #}
+{% if type != 'new' %}
+    {{ toolbar_button(path('exceptionchecker_new'), 'new') }}
+{% endif %}
+
+{# Modify #}
+{% if type != 'dashboard' and type != 'modify' and type != 'help' and type != 'new' %}
+    {{ toolbar_button(path('exceptionchecker_modify', {'id': exceptionChecker.id}), 'modify') }}
+{% endif %}
+
+{# Duplicate #}
+{% if type == 'display' or type == 'modify' %}
+    {{ toolbar_button(path('exceptionchecker_duplicate', {'id': exceptionChecker.id}), 'duplicate') }}
+{% endif %}
+
+{# Cancel #}
+{% if type != 'dashboard' %}
+    {{ toolbar_button('cancel', 'cancel') }}
+{% endif %}
+
+{# Delete #}
+{% if type != 'dashboard' and type != 'delete' and type != 'help' and type != 'new' %}
+    {{ toolbar_button(path('exceptionchecker_delete', {'id': exceptionChecker.id}), 'delete') }}
+{% endif %}
+
+{# Help #}
+{% if type != 'help' %}
+    {{ toolbar_button(path('exceptionchecker_help'), 'help') }}
+{% endif %}
+{% endspaceless %}

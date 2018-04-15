@@ -1,0 +1,51 @@
+{% trans_default_domain 'ExceptionChecker' %}
+
+<h2>Gestión del ExceptionChecker</h2>
+<p>
+    Las herramientas están disponibles cuando se identifica al usuario y tiene los derechos necesarios. Una barra de herramientas aparece en cada ExceptionChecker. También es posible gestionar las ExceptionCheckers en el tablero.
+</p>
+<p>
+    <strong>Crear un ExceptionChecker</strong> : utilizar el botón {{ toolbar_button('', 'new') }}
+</p>
+<p>
+    <strong>Modificar un ExceptionChecker</strong> : utilizar el botón {{ toolbar_button('', 'modify') }}
+</p>
+<p>
+    <strong>Duplicar un ExceptionChecker</strong> : utilizar el botón {{ toolbar_button('', 'duplicate') }}
+</p>
+<p>
+    <strong>Suprimar un ExceptionChecker</strong> : utilizar el botón {{ toolbar_button('', 'delete') }}
+</p>
+<p>
+    <strong>Ver la versión actual de un ExceptionChecker</strong> : utilizar el botón {{ toolbar_button('', 'display') }}
+</p>
+<p>
+    <strong>Cancelar</strong> : utilizar el botón {{ toolbar_button('', 'cancel') }}
+</p>
+
+<h2>Datos necesarios</h2>
+<p>
+    Para cada ExceptionChecker es necesario proporcionar
+</p>
+<p>
+    <strong>Url</strong>: url para verificar cuándo se encuentra una excepción, por ejemplo "/wp-login.php". Puede agregar "*" al final para actuar como un wildcard, por ejemplo "/wp*" para que coincida con "/wp-login", "/wp-admin", etc.
+</p>
+    <strong>Tipo</strong>: qué hacer si la url está configurada (supprimido, redirigido, excluido).
+</p>
+<p>
+    <strong>Tipo de redirección</strong> : el tipo de redirección si se redirigirá la URL (Asset, Route, Url).
+</p>
+<p>
+    <strong>Datos de redirección</strong> : datos necesarios para la redirección, según el tipo de redirección definido anteriormente.
+    <ul>
+        <li>Asset: ruta a su asset, por ejemplo "/path_to_asset"</li>
+        <li>Url: url relativa o absoluta, por ejemplo "http://example.com"</li>
+        <li>Route sin parámetros: "route_name"</li>
+        <li>Route con un parámetros: "route_name['param_key' => 'param_value']"</li>
+        <li>Route con múltiples parámetros: "route_name['param_key' => 'param_value', 'another_param_key' => 'another_param_value']"</li>
+    </ul>
+</p>
+
+<p class="text-center">
+    <strong><a href="https://975l.com/es/pages/exception-checker-bundle">>> ExceptionChecker (Tutoriales, capturas de pantalla, etc.) <<</a></strong>
+</p>

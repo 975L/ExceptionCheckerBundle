@@ -1,0 +1,48 @@
+{% trans_default_domain 'ExceptionChecker' %}
+
+<h2>Gestion de l'événement</h2>
+<p>
+    Les outils sont accessibles lorsque l'utilisateur/trice est identifié/e et dispose des droits nécessaires. Une barre d'outils apparaît alors sur chaque événement. Il est aussi possible de gérer les événements depuis le tableau de bord.
+</p>
+<p>
+    <strong>Créer un événement</strong> : utiliser le bouton {{ toolbar_button('', 'new') }}
+</p>
+<p>
+    <strong>Modifier un événement</strong> : utiliser le bouton {{ toolbar_button('', 'modify') }}
+</p>
+<p>
+    <strong>Dupliquer un événement</strong> : utiliser le bouton {{ toolbar_button('', 'duplicate') }}
+</p>
+<p>
+    <strong>Supprimer un événement</strong> : utiliser le bouton {{ toolbar_button('', 'delete') }}
+</p>
+<p>
+    <strong>Afficher la version actuelle d'un événement</strong> : utiliser le bouton {{ toolbar_button('', 'display') }}
+</p>
+<p>
+    <strong>Annuler</strong> : utiliser le bouton {{ toolbar_button('', 'cancel') }}
+</p>
+
+<h2>Données nécessaires</h2>
+<p>
+    <strong>Url</strong>: url a vérifier lorsqu'une exception est trouvée, par exemple "/wp-login.php". Vous pouvez ajouter "*" à la fin pour agir comme wildcard, par exemple "/wp*" pour matcher "/wp-login", "/wp-admin", etc.
+</p>
+    <strong>Type</strong>: ce qu'il convient de faire si l'url est matché (supprimé, redirigé, exclu).
+</p>
+<p>
+    <strong>Type de redirection</strong> : type de redirection si l'url doit être redirigée (Asset, Route, Url).
+</p>
+<p>
+    <strong>Données de redirection</strong> : données nécessaires pour la redirection, cela dépend du type de redirection défini ci-dessus.
+    <ul>
+        <li>Asset: chemin vers votre asset, par exemple "/path_to_asset"</li>
+        <li>Url: url relatif ou absolu, par exemple. "http://example.com"</li>
+        <li>Route sans paramètres: "route_name"</li>
+        <li>Route avec un paramètre: "route_name['param_key' => 'param_value']"</li>
+        <li>Route avec de multiples paramètres: "route_name['param_key' => 'param_value', 'another_param_key' => 'another_param_value']"</li>
+    </ul>
+</p>
+
+<p class="text-center">
+    <strong><a href="https://975l.com/fr/pages/exception-checker-bundle">>> ExceptionChecker (Tutoriels, copies d'écran, etc.) <<</a></strong>
+</p>

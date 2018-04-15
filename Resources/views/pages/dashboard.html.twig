@@ -1,0 +1,62 @@
+{% extends "@c975LExceptionChecker/layout.html.twig" %}
+{% trans_default_domain 'exceptionChecker' %}
+{% set title = 'label.dashboard'|trans({}, 'toolbar') %}
+
+{% block exceptionchecker_content %}
+{# Toolbar #}
+    {{ toolbar|raw }}
+
+{# List of exceptionChecker and actions #}
+    <div class="text-center">
+        <h2>
+            {{ 'text.list_exception_checkers'|trans }}
+        </h2>
+        <table class="table table-hover table-condensed table-responsive">
+            <thead>
+                <tr>
+                    <th class="text-center">{{ knp_pagination_sortable(exceptionCheckers, 'Id', 'id') }}&nbsp;<span class="fas fa-sort"></span></th>
+                    <th class="text-center"><span class="fas fa-eye"></span>&nbsp;{{ knp_pagination_sortable(exceptionCheckers, 'label.url'|trans, 'url') }}&nbsp;<span class="fas fa-sort"></span></th>
+                    <th class="text-center"><span class="fas fa-pencil-alt"></span>&nbsp;{{ 'label.modify'|trans({}, 'toolbar') }}</th>
+                    <th class="text-center"><span class="fas fa-copy"></span>&nbsp;{{ 'label.duplicate'|trans({}, 'toolbar') }}</th>
+                    <th class="text-center"><span class="fas fa-trash"></span>&nbsp;{{ 'label.delete'|trans({}, 'toolbar') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for exceptionChecker in exceptionCheckers %}
+                    <tr>
+{# Id #}
+                        <td class="text-center">
+                            <a href="{{ path('exceptionchecker_display', {'id': exceptionChecker.id}) }}" title="{{ 'label.display'|trans({}, 'toolbar') }}">{{ exceptionChecker.id }}</a>
+                        </td>
+{# Url #}
+                        <td class="text-left">
+                            <a href="{{ path('exceptionchecker_display', {'id': exceptionChecker.id}) }}" title="{{ 'label.display'|trans({}, 'toolbar') }}">{{ exceptionChecker.url }}</a>
+                        </td>
+{# Modify #}
+                        <td class="text-center">
+                            <a href="{{ path('exceptionchecker_modify', {'id': exceptionChecker.id}) }}" title="{{ 'label.modify'|trans({}, 'toolbar') }}">{{ 'label.modify'|trans({}, 'toolbar') }}</a>
+                        </td>
+{# Duplicate #}
+                        <td class="text-center">
+                            <a href="{{ path('exceptionchecker_duplicate', {'id': exceptionChecker.id}) }}" title="{{ 'label.duplicate'|trans({}, 'toolbar') }}">{{ 'label.duplicate'|trans({}, 'toolbar') }}</a>
+                        </td>
+{# Delete #}
+                        <td class="text-center">
+                            <a href="{{ path('exceptionchecker_delete', {'id': exceptionChecker.id}) }}" title="{{ 'label.delete'|trans({}, 'toolbar') }}" class="text-danger">{{ 'label.delete'|trans({}, 'toolbar') }}</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+{# No exceptionCheckers #}
+        {% if exceptionCheckers.getTotalItemCount == 0 %}
+            <p class="alert alert-info">
+                {{ 'label.no_exceptionCheckers'|trans }}
+            </p>
+        {% endif %}
+{# Pagination #}
+        <div class="navigation text-center">
+            {{ knp_pagination_render(exceptionCheckers) }}
+        </div>
+    </div>
+{% endblock %}

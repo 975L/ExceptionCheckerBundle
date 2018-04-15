@@ -11,21 +11,22 @@ namespace c975L\ExceptionCheckerBundle\Listener;
 
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class ExceptionListener
 {
     private $container;
+    private $em;
     private $router;
 
     public function __construct(
         \Symfony\Component\DependencyInjection\ContainerInterface $container,
+        \Doctrine\ORM\EntityManagerInterface $em,
         \Symfony\Bundle\FrameworkBundle\Routing\Router $router
         ) {
         $this->container = $container;
+        $this->em = $em;
         $this->router = $router;
     }
 
@@ -34,66 +35,54 @@ class ExceptionListener
         //Gets exception
         $exception = $event->getException();
 
-        if ($exception instanceof NotFoundHttpException) {
+        if (!$exception instanceof GoneHttpException) {
             //Gets url requested
             $url = $event->getRequest()->getPathInfo();
 
             if ($url !== null) {
-                $folderPath = $this->container->getParameter('kernel.root_dir') . '/ExceptionChecker/';
+                //Gets repository
+                $repository = $this->em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
 
-                //Checks if url has been excluded
-                $excludedUrlsFile = $folderPath . 'excludedUrls.txt';
-                if (is_file($excludedUrlsFile)) {
-                    $excludedUrls = file_get_contents($excludedUrlsFile);
-                    $pattern = '/^' . preg_quote($url, '/') . '$/m';
-                    //Redirects to excluded page
-                    if(preg_match_all($pattern, $excludedUrls, $matches)){
-                        //Updates Response
-                        $redirectUrl = $this->router->generate('exception_checker_excluded');
-                        $response = new RedirectResponse($redirectUrl);
-                        $event->setResponse($response);
-                    }
-                }
+                //Gets the exceptionChecker
+                $exceptionChecker = $repository->findByUrl($url);
 
-                //Checks if url has been deleted
-                $deletedUrlsFile = $folderPath . 'deletedUrls.txt';
-                if (!isset($redirectUrl) && is_file($deletedUrlsFile)) {
-                    $deletedUrls = file_get_contents($deletedUrlsFile);
-                    $pattern = '/^' . preg_quote($url, '/') . '$/m';
-                    //Sends a Gone Exception
-                    if(preg_match_all($pattern, $deletedUrls, $matches)){
-                        throw new GoneHttpException();
-                    }
-                }
+                //Checks with wildcards if not found
+                if ($exceptionChecker === null) {
+                    $exceptionCheckersWildcard = $repository->findWildcard();
 
-                //Checks if url has been redirected
-                $redirectedUrlsFile = $folderPath . 'redirectedUrls.txt';
-                if (!isset($redirectUrl) && is_file($redirectedUrlsFile)) {
-                    $redirectedUrls = str_replace(array(' #', ' #', '# ', '# '), '#', file_get_contents($redirectedUrlsFile));
-                    $pattern = '/^' . preg_quote($url, '/') . '#.*/m';
-
-                    //Redirects to new url
-                    if(preg_match_all($pattern, $redirectedUrls, $matches)){
-                        $redirect = explode('#', $matches[0][0]);
-                        $redirectData = explode(':', $redirect[1]);
-
-                        //Gets url from Url provided
-                        if ($redirectData[0] == 'Url') {
-                            $redirectUrl = $redirectData[1];
-                            //Url is absolute and has been split by explode
-                            if (isset($redirectData[2])) {
-                                $redirectUrl .= ':' . $redirectData[2];
+                    if ($exceptionCheckersWildcard !== null) {
+                        foreach ($exceptionCheckersWildcard as $exceptionCheckerWildcard) {
+                            if (stripos($url, str_replace('*', '', $exceptionCheckerWildcard->getUrl())) !== false) {
+                                $exceptionChecker = $exceptionCheckerWildcard;
+                                break;
                             }
-                        //Builds url from Asset provided
-                        } elseif ($redirectData[0] == 'Asset') {
-                            $redirectUrl = str_replace('/app_dev.php', '', $this->router->getContext()->getBaseUrl()) . $redirectData[1];
-                        //Builds url from Route provided
-                        } elseif ($redirectData[0] == 'Route') {
+                        }
+                    }
+                }
+
+                //ExceptionChecker has been found
+                if ($exceptionChecker !== null) {
+                    //Deleted
+                    if ($exceptionChecker->getKind() == 'deleted') {
+                        throw new GoneHttpException($url);
+                    //Excluded
+                    } elseif ($exceptionChecker->getKind() == 'excluded') {
+                        $redirectUrl = $this->router->generate($this->container->getParameter('c975_l_exception_checker.redirectExcluded'));
+                    //Redirected
+                    } elseif ($exceptionChecker->getKind() == 'redirected') {
+                        //Asset
+                        if ($exceptionChecker->getRedirectKind() == 'Asset') {
+                            $redirectUrl = str_replace('/app_dev.php', '', $this->router->getContext()->getBaseUrl()) . $exceptionChecker->getRedirectData();
+                        //Url
+                        } elseif ($exceptionChecker->getRedirectKind() == 'Url') {
+                            $redirectUrl = $exceptionChecker->getRedirectData();
+                        //Route
+                        } elseif ($exceptionChecker->getRedirectKind() == 'Route') {
                             //Gets Route parameters
                             $parameters = array();
                             $parametersFinal = array();
-                            if (strpos($redirectData[1], '[') !== false) {
-                                preg_match('/\[.*\]/s', $redirectData[1], $parameters);
+                            if (strpos($exceptionChecker->getRedirectData(), '[') !== false) {
+                                preg_match('/\[.*\]/s', $exceptionChecker->getRedirectData(), $parameters);
                                 $parametersData = str_replace(array('[', ']'), '', $parameters[0]);
                                 $parametersAll = explode(',', $parametersData);
                                 foreach ($parametersAll as $parameter) {
@@ -103,14 +92,15 @@ class ExceptionListener
                                     $parametersFinal[$key] = $value;
                                 }
                             }
-                            $redirectUrl = $this->router->generate(str_replace($parameters, '', $redirectData[1]), $parametersFinal);
-                        }
 
-                        //Updates Response
-                        if (isset($redirectUrl)) {
-                            $response = new RedirectResponse($redirectUrl);
-                            $event->setResponse($response);
+                            $redirectUrl = $this->router->generate(str_replace($parameters, '', $exceptionChecker->getRedirectData()), $parametersFinal);
                         }
+                    }
+
+                    //Updates Response
+                    if (isset($redirectUrl)) {
+                        $response = new RedirectResponse($redirectUrl);
+                        $event->setResponse($response);
                     }
                 }
             }
