@@ -23,6 +23,8 @@ class ExceptionCheckerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;
+        $submitLabel = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'delete' : 'validate';
+        $submitClass = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'btn-danger' : 'btn-primary';
 
         $builder
             ->add('url', TextType::class, array(
@@ -64,28 +66,25 @@ class ExceptionCheckerType extends AbstractType
                     'placeholder' => 'label.redirect_data',
                 )))
             ;
-            if ($options['exceptionCheckerConfig']['action'] != 'new') {
-                $builder
-                    ->add('creation', DateTimeType::class, array(
-                        'label' => 'label.creation',
-                        'disabled' => true,
-                        'required' => false,
-                        'widget' => 'single_text',
-                        'format' => 'dd-MM-yyyy',
-                        'html5' => false,
-                        ))
-                    ;
-                }
-//Submit
-            $submitLabel = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'delete' : 'validate';
-            $submitClass = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'btn-danger' : 'btn-primary';
+        if ($options['exceptionCheckerConfig']['action'] != 'new') {
             $builder
-                ->add('submit', SubmitType::class, array(
-                    'label' => 'label.' . $submitLabel,
-                    'translation_domain' => 'toolbar',
-                    'attr' => array('class' => 'btn btn-block btn-lg ' . $submitClass),
-                ))
-            ;
+                ->add('creation', DateTimeType::class, array(
+                    'label' => 'label.creation',
+                    'disabled' => true,
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'dd-MM-yyyy',
+                    'html5' => false,
+                    ))
+                ;
+            }
+        $builder
+            ->add('submit', SubmitType::class, array(
+                'label' => 'label.' . $submitLabel,
+                'translation_domain' => 'toolbar',
+                'attr' => array('class' => 'btn btn-block btn-lg ' . $submitClass),
+            ))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

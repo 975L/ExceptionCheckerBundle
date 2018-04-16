@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3.1
+------
+- Re-ordered variables in `ExceptionCheckerType.php` (16/04/2018)
+- Corrected indentation in `ExceptionCheckerType.php` (16/04/2018)
+
 v1.3
 ----
 - Added Entity to allow adding, modifying, deleting new url exception (15/04/2018)
@@ -9,7 +14,7 @@ v1.3
 
 v1.2
 ----
-- Added excludedUrls functionaltiy (14/04/2018)
+- Added excludedUrls functionality (14/04/2018)
 
 v1.1
 ----
