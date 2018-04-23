@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3.2
+------
+- Added default timestamp for creation field in `exception_checker.sql` (23/04/2018)
+- Corrected `findByUrl` query as result can be multiple (23/04/2018)
+
 v1.3.1
 ------
 - Re-ordered variables in `ExceptionCheckerType.php` (16/04/2018)

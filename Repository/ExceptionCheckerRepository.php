@@ -21,6 +21,8 @@ class ExceptionCheckerRepository extends EntityRepository
         $qb->select('e')
             ->where('e.url LIKE :url')
             ->setParameter('url', $url . '%')
+            ->orderBy('e.url', 'ASC')
+            ->setMaxResults(1)
             ;
 
         return $qb->getQuery()->getOneOrNullResult();

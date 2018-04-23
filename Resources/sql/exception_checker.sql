@@ -18,30 +18,27 @@ CREATE TABLE `exception_checker` (
   `kind` varchar(24) NOT NULL,
   `redirect_kind` varchar(24) DEFAULT NULL,
   `redirect_data` varchar(255) DEFAULT NULL,
-  `creation` datetime NOT NULL,
+  `creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `un_exception_checker` (`url`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 
 /*
-Well known tested links to be excluded. Un-comment if you wish to add them
+-- Well known tested links to be excluded. Un-comment if you wish to add them
 
 LOCK TABLES `exception_checker` WRITE;
-INSERT INTO `exception_checker` (url, kind, redirect_kind, redirect_data, creation) VALUES
-('/.well-known*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/admin*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/cgi-bin*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/HNAP1*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/joomla*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/google*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/my-admin*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/phpmyadmin*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/wordpress*','excluded',NULL,NULL,'2018-04-15 15:15:15'),
-('/wp*','excluded',NULL,NULL,'2018-04-15 15:15:15')
+INSERT INTO `exception_checker` (url, kind) VALUES
+('/.well-known*','excluded'),
+('/admin*','excluded'),
+('/cgi-bin*','excluded'),
+('/HNAP1*','excluded'),
+('/joomla*','excluded'),
+('/google*','excluded'),
+('/my-admin*','excluded'),
+('/phpmyadmin*','excluded'),
+('/wordpress*','excluded'),
+('/wp*','excluded')
 ;
 UNLOCK TABLES;
 */
-
-
-
