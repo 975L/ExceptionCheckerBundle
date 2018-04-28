@@ -35,7 +35,23 @@ class ExceptionListener
         //Gets exception
         $exception = $event->getException();
 
-        if (!$exception instanceof GoneHttpException) {
+        //Checks if Exception is supported
+        $exceptionContinue = false;
+        $supportedExceptions = array(
+            'HttpException',
+            'MethodNotAllowedHttpException',
+            'NotAcceptableHttpException',
+            'NotFoundHttpException',
+        );
+        foreach ($supportedExceptions as $supportedException) {
+            if (is_a($exception, $supportedException)) {
+                $exceptionContinue = true;
+                break;
+            }
+        }
+
+        //Exception is supported
+        if ($exceptionContinue === true) {
             //Gets url requested
             $url = $event->getRequest()->getPathInfo();
 

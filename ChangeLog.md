@@ -1,5 +1,10 @@
 # Changelog
 
+v1.3.3
+------
+- Changed utf8mb64 to utf8 for table definition (24/04/2018)
+- Added supported list of Exceptions (27/04/2018)
+
 v1.3.2
 ------
 - Added default timestamp for creation field in `exception_checker.sql` (23/04/2018)
