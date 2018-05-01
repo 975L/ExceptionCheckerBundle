@@ -38,13 +38,13 @@ class ExceptionListener
         //Checks if Exception is supported
         $exceptionContinue = false;
         $supportedExceptions = array(
-            'HttpException',
-            'MethodNotAllowedHttpException',
-            'NotAcceptableHttpException',
-            'NotFoundHttpException',
+            'Symfony\Component\HttpKernel\Exception\HttpException',
+            'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException',
+            'Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException',
+            'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
         );
         foreach ($supportedExceptions as $supportedException) {
-            if (is_a($exception, $supportedException)) {
+            if ($exception instanceof $supportedException) {
                 $exceptionContinue = true;
                 break;
             }

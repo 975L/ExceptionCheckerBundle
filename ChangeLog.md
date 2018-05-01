@@ -1,5 +1,10 @@
 # Changelog
 
+v1.4.2
+------
+- Corrected names of supported Exception to full qualified ones (01/05/2018)
+- Used `instanceof` in place of `is_a()` to check against supported Exceptions (01/05/2018)
+
 v1.4.1
 ------
 - Added missing info in `README.md` (01/05/2018)
