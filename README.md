@@ -55,10 +55,16 @@ c975_l_exception_checker:
     #The Route where the excluded Urls will be redirected to
     redirectExcluded: 'pageedit_home' #We advise you to redirect to your homepage
 ```
+
 If you wish to be able to add urls with an url call (see below), you need to add `exceptionCheckerSecret` parameter in `app/config/parameters.yml` file, like this:
 ```yml
 parameters:
     exceptionCheckerSecret: YOUR_SECRET_CODE
+```
+And in `app/config/parameters.yml.dist`:
+```yml
+parameters:
+    exceptionCheckerSecret: ~
 ```
 
 Step 4: Enable the Routes
