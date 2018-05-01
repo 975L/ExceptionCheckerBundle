@@ -8,6 +8,7 @@ ExceptionCheckerBundle does the following:
 - Provides forms to add, modify, duplicate, delete the urls to check with,
 - Will reduce errors trigerred as if urls are registered, they will not be exception anymore (except for deleted urls which will throw GoneHttpException),
 - Integrates with your web design,
+- You can add deleted|excluded url with a simple url call (+ secret code or already signed in),
 
 This Bundle relies on the use of [jQuery](https://jquery.com/) and [Bootstrap](http://getbootstrap.com/).
 
@@ -53,6 +54,11 @@ c975_l_exception_checker:
     roleNeeded: 'ROLE_ADMIN' #default 'ROLE-ADMIN'
     #The Route where the excluded Urls will be redirected to
     redirectExcluded: 'pageedit_home' #We advise you to redirect to your homepage
+```
+If you wish to be able to add urls with an url call (see below), you need to add `exceptionCheckerSecret` parameter in `app/config/parameters.yml` file, like this:
+```yml
+parameters:
+    exceptionCheckerSecret: YOUR_SECRET_CODE
 ```
 
 Step 4: Enable the Routes
@@ -103,6 +109,16 @@ Use the Route `exceptionchecker_dashboard` (url: "/exception-checker/dashboard")
 Matching of urls is made with `LIKE url%` so it means that if the searched url is the beginning of a checked url, the match will be met, i.e. `/wp-login.php` will be matched by `/wp-login`.
 
 **You can use wildcards, to match a set of urls, by adding `*` at the end of the url, i.e. url `/wp*` will be matched by `/wp-login`, `/wp-admin`, `/wp-login.php`, etc.**
+
+Add deleted or excluded via url call
+------------------------------------
+This bundle provides a great feature to add deleted|excluded url easily and fastly!
+
+Imagine, you receive a new email (from Monolog i.e.), saying "No Route found for...". To add this url to ExceptionCheckerBundle, simply indicate {kind} (deleted or excluded) and copy/paste the requested {url} in `http://example.com/ec-add/{kind}?u={url}` (this will use the Route `exceptionchecker_add`). Type your secret code (if you're not signed in) and the url is added!
+
+i.e. `http://example.com/ec-add/excluded?u=/js/mage/cookies.js`.
+
+**You need to have set `exceptionCheckerSecret` in `app/config/parameters.yml` to be able to add urls without having to sign in.**
 
 Deleted Urls
 ------------

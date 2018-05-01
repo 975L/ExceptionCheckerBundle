@@ -119,6 +119,7 @@ class ExceptionCheckerController extends Controller
     /**
      * @Route("/exception-checker/new",
      *      name="exceptionchecker_new")
+     * @Method({"GET", "HEAD", "POST"})
      */
     public function newAction(Request $request)
     {
@@ -175,6 +176,86 @@ class ExceptionCheckerController extends Controller
         throw $this->createAccessDeniedException();
     }
 
+//ADD
+    /**
+     * @Route("/ec-add/{kind}",
+     *      name="exceptionchecker_add",
+     *      requirements={
+     *          "kind": "deleted|excluded"
+     *      })
+     */
+    public function addAction(Request $request, $kind)
+    {
+        //Gets the user
+        $user = $this->getUser();
+
+        //Defines form
+        $exceptionChecker = new ExceptionChecker();
+        $exceptionChecker
+            ->setKind($kind)
+            ->setUrl($request->get('u'))
+        ;
+        $exceptionCheckerConfig = array(
+            'action' => 'add',
+            'user' => $user,
+        );
+        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Gets the translator
+            $translator = $this->get('translator');
+
+            //Adds url if user has rights
+            if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded')) ||
+                $form->get('secret')->getData() == $this->getParameter('exceptionCheckerSecret')) {
+                //Gets the manager
+                $em = $this->getDoctrine()->getManager();
+
+                //Gets repository
+                $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
+
+                //Checks if exceptionChecker already exists
+                $existing = $repository->findOneByUrl($request->get('u'));
+
+                //ExceptionChecker url doesn't exist
+                if ($existing === null) {
+                    //Adds data
+                    $exceptionChecker->setCreation(new \DateTime());
+
+                    //Persists data in DB
+                    $em->persist($exceptionChecker);
+                    $em->flush();
+                }
+
+                //Creates flash
+                $flash = $translator->trans('text.exception_checker_added', array('%url%' => $request->get('u')), 'exceptionChecker');
+                $request->getSession()
+                    ->getFlashBag()
+                    ->add('success', $flash);
+
+                //Redirects to the exceptionChecker
+                return $this->redirectToRoute($this->getParameter('c975_l_exception_checker.redirectExcluded'));
+            //Wrong secret code
+            } elseif ($form->get('secret')->getData() != $this->getParameter('exceptionCheckerSecret')) {
+                //Creates flash
+                $flash = $translator->trans('text.wrong_secret_code', array(), 'exceptionChecker');
+                $request->getSession()
+                    ->getFlashBag()
+                    ->add('danger', $flash);
+            //Access is denied
+            } else {
+                throw $this->createAccessDeniedException();
+            }
+        }
+
+        //Returns the form to add url
+        return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
+            'form' => $form->createView(),
+            'toolbar' => '',
+        ));
+    }
+
 //MODIFY
     /**
      * @Route("/exception-checker/modify/{id}",
@@ -182,6 +263,7 @@ class ExceptionCheckerController extends Controller
      *      requirements={
      *          "id": "^([0-9]+)"
      *      })
+     * @Method({"GET", "HEAD", "POST"})
      */
     public function modifyAction(Request $request, $id)
     {
@@ -326,6 +408,7 @@ class ExceptionCheckerController extends Controller
      *      requirements={
      *          "id": "^([0-9]+)"
      *      })
+     * @Method({"GET", "HEAD", "POST"})
      */
     public function deleteAction(Request $request, $id)
     {

@@ -38,6 +38,18 @@
                 <source>text.list_exception_checkers</source>
                 <target>List of ExceptionCheckers</target>
             </trans-unit>
+            <trans-unit id="10">
+                <source>text.exception_checker_added</source>
+                <target>The url "%url%" has been added successfully to ExceptionChecker</target>
+            </trans-unit>
+            <trans-unit id="11">
+                <source>text.wrong_secret_code</source>
+                <target>Wrong secret code</target>
+            </trans-unit>
+            <trans-unit id="12">
+                <source>label.secret_code</source>
+                <target>Secret code</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

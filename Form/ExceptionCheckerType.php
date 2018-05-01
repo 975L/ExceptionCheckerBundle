@@ -23,6 +23,8 @@ class ExceptionCheckerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;
+        $addAction = $options['exceptionCheckerConfig']['action'] == 'add' ? true : false;
+        $user = isset($options['exceptionCheckerConfig']['user']) ? $options['exceptionCheckerConfig']['user'] : false;
         $submitLabel = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'delete' : 'validate';
         $submitClass = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'btn-danger' : 'btn-primary';
 
@@ -45,39 +47,53 @@ class ExceptionCheckerType extends AbstractType
                     'label.redirected' => 'redirected',
                 ),
                 ))
-            ->add('redirectKind', ChoiceType::class, array(
-                'label' => 'label.redirect_kind',
-                'disabled' => $disabled,
-                'required' => false,
-                'choices' => array(
-                    'label.redirect_kind' => '',
-                    'Asset' => 'Asset',
-                    'Route' => 'Route',
-                    'Url' => 'Url',
-                ),
-                'attr' => array(
-                    'placeholder' => 'label.redirect_kind',
-                )))
-            ->add('redirectData', TextType::class, array(
-                'label' => 'label.redirect_data',
-                'disabled' => $disabled,
-                'required' => false,
-                'attr' => array(
-                    'placeholder' => 'label.redirect_data',
-                )))
             ;
-        if ($options['exceptionCheckerConfig']['action'] != 'new') {
+        if ($addAction !== true) {
             $builder
-                ->add('creation', DateTimeType::class, array(
-                    'label' => 'label.creation',
-                    'disabled' => true,
+                ->add('redirectKind', ChoiceType::class, array(
+                    'label' => 'label.redirect_kind',
+                    'disabled' => $disabled,
                     'required' => false,
-                    'widget' => 'single_text',
-                    'format' => 'dd-MM-yyyy',
-                    'html5' => false,
+                    'choices' => array(
+                        'label.redirect_kind' => '',
+                        'Asset' => 'Asset',
+                        'Route' => 'Route',
+                        'Url' => 'Url',
+                    ),
+                    'attr' => array(
+                        'placeholder' => 'label.redirect_kind',
+                    )))
+                ->add('redirectData', TextType::class, array(
+                    'label' => 'label.redirect_data',
+                    'disabled' => $disabled,
+                    'required' => false,
+                    'attr' => array(
+                        'placeholder' => 'label.redirect_data',
+                    )))
+                ;
+            if ($options['exceptionCheckerConfig']['action'] != 'new') {
+                $builder
+                    ->add('creation', DateTimeType::class, array(
+                        'label' => 'label.creation',
+                        'disabled' => true,
+                        'required' => false,
+                        'widget' => 'single_text',
+                        'format' => 'dd-MM-yyyy',
+                        'html5' => false,
+                        ))
+                    ;
+                }
+        //Secret code request
+        } elseif ($user === false) {
+            $builder
+                ->add('secret', TextType::class, array(
+                    'label' => 'label.secret_code',
+                    'mapped' => false,
+                    'disabled' => false,
+                    'required' => true,
                     ))
                 ;
-            }
+        }
         $builder
             ->add('submit', SubmitType::class, array(
                 'label' => 'label.' . $submitLabel,

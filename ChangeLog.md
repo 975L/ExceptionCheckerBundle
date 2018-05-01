@@ -1,5 +1,10 @@
 # Changelog
 
+v1.4
+----
+- Added possibility to add url (deleted/excluded) directly from url call with secret code (01/05/2018)
+- Added missing methods for Routes (01/05/2018)
+
 v1.3.3
 ------
 - Changed utf8mb64 to utf8 for table definition (24/04/2018)
