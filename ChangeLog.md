@@ -1,5 +1,9 @@
 # Changelog
 
+v1.5
+----
+- Corrected the way the `GoneHttpException` is sent (13/05/2018)
+
 v1.4.2
 ------
 - Corrected names of supported Exception to full qualified ones (01/05/2018)

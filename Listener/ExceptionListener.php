@@ -80,7 +80,7 @@ class ExceptionListener
                 if ($exceptionChecker !== null) {
                     //Deleted
                     if ($exceptionChecker->getKind() == 'deleted') {
-                        throw new GoneHttpException($url);
+                        $event->setException(new GoneHttpException($url));
                     //Excluded
                     } elseif ($exceptionChecker->getKind() == 'excluded') {
                         $redirectUrl = $this->router->generate($this->container->getParameter('c975_l_exception_checker.redirectExcluded'));
