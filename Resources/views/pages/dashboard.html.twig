@@ -4,8 +4,7 @@
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
-
+    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'dashboard', 'md') }}
 {# List of exceptionChecker and actions #}
     <div class="text-center">
         <h2>

@@ -1,5 +1,9 @@
 # Changelog
 
+v1.5.1
+------
+- Modified toolbars calls due to modification of c975LToolbarBundle (13/05/2018)
+
 v1.5
 ----
 - Corrected the way the `GoneHttpException` is sent (13/05/2018)

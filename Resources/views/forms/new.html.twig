@@ -4,7 +4,7 @@
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
+    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'new', 'md') }}
 {# Form #}
     {{ form_start(form) }}
         {{ form_widget(form) }}

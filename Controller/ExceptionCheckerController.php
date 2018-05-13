@@ -50,19 +50,9 @@ class ExceptionCheckerController extends Controller
                 25
             );
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'dashboard',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             //Returns the dashboard
             return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
                 'exceptionCheckers' => $pagination,
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -95,18 +85,7 @@ class ExceptionCheckerController extends Controller
             //Gets the exceptionChecker
             $exceptionChecker = $repository->findOneById($id);
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'display',
-                'exceptionChecker' => $exceptionChecker,
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
-                'toolbar' => $toolbar,
                 'exceptionChecker' => $exceptionChecker,
             ));
         }
@@ -156,19 +135,9 @@ class ExceptionCheckerController extends Controller
                 ));
             }
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'new',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             //Returns the form to edit content
             return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
                 'form' => $form->createView(),
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -252,7 +221,6 @@ class ExceptionCheckerController extends Controller
         //Returns the form to add url
         return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
             'form' => $form->createView(),
-            'toolbar' => '',
         ));
     }
 
@@ -306,21 +274,10 @@ class ExceptionCheckerController extends Controller
                 ));
             }
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'modify',
-                'exceptionChecker' => $exceptionChecker,
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             //Returns the form to modify content
             return $this->render('@c975LExceptionChecker/forms/modify.html.twig', array(
                 'form' => $form->createView(),
                 'exceptionChecker' => $exceptionChecker,
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -379,21 +336,10 @@ class ExceptionCheckerController extends Controller
                 ));
             }
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'duplicate',
-                'exceptionChecker' => $exceptionChecker,
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             //Returns the form to duplicate content
             return $this->render('@c975LExceptionChecker/forms/duplicate.html.twig', array(
                 'form' => $form->createView(),
                 'exceptionChecker' => $exceptionCheckerClone,
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -442,21 +388,10 @@ class ExceptionCheckerController extends Controller
                 return $this->redirectToRoute('exceptionchecker_dashboard');
             }
 
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'delete',
-                'exceptionChecker' => $exceptionChecker,
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
             //Returns the form to delete content
             return $this->render('@c975LExceptionChecker/forms/delete.html.twig', array(
                 'form' => $form->createView(),
                 'exceptionChecker' => $exceptionChecker,
-                'toolbar' => $toolbar,
             ));
         }
 
@@ -472,24 +407,9 @@ class ExceptionCheckerController extends Controller
      */
     public function helpAction()
     {
-        //Gets the user
-        $user = $this->getUser();
-
-        //Returns the dashboard content
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Defines toolbar
-            $tools  = $this->renderView('@c975LExceptionChecker/tools.html.twig', array(
-                'type' => 'help',
-            ));
-            $toolbar = $this->forward('c975L\ToolbarBundle\Controller\ToolbarController::displayAction', array(
-                'tools'  => $tools,
-                'dashboard'  => 'exceptionchecker',
-            ))->getContent();
-
-            //Returns the help
-            return $this->render('@c975LExceptionChecker/pages/help.html.twig', array(
-                'toolbar' => $toolbar,
-            ));
+        //Returns the help
+        if ($this->getUser() !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
+            return $this->render('@c975LExceptionChecker/pages/help.html.twig');
         }
 
         //Access is denied

@@ -4,8 +4,7 @@
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
-
+    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'help', 'md') }}
 {# Help content #}
     {{ include( ['@c975LExceptionChecker/pages/languages/help-' ~ app.request.locale ~ '.html.twig', '@c975LExceptionChecker/pages/languages/help-en.html.twig']) }}
 {% endblock %}

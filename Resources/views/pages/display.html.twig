@@ -4,7 +4,7 @@
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
-    {{ toolbar|raw }}
+    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'display', 'md', exceptionChecker) }}
     <div>
 {# Url #}
         <p>
