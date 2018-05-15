@@ -1,5 +1,10 @@
 # Changelog
 
+v1.6
+----
+- Added Method to Route `exceptionchecker_add` (15/05/2018)
+- Added link to Route `exceptionchecker_add` in log, to be used by simply clicking on it when receiving log email (15/05/2018)
+
 v1.5.1
 ------
 - Modified toolbars calls due to modification of c975LToolbarBundle (13/05/2018)

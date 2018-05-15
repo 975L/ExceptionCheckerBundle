@@ -9,6 +9,7 @@ ExceptionCheckerBundle does the following:
 - Will reduce errors trigerred as if urls are registered, they will not be exception anymore (except for deleted urls which will throw GoneHttpException),
 - Integrates with your web design,
 - You can add deleted|excluded url with a simple url call (+ secret code or already signed in),
+- Furthermore, this link is added in the log, so when you receive the email from Monolog, you just need to click on it to add it to ExceptionChecker,
 
 This Bundle relies on the use of [jQuery](https://jquery.com/) and [Bootstrap](http://getbootstrap.com/).
 

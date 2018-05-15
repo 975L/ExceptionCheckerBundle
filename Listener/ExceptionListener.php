@@ -13,20 +13,24 @@ use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ExceptionListener
 {
     private $container;
     private $em;
+    private $logger;
     private $router;
 
     public function __construct(
         \Symfony\Component\DependencyInjection\ContainerInterface $container,
         \Doctrine\ORM\EntityManagerInterface $em,
+        \Psr\Log\LoggerInterface $logger,
         \Symfony\Bundle\FrameworkBundle\Routing\Router $router
         ) {
         $this->container = $container;
         $this->em = $em;
+        $this->logger = $logger;
         $this->router = $router;
     }
 
@@ -118,6 +122,10 @@ class ExceptionListener
                         $response = new RedirectResponse($redirectUrl);
                         $event->setResponse($response);
                     }
+                //Adds link to exclude to log (useful if log is sent by email)
+                } else {
+                    $exceptionAddUrl = $this->router->generate('exceptionchecker_add', array('kind' => 'excluded'), UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
+                    $this->logger->info('-----> Add to ExceptionChecker? Use ' . $exceptionAddUrl . ' with your secret code!');
                 }
             }
         }

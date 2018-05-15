@@ -152,6 +152,7 @@ class ExceptionCheckerController extends Controller
      *      requirements={
      *          "kind": "deleted|excluded"
      *      })
+     * @Method({"GET", "HEAD", "POST"})
      */
     public function addAction(Request $request, $kind)
     {
