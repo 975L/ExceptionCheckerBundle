@@ -1,6 +1,12 @@
 ExceptionCheckerBundle
 ======================
 
+**Imagine...** There's a bad request on your Symfony website, which leads Monolog to send you an email (action level set to error). Then, you simply just delete the email OR set the action level to critical (and then lose all warnings about real links problems that should be solved!).
+
+With ExceptionCheckerBundle, exclude a called url and redirect this url to your homepage (or whatever you want) is **as easy as clicking on a link!**.
+
+A link is provided in the log file sent by email, this link will lead to a form where you need to enter your defined secret code (secret code is not needed if you're logged in), and that's it! The link is excluded and redirected!
+
 ExceptionCheckerBundle does the following:
 
 - Catch Symfony's exceptions and checks if the called url has been deleted or redirected or is an excluded one,
@@ -9,7 +15,6 @@ ExceptionCheckerBundle does the following:
 - Will reduce errors trigerred as if urls are registered, they will not be exception anymore (except for deleted urls which will throw GoneHttpException),
 - Integrates with your web design,
 - You can add deleted|excluded url with a simple url call (+ secret code or already signed in),
-- Furthermore, this link is added in the log, so when you receive the email from Monolog, you just need to click on it to add it to ExceptionChecker,
 
 This Bundle relies on the use of [jQuery](https://jquery.com/) and [Bootstrap](http://getbootstrap.com/).
 

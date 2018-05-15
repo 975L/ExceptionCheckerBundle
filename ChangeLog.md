@@ -1,5 +1,9 @@
 # Changelog
 
+v1.6.1
+------
+- Updated `README.md` (15/05/2018)
+
 v1.6
 ----
 - Added Method to Route `exceptionchecker_add` (15/05/2018)
