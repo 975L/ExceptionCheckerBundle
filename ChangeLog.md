@@ -1,5 +1,9 @@
 # Changelog
 
+v1.6.1.1
+--------
+- Removed required in composer.json (22/05/2018)
+
 v1.6.1
 ------
 - Updated `README.md` (15/05/2018)
