@@ -26,7 +26,7 @@ class ExceptionListener
         \Symfony\Component\DependencyInjection\ContainerInterface $container,
         \Doctrine\ORM\EntityManagerInterface $em,
         \Psr\Log\LoggerInterface $logger,
-        \Symfony\Bundle\FrameworkBundle\Routing\Router $router
+        \Symfony\Component\Routing\RouterInterface $router
         ) {
         $this->container = $container;
         $this->em = $em;
