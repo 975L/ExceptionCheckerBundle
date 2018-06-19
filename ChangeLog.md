@@ -1,5 +1,9 @@
 # Changelog
 
+v1.6.3
+------
+- Corrected flash message when adding from ec-add (19/06/2018)
+
 v1.6.2
 ------
 - Added possibility to change to reidrected kind when using ec-add Route (26/05/2018)

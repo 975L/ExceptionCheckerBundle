@@ -199,7 +199,7 @@ class ExceptionCheckerController extends Controller
                 }
 
                 //Creates flash
-                $flash = $translator->trans('text.exception_checker_added', array('%url%' => $request->get('u')), 'exceptionChecker');
+                $flash = $translator->trans('text.exception_checker_added', array('%url%' => $exceptionChecker->getUrl()), 'exceptionChecker');
                 $request->getSession()
                     ->getFlashBag()
                     ->add('success', $flash);
