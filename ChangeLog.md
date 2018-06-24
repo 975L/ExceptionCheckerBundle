@@ -1,5 +1,9 @@
 # Changelog
 
+v1.6.4
+------
+- Suppressed input field for secret code when signed in (24/06/2018)
+
 v1.6.3
 ------
 - Corrected flash message when adding from ec-add (19/06/2018)

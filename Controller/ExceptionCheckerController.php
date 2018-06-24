@@ -111,6 +111,7 @@ class ExceptionCheckerController extends Controller
             $exceptionChecker = new ExceptionChecker();
             $exceptionCheckerConfig = array(
                 'action' => 'new',
+                'user' => $user,
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -253,6 +254,7 @@ class ExceptionCheckerController extends Controller
             //Defines form
             $exceptionCheckerConfig = array(
                 'action' => 'modify',
+                'user' => $user,
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -315,6 +317,7 @@ class ExceptionCheckerController extends Controller
             $exceptionCheckerClone = clone $exceptionChecker;
             $exceptionCheckerConfig = array(
                 'action' => 'duplicate',
+                'user' => $user,
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionCheckerClone, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -376,6 +379,7 @@ class ExceptionCheckerController extends Controller
             //Defines form
             $exceptionCheckerConfig = array(
                 'action' => 'delete',
+                'user' => $user,
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);

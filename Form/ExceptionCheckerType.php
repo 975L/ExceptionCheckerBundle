@@ -82,13 +82,18 @@ class ExceptionCheckerType extends AbstractType
                 ;
             }
         //Secret code
+        if ($user === false) {
+            $builder
+                ->add('secret', TextType::class, array(
+                    'label' => 'label.secret_code',
+                    'mapped' => false,
+                    'disabled' => false,
+                    'required' => true,
+                    ))
+            ;
+        }
+        //Submit
         $builder
-            ->add('secret', TextType::class, array(
-                'label' => 'label.secret_code',
-                'mapped' => false,
-                'disabled' => false,
-                'required' => true,
-                ))
             ->add('submit', SubmitType::class, array(
                 'label' => 'label.' . $submitLabel,
                 'translation_domain' => 'toolbar',
