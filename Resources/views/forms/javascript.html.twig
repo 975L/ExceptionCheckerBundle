@@ -6,6 +6,9 @@
                 .val('')
                 .prop('required', false)
                 .prop('disabled', true)
+                .parent()
+                .parent()
+                .hide()
                 ;
             $("label[for='exception_checker_redirectKind']")
                 .removeClass('required');
@@ -13,6 +16,9 @@
                 .val('')
                 .prop('required', false)
                 .prop('disabled', true)
+                .parent()
+                .parent()
+                .hide()
                 ;
             $("label[for='exception_checker_redirectData']")
                 .removeClass('required');
@@ -22,6 +28,9 @@
             $('#exception_checker_redirectKind')
                 .prop('required', true)
                 .prop('disabled', false)
+                .parent()
+                .parent()
+                .show()
                 ;
             $("label[for='exception_checker_redirectKind']")
                 .addClass('required');
@@ -29,6 +38,9 @@
                 .prop('required', true)
                 .prop('disabled', false)
                 .addClass('required')
+                .parent()
+                .parent()
+                .show()
                 ;
             $("label[for='exception_checker_redirectData']")
                 .addClass('required');

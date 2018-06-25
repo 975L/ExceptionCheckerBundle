@@ -1,5 +1,9 @@
 # Changelog
 
+v1.6.5
+------
+- Hide Redirection field when the kind is not a Redirection (25/06/2018)
+
 v1.6.4
 ------
 - Suppressed input field for secret code when signed in (24/06/2018)
