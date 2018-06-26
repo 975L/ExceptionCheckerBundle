@@ -6,8 +6,7 @@
                 .val('')
                 .prop('required', false)
                 .prop('disabled', true)
-                .parent()
-                .parent()
+                .closest('.form-group')
                 .hide()
                 ;
             $("label[for='exception_checker_redirectKind']")
@@ -16,8 +15,7 @@
                 .val('')
                 .prop('required', false)
                 .prop('disabled', true)
-                .parent()
-                .parent()
+                .closest('.form-group')
                 .hide()
                 ;
             $("label[for='exception_checker_redirectData']")
@@ -28,8 +26,7 @@
             $('#exception_checker_redirectKind')
                 .prop('required', true)
                 .prop('disabled', false)
-                .parent()
-                .parent()
+                .closest('.form-group')
                 .show()
                 ;
             $("label[for='exception_checker_redirectKind']")
@@ -38,8 +35,7 @@
                 .prop('required', true)
                 .prop('disabled', false)
                 .addClass('required')
-                .parent()
-                .parent()
+                .closest('.form-group')
                 .show()
                 ;
             $("label[for='exception_checker_redirectData']")

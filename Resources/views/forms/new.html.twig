@@ -4,7 +4,9 @@
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
-    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'new', 'md') }}
+    {% if app.user != null %}
+        {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'new', 'md') }}
+    {% endif %}
 {# Form #}
     {{ form_start(form) }}
         {{ form_widget(form) }}

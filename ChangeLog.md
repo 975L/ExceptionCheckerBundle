@@ -1,5 +1,10 @@
 # Changelog
 
+v1.6.6
+------
+- Added test in `forms/new.html.twig` to check if user is defined to not display toolbar, as this form is  also called via "exceptionchecker_add" Route (26/06/2018)
+- Corrected `forms/javascript.html.twig` that was hiding full form for certain configurations (26/06/2018)
+
 v1.6.5
 ------
 - Hide Redirection field when the kind is not a Redirection (25/06/2018)
@@ -14,7 +19,7 @@ v1.6.3
 
 v1.6.2
 ------
-- Added possibility to change to reidrected kind when using ec-add Route (26/05/2018)
+- Added possibility to change to reidrected kind when using `exceptionchecker_add` Route (26/05/2018)
 
 v1.6.1.2
 --------
