@@ -1,5 +1,11 @@
 # Changelog
 
+v1.7
+----
+- Removed `Action` in controller method name as not requested anymore (21/07/2018)
+- Corrected meta in `layout.html.twig` (21/07/2018)
+- Use of Yoda notation (21/07/2018)
+
 v1.6.6
 ------
 - Added test in `forms/new.html.twig` to check if user is defined to not display toolbar, as this form is  also called via "exceptionchecker_add" Route (26/06/2018)

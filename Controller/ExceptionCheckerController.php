@@ -26,21 +26,15 @@ class ExceptionCheckerController extends Controller
      *      name="exceptionchecker_dashboard")
      * @Method({"GET", "HEAD"})
      */
-    public function dashboardAction(Request $request)
+    public function dashboard(Request $request)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Returns the dashboard content
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the manager
-            $em = $this->getDoctrine()->getManager();
-
-            //Gets repository
-            $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
-            //Gets the exceptionchecker
-            $exceptionCheckers = $repository->findAll();
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
+            //Gets the exceptionCheckers
+            $exceptionCheckers = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
+                ->findAll();
 
             //Pagination
             $paginator  = $this->get('knp_paginator');
@@ -69,21 +63,15 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD"})
      */
-    public function displayAction($id)
+    public function display($id)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines the form
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the manager
-            $em = $this->getDoctrine()->getManager();
-
-            //Gets repository
-            $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             //Gets the exceptionChecker
-            $exceptionChecker = $repository->findOneById($id);
+            $exceptionChecker = $this->getDoctrine()
+                ->getManager()
+                ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
+                ->findOneById($id);
 
             return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
                 'exceptionChecker' => $exceptionChecker,
@@ -100,18 +88,15 @@ class ExceptionCheckerController extends Controller
      *      name="exceptionchecker_new")
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function newAction(Request $request)
+    public function new(Request $request)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines the form
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             //Defines form
             $exceptionChecker = new ExceptionChecker();
             $exceptionCheckerConfig = array(
                 'action' => 'new',
-                'user' => $user,
+                'user' => $this->getUser(),
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -119,14 +104,12 @@ class ExceptionCheckerController extends Controller
             if ($form->isSubmitted() && $form->isValid()) {
                 //Adds data
                 $exceptionChecker->setCreation(new \DateTime());
-                if ($exceptionChecker->getRedirectKind() == '') {
+                if ('' == $exceptionChecker->getRedirectKind()) {
                     $exceptionChecker->setRedirectKind(null);
                 }
 
-                //Gets the manager
-                $em = $this->getDoctrine()->getManager();
-
                 //Persists data in DB
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($exceptionChecker);
                 $em->flush();
 
@@ -155,11 +138,8 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function addAction(Request $request, $kind)
+    public function add(Request $request, $kind)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines form
         $exceptionChecker = new ExceptionChecker();
         $exceptionChecker
@@ -168,7 +148,7 @@ class ExceptionCheckerController extends Controller
         ;
         $exceptionCheckerConfig = array(
             'action' => 'add',
-            'user' => $user,
+            'user' => $this->getUser(),
         );
         $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
         $form->handleRequest($request);
@@ -178,19 +158,14 @@ class ExceptionCheckerController extends Controller
             $translator = $this->get('translator');
 
             //Adds url if user has rights
-            if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded')) ||
+            if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded')) ||
                 $form->get('secret')->getData() == $this->getParameter('exceptionCheckerSecret')) {
-                //Gets the manager
-                $em = $this->getDoctrine()->getManager();
-
-                //Gets repository
-                $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
                 //Checks if exceptionChecker already exists
-                $existing = $repository->findOneByUrl($request->get('u'));
+                $em = $this->getDoctrine()->getManager();
+                $existingExceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneByUrl($request->get('u'));
 
                 //ExceptionChecker url doesn't exist
-                if ($existing === null) {
+                if (null === $existingExceptionChecker) {
                     //Adds data
                     $exceptionChecker->setCreation(new \DateTime());
 
@@ -235,26 +210,18 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function modifyAction(Request $request, $id)
+    public function modify(Request $request, $id)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines the form
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the manager
-            $em = $this->getDoctrine()->getManager();
-
-            //Gets repository
-            $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             //Gets the exceptionChecker
-            $exceptionChecker = $repository->findOneById($id);
+            $em = $this->getDoctrine()->getManager();
+            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
 
             //Defines form
             $exceptionCheckerConfig = array(
                 'action' => 'modify',
-                'user' => $user,
+                'user' => $this->getUser(),
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -297,27 +264,19 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function duplicateAction(Request $request, $id)
+    public function duplicate(Request $request, $id)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines the form
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the manager
-            $em = $this->getDoctrine()->getManager();
-
-            //Gets repository
-            $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             //Gets the exceptionChecker
-            $exceptionChecker = $repository->findOneById($id);
+            $em = $this->getDoctrine()->getManager();
+            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
 
             //Defines form
             $exceptionCheckerClone = clone $exceptionChecker;
             $exceptionCheckerConfig = array(
                 'action' => 'duplicate',
-                'user' => $user,
+                'user' => $this->getUser(),
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionCheckerClone, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -360,26 +319,18 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function deleteAction(Request $request, $id)
+    public function delete(Request $request, $id)
     {
-        //Gets the user
-        $user = $this->getUser();
-
         //Defines the form
-        if ($user !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the manager
-            $em = $this->getDoctrine()->getManager();
-
-            //Gets repository
-            $repository = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             //Gets the exceptionChecker
-            $exceptionChecker = $repository->findOneById($id);
+            $em = $this->getDoctrine()->getManager();
+            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
 
             //Defines form
             $exceptionCheckerConfig = array(
                 'action' => 'delete',
-                'user' => $user,
+                'user' => $this->getUser(),
             );
             $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
             $form->handleRequest($request);
@@ -410,10 +361,10 @@ class ExceptionCheckerController extends Controller
      *      name="exceptionchecker_help")
      * @Method({"GET", "HEAD"})
      */
-    public function helpAction()
+    public function help()
     {
         //Returns the help
-        if ($this->getUser() !== null && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
+        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
             return $this->render('@c975LExceptionChecker/pages/help.html.twig');
         }
 
