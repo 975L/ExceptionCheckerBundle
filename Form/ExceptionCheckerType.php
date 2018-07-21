@@ -13,7 +13,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -25,8 +24,6 @@ class ExceptionCheckerType extends AbstractType
         $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;
         $addAction = $options['exceptionCheckerConfig']['action'] == 'add' ? true : false;
         $user = isset($options['exceptionCheckerConfig']['user']) ? $options['exceptionCheckerConfig']['user'] : false;
-        $submitLabel = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'delete' : 'validate';
-        $submitClass = $options['exceptionCheckerConfig']['action'] == 'delete' ? 'btn-danger' : 'btn-primary';
 
         $builder
             ->add('url', TextType::class, array(
@@ -92,14 +89,6 @@ class ExceptionCheckerType extends AbstractType
                     ))
             ;
         }
-        //Submit
-        $builder
-            ->add('submit', SubmitType::class, array(
-                'label' => 'label.' . $submitLabel,
-                'translation_domain' => 'toolbar',
-                'attr' => array('class' => 'btn btn-block btn-lg ' . $submitClass),
-            ))
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
