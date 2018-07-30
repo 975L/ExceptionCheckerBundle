@@ -15,43 +15,51 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Translation\Translator;
+use Knp\Component\Pager\PaginatorInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerType;
 
 class ExceptionCheckerController extends Controller
 {
+    private $accessGranted;
+
+    public function __construct(AuthorizationCheckerInterface $authChecker, string $roleNeeded)
+    {
+        $this->accessGranted = $authChecker->isGranted($roleNeeded);
+    }
+
 //DASHBOARD
     /**
      * @Route("/exception-checker/dashboard",
      *      name="exceptionchecker_dashboard")
      * @Method({"GET", "HEAD"})
      */
-    public function dashboard(Request $request)
+    public function dashboard(Request $request, PaginatorInterface $paginator)
     {
-        //Returns the dashboard content
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the exceptionCheckers
-            $exceptionCheckers = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
-                ->findAll();
-
-            //Pagination
-            $paginator  = $this->get('knp_paginator');
-            $pagination = $paginator->paginate(
-                $exceptionCheckers,
-                $request->query->getInt('p', 1),
-                25
-            );
-
-            //Returns the dashboard
-            return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
-                'exceptionCheckers' => $pagination,
-            ));
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Gets the exceptionCheckers
+        $exceptionCheckers = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
+            ->findAll();
+
+        //Pagination
+        $pagination = $paginator->paginate(
+            $exceptionCheckers,
+            $request->query->getInt('p', 1),
+            25
+        );
+
+        //Renders the dashboard
+        return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
+            'exceptionCheckers' => $pagination,
+        ));
     }
 
 //DISPLAY
@@ -63,23 +71,17 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD"})
      */
-    public function display($id)
+    public function display(ExceptionChecker $exceptionChecker)
     {
-        //Defines the form
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the exceptionChecker
-            $exceptionChecker = $this->getDoctrine()
-                ->getManager()
-                ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
-                ->findOneById($id);
-
-            return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
-                'exceptionChecker' => $exceptionChecker,
-            ));
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the ExceptionChecker
+        return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
+            'exceptionChecker' => $exceptionChecker,
+        ));
     }
 
 //NEW
@@ -90,43 +92,42 @@ class ExceptionCheckerController extends Controller
      */
     public function new(Request $request)
     {
-        //Defines the form
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Defines form
-            $exceptionChecker = new ExceptionChecker();
-            $exceptionCheckerConfig = array(
-                'action' => 'new',
-                'user' => $this->getUser(),
-            );
-            $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
-            $form->handleRequest($request);
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
+        }
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                //Adds data
-                $exceptionChecker->setCreation(new \DateTime());
-                if ('' == $exceptionChecker->getRedirectKind()) {
-                    $exceptionChecker->setRedirectKind(null);
-                }
+        //Defines form
+        $exceptionChecker = new ExceptionChecker();
+        $exceptionCheckerConfig = array(
+            'action' => 'new',
+            'user' => $this->getUser(),
+        );
+        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form->handleRequest($request);
 
-                //Persists data in DB
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($exceptionChecker);
-                $em->flush();
-
-                //Redirects to the exceptionChecker
-                return $this->redirectToRoute('exceptionchecker_display', array(
-                    'id' => $exceptionChecker->getId(),
-                ));
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Adds data
+            $exceptionChecker->setCreation(new \DateTime());
+            if ('' == $exceptionChecker->getRedirectKind()) {
+                $exceptionChecker->setRedirectKind(null);
             }
 
-            //Returns the form to edit content
-            return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
-                'form' => $form->createView(),
+            //Persists data in DB
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($exceptionChecker);
+            $em->flush();
+
+            //Redirects to the exceptionChecker
+            return $this->redirectToRoute('exceptionchecker_display', array(
+                'id' => $exceptionChecker->getId(),
             ));
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the new form
+        return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
 //ADD
@@ -138,7 +139,7 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function add(Request $request, $kind)
+    public function add(Request $request, Translator $translator, $kind)
     {
         //Defines form
         $exceptionChecker = new ExceptionChecker();
@@ -154,12 +155,8 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Gets the translator
-            $translator = $this->get('translator');
-
             //Adds url if user has rights
-            if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded')) ||
-                $form->get('secret')->getData() == $this->getParameter('exceptionCheckerSecret')) {
+            if (true === $this->accessGranted || $form->get('secret')->getData() == $this->getParameter('exceptionCheckerSecret')) {
                 //Checks if exceptionChecker already exists
                 $em = $this->getDoctrine()->getManager();
                 $existingExceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneByUrl($request->get('u'));
@@ -175,27 +172,25 @@ class ExceptionCheckerController extends Controller
                 }
 
                 //Creates flash
-                $flash = $translator->trans('text.exception_checker_added', array('%url%' => $exceptionChecker->getUrl()), 'exceptionChecker');
                 $request->getSession()
                     ->getFlashBag()
-                    ->add('success', $flash);
+                    ->add('success', $translator->trans('text.exception_checker_added', array('%url%' => $exceptionChecker->getUrl()), 'exceptionChecker'));
 
-                //Redirects to the exceptionChecker
+                //Redirects to the ExceptionChecker
                 return $this->redirectToRoute($this->getParameter('c975_l_exception_checker.redirectExcluded'));
             //Wrong secret code
             } elseif ($form->get('secret')->getData() != $this->getParameter('exceptionCheckerSecret')) {
                 //Creates flash
-                $flash = $translator->trans('text.wrong_secret_code', array(), 'exceptionChecker');
                 $request->getSession()
                     ->getFlashBag()
-                    ->add('danger', $flash);
+                    ->add('danger', $translator->trans('text.wrong_secret_code', array(), 'exceptionChecker'));
             //Access is denied
             } else {
                 throw $this->createAccessDeniedException();
             }
         }
 
-        //Returns the form to add url
+        //Renders the add form
         return $this->render('@c975LExceptionChecker/forms/new.html.twig', array(
             'form' => $form->createView(),
         ));
@@ -210,49 +205,45 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function modify(Request $request, $id)
+    public function modify(Request $request, ExceptionChecker $exceptionChecker)
     {
-        //Defines the form
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the exceptionChecker
-            $em = $this->getDoctrine()->getManager();
-            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
+        }
 
-            //Defines form
-            $exceptionCheckerConfig = array(
-                'action' => 'modify',
-                'user' => $this->getUser(),
-            );
-            $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
-            $form->handleRequest($request);
+        //Defines form
+        $exceptionCheckerConfig = array(
+            'action' => 'modify',
+            'user' => $this->getUser(),
+        );
+        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                //Adds data
-                $exceptionChecker->setCreation(new \DateTime());
-                if ($exceptionChecker->getRedirectKind() == '') {
-                    $exceptionChecker->setRedirectKind(null);
-                    $exceptionChecker->setRedirectData(null);
-                }
-
-                //Persists data in DB
-                $em->persist($exceptionChecker);
-                $em->flush();
-
-                //Redirects to the exceptionChecker
-                return $this->redirectToRoute('exceptionchecker_display', array(
-                    'id' => $exceptionChecker->getId(),
-                ));
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Adds data
+            $exceptionChecker->setCreation(new \DateTime());
+            if ($exceptionChecker->getRedirectKind() == '') {
+                $exceptionChecker->setRedirectKind(null);
+                $exceptionChecker->setRedirectData(null);
             }
 
-            //Returns the form to modify content
-            return $this->render('@c975LExceptionChecker/forms/modify.html.twig', array(
-                'form' => $form->createView(),
-                'exceptionChecker' => $exceptionChecker,
+            //Persists data in DB
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($exceptionChecker);
+            $em->flush();
+
+            //Redirects to the exceptionChecker
+            return $this->redirectToRoute('exceptionchecker_display', array(
+                'id' => $exceptionChecker->getId(),
             ));
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the modify form
+        return $this->render('@c975LExceptionChecker/forms/modify.html.twig', array(
+            'form' => $form->createView(),
+            'exceptionChecker' => $exceptionChecker,
+        ));
     }
 
 //DUPLICATE
@@ -264,50 +255,46 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function duplicate(Request $request, $id)
+    public function duplicate(Request $request, ExceptionChecker $exceptionChecker)
     {
-        //Defines the form
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the exceptionChecker
-            $em = $this->getDoctrine()->getManager();
-            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
+        }
 
-            //Defines form
-            $exceptionCheckerClone = clone $exceptionChecker;
-            $exceptionCheckerConfig = array(
-                'action' => 'duplicate',
-                'user' => $this->getUser(),
-            );
-            $form = $this->createForm(ExceptionCheckerType::class, $exceptionCheckerClone, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
-            $form->handleRequest($request);
+        //Defines form
+        $exceptionCheckerClone = clone $exceptionChecker;
+        $exceptionCheckerConfig = array(
+            'action' => 'duplicate',
+            'user' => $this->getUser(),
+        );
+        $form = $this->createForm(ExceptionCheckerType::class, $exceptionCheckerClone, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                //Adds data
-                $exceptionChecker->setCreation(new \DateTime());
-                if ($exceptionChecker->getRedirectKind() == '') {
-                    $exceptionChecker->setRedirectKind(null);
-                    $exceptionChecker->setRedirectData(null);
-                }
-
-                //Persists data in DB
-                $em->persist($exceptionCheckerClone);
-                $em->flush();
-
-                //Redirects to the exceptionChecker
-                return $this->redirectToRoute('exceptionchecker_display', array(
-                    'id' => $exceptionChecker->getId(),
-                ));
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Adds data
+            $exceptionChecker->setCreation(new \DateTime());
+            if ($exceptionChecker->getRedirectKind() == '') {
+                $exceptionChecker->setRedirectKind(null);
+                $exceptionChecker->setRedirectData(null);
             }
 
-            //Returns the form to duplicate content
-            return $this->render('@c975LExceptionChecker/forms/duplicate.html.twig', array(
-                'form' => $form->createView(),
-                'exceptionChecker' => $exceptionCheckerClone,
+            //Persists data in DB
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($exceptionCheckerClone);
+            $em->flush();
+
+            //Redirects to the exceptionChecker
+            return $this->redirectToRoute('exceptionchecker_display', array(
+                'id' => $exceptionChecker->getId(),
             ));
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the duplicate  form
+        return $this->render('@c975LExceptionChecker/forms/duplicate.html.twig', array(
+            'form' => $form->createView(),
+            'exceptionChecker' => $exceptionCheckerClone,
+        ));
     }
 
 //DELETE
@@ -319,40 +306,36 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Request $request, ExceptionChecker $exceptionChecker)
     {
-        //Defines the form
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            //Gets the exceptionChecker
-            $em = $this->getDoctrine()->getManager();
-            $exceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneById($id);
-
-            //Defines form
-            $exceptionCheckerConfig = array(
-                'action' => 'delete',
-                'user' => $this->getUser(),
-            );
-            $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                //Persists data in DB
-                $em->remove($exceptionChecker);
-                $em->flush();
-
-                //Redirects to the dashboard
-                return $this->redirectToRoute('exceptionchecker_dashboard');
-            }
-
-            //Returns the form to delete content
-            return $this->render('@c975LExceptionChecker/forms/delete.html.twig', array(
-                'form' => $form->createView(),
-                'exceptionChecker' => $exceptionChecker,
-            ));
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Defines form
+        $exceptionCheckerConfig = array(
+            'action' => 'delete',
+            'user' => $this->getUser(),
+        );
+        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Persists data in DB
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($exceptionChecker);
+            $em->flush();
+
+            //Redirects to the dashboard
+            return $this->redirectToRoute('exceptionchecker_dashboard');
+        }
+
+        //Renders the delete form
+        return $this->render('@c975LExceptionChecker/forms/delete.html.twig', array(
+            'form' => $form->createView(),
+            'exceptionChecker' => $exceptionChecker,
+        ));
     }
 
 //HELP
@@ -363,12 +346,12 @@ class ExceptionCheckerController extends Controller
      */
     public function help()
     {
-        //Returns the help
-        if (null !== $this->getUser() && $this->get('security.authorization_checker')->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded'))) {
-            return $this->render('@c975LExceptionChecker/pages/help.html.twig');
+        //Access denied
+        if (true !== $this->accessGranted) {
+            throw $this->createAccessDeniedException();
         }
 
-        //Access is denied
-        throw $this->createAccessDeniedException();
+        //Renders the help
+        return $this->render('@c975LExceptionChecker/pages/help.html.twig');
     }
 }

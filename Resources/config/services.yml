@@ -6,6 +6,8 @@ services:
 
     c975L\ExceptionCheckerBundle\Controller\:
         resource: '../../Controller/*'
+        bind:
+            $roleNeeded: '%c975_l_exception_checker.roleNeeded%'
 
     c975L\ExceptionCheckerBundle\Listener\ExceptionListener:
         tags:

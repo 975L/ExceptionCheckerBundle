@@ -1,5 +1,10 @@
 # Changelog
 
+v1.7.2
+------
+- Injected `AuthorizationCheckerInterface` in Controllers to avoid use of `$this->get()` (30/07/2018)
+- Made use of ParamConverter (30/07/2018)
+
 v1.7.1
 ------
 - Removed `SubmitType` in ExceptionCheckerType and replaced by adding button in template as it's not a "Best Practice" (21/07/2018)
