@@ -1,5 +1,12 @@
 # Changelog
 
+v1.8
+----
+- Made use of Voters for access rights (01/08/2018)
+- Renamed `new` to `add` to avoid using php reserved word (01/08/2018)
+- Rename Route `exceptionchecker_add` (ec-add/{kind}) to `exceptionchecker_add_from_url` (01/08/2018)
+- Added info about kind of url in add form (01/08/2018)
+
 v1.7.2
 ------
 - Injected `AuthorizationCheckerInterface` in Controllers to avoid use of `$this->get()` (30/07/2018)

@@ -7,6 +7,8 @@
     {% if app.user != null %}
         {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'new', 'md') }}
     {% endif %}
+{# Info #}
+    <p class="text-center">{{ 'text.info_url'|trans|raw }}</p>
 {# Form #}
     {{ form_start(form) }}
         {{ form_widget(form) }}

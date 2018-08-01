@@ -50,6 +50,10 @@
                 <source>label.secret_code</source>
                 <target>Secret code</target>
             </trans-unit>
+            <trans-unit id="13">
+                <source>text.info_url</source>
+                <target><![CDATA[Urls like "/wp-login.php" will be matched by "/wp-login".<br/>Use wildcard to match a set of urls: "/wp*" to match "/wp-login", "/wp-admin.php", etc.]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

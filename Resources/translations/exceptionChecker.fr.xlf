@@ -50,6 +50,10 @@
                 <source>label.secret_code</source>
                 <target>Code secret</target>
             </trans-unit>
+            <trans-unit id="13">
+                <source>text.info_url</source>
+                <target><![CDATA[Les urls comme "/wp-login.php" seront trouvées par "/ wp-login".<br/>Utilisez un caractère générique pour faire correspondre un ensemble d'urls: "/ wp *" pour correspondre à "/wp*" to match "/wp-login", "/wp-admin.php", etc.]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

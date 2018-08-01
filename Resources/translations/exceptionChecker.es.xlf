@@ -50,6 +50,10 @@
                 <source>label.secret_code</source>
                 <target>Código secreto</target>
             </trans-unit>
+            <trans-unit id="13">
+                <source>text.info_url</source>
+                <target><![CDATA[Las URLs como "/wp-login.php" se emparejarán con "/ wp-login".<br/>Use el comodín para hacer coincidir un conjunto de URLs: "/ wp *" para que coincida con "/wp-login", "/wp-admin.php", etc.]]></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
