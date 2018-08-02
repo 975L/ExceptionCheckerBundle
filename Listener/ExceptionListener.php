@@ -124,7 +124,7 @@ class ExceptionListener
                     }
                 //Adds link to exclude to log (useful if log is sent by email)
                 } else {
-                    $exceptionAddUrl = $this->router->generate('exceptionchecker_add', array('kind' => 'excluded'), UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
+                    $exceptionAddUrl = $this->router->generate('exceptionchecker_create_from_url', array('kind' => 'excluded'), UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
                     $this->logger->info('-----> Add to ExceptionChecker? Use ' . $exceptionAddUrl . ' with your secret code!');
                 }
             }

@@ -71,20 +71,20 @@ class ExceptionCheckerController extends Controller
         ));
     }
 
-//ADD
+//CREATE
     /**
-     * @Route("/exception-checker/new",
-     *      name="exceptionchecker_add")
+     * @Route("/exception-checker/create",
+     *      name="exceptionchecker_create")
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function add(Request $request)
+    public function create(Request $request)
     {
         $exceptionChecker = new ExceptionChecker();
-        $this->denyAccessUnlessGranted('add', $exceptionChecker);
+        $this->denyAccessUnlessGranted('create', $exceptionChecker);
 
         //Defines form
         $exceptionCheckerConfig = array(
-            'action' => 'new',
+            'action' => 'create',
             'user' => $this->getUser(),
         );
         $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
@@ -114,10 +114,10 @@ class ExceptionCheckerController extends Controller
         ));
     }
 
-//ADD FROM URL CALL
+//CREATE FROM URL CALL
     /**
      * @Route("/ec-add/{kind}",
-     *      name="exceptionchecker_add_from_url",
+     *      name="exceptionchecker_create_from_url",
      *      requirements={
      *          "kind": "deleted|excluded"
      *      })

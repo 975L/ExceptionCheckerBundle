@@ -1,5 +1,10 @@
 # Changelog
 
+v1.8.1
+------
+- Renamed things link to `add` to `create` (02/08/2018)
+- Ordered in alphabetical Voters constants (02/08/2018)
+
 v1.8
 ----
 - Made use of Voters for access rights (01/08/2018)

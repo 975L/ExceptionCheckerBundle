@@ -22,7 +22,7 @@ class ExceptionCheckerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;
-        $addAction = $options['exceptionCheckerConfig']['action'] == 'add' ? true : false;
+        $addAction = $options['exceptionCheckerConfig']['action'] == 'create' ? true : false;
         $user = isset($options['exceptionCheckerConfig']['user']) ? $options['exceptionCheckerConfig']['user'] : false;
 
         $builder

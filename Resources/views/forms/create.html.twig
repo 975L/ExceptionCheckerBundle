@@ -1,11 +1,11 @@
 {% extends "@c975LExceptionChecker/layout.html.twig" %}
 {% trans_default_domain 'exceptionChecker' %}
-{% set title = 'label.new'|trans({}, 'toolbar') %}
+{% set title = 'label.create'|trans({}, 'toolbar') %}
 
 {% block exceptionchecker_content %}
 {# Toolbar #}
     {% if app.user != null %}
-        {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'new', 'md') }}
+        {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'create', 'md') }}
     {% endif %}
 {# Info #}
     <p class="text-center">{{ 'text.info_url'|trans|raw }}</p>
