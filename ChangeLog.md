@@ -1,5 +1,17 @@
 # Changelog
 
+v1.9
+----
+- Added link to BuyMeCoffee (22/08/2018)
+- Added link to apidoc (22/08/2018)
+- Removed FQCN (22/08/2018)
+- Created Service (22/08/2018)
+- Made Controller skinny (22/08/2018)
+- Corrected redirection after submission of duplicated ExceptionChecker (22/08/2018)
+- Corrected Route `exceptionchecker_create_from_url` rendering (22/08/2018)
+- Corrected Translations (22/08/2018)
+- Updated `README.md` (22/08/2018)
+
 v1.8.1
 ------
 - Renamed things link to `add` to `create` (02/08/2018)

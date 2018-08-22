@@ -12,10 +12,18 @@ namespace c975L\ExceptionCheckerBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 
+/**
+ * Repository for ExceptionChecker Entity
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class ExceptionCheckerRepository extends EntityRepository
 {
-    //Finds by url
-    public function findByUrl($url)
+    /**
+     * Finds ExceptionChecker by url
+     * @return mixed
+     */
+    public function findByUrl(string $url)
     {
         $qb = $this->createQueryBuilder('e');
         $qb->select('e')
@@ -28,7 +36,10 @@ class ExceptionCheckerRepository extends EntityRepository
         return $qb->getQuery()->getOneOrNullResult();
     }
 
-    //Finds all the wildcards available
+    /**
+     * Finds all the wildcards available
+     * @return mixed
+     */
     public function findWildcard()
     {
         $qb = $this->createQueryBuilder('e');

@@ -16,9 +16,13 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * ExceptionChecker FormType
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class ExceptionCheckerType extends AbstractType
 {
-    //Builds the form
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;

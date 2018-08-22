@@ -13,7 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * ExceptionChecker
+ * Entity ExceptionChecker (linked to DB table `exception_checker`)
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
  *
  * @ORM\Table(name="exception_checker", indexes={@ORM\Index(name="un_exception_checker", columns={"name", "url"})})
  * @ORM\Entity(repositoryClass="c975L\ExceptionCheckerBundle\Repository\ExceptionCheckerRepository")
@@ -21,6 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ExceptionChecker
 {
     /**
+     * ExceptionChecker unique id
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -30,6 +33,7 @@ class ExceptionChecker
     protected $id;
 
     /**
+     * Url for the ExceptionChecker
      * @var string
      *
      * @ORM\Column(name="url", type="string", length=255, unique=true)
@@ -37,6 +41,7 @@ class ExceptionChecker
     protected $url;
 
     /**
+     * Kind (deleted, excluded, redirected) of ExceptionChecker
      * @var string
      *
      * @ORM\Column(name="kind", type="string", length=24)
@@ -45,6 +50,7 @@ class ExceptionChecker
     protected $kind;
 
     /**
+     * Kind of redirect (Asset, Route, Url) for ExceptionChecker
      * @var string|null
      *
      * @ORM\Column(name="redirect_kind", type="string", length=24, nullable=true)
@@ -53,6 +59,7 @@ class ExceptionChecker
     protected $redirectKind;
 
     /**
+     * RedirectData needed by redirectKind (Route, Url, parameters, etc.)
      * @var string|null
      *
      * @ORM\Column(name="redirect_data", type="string", length=255, nullable=true)
@@ -60,7 +67,8 @@ class ExceptionChecker
     protected $redirectData;
 
     /**
-     * @var datetime
+     * DateTime of creation for ExceptionChecker
+     * @var \DateTime
      *
      * @ORM\Column(name="creation", type="datetime")
      */
@@ -68,8 +76,7 @@ class ExceptionChecker
 
 
     /**
-     * Get id.
-     *
+     * Get id
      * @return int
      */
     public function getId()
@@ -78,10 +85,8 @@ class ExceptionChecker
     }
 
     /**
-     * Set url.
-     *
-     * @param string $url
-     *
+     * Set url
+     * @param string
      * @return ExceptionChecker
      */
     public function setUrl($url)
@@ -92,8 +97,7 @@ class ExceptionChecker
     }
 
     /**
-     * Get url.
-     *
+     * Get url
      * @return string
      */
     public function getUrl()
@@ -102,10 +106,8 @@ class ExceptionChecker
     }
 
     /**
-     * Set kind.
-     *
-     * @param string $kind
-     *
+     * Set kind
+     * @param string
      * @return ExceptionChecker
      */
     public function setKind($kind)
@@ -116,8 +118,7 @@ class ExceptionChecker
     }
 
     /**
-     * Get kind.
-     *
+     * Get kind
      * @return string
      */
     public function getKind()
@@ -126,10 +127,8 @@ class ExceptionChecker
     }
 
     /**
-     * Set redirectKind.
-     *
-     * @param string|null $redirectKind
-     *
+     * Set redirectKind
+     * @param string|null
      * @return ExceptionChecker
      */
     public function setRedirectKind($redirectKind = null)
@@ -140,8 +139,7 @@ class ExceptionChecker
     }
 
     /**
-     * Get redirectKind.
-     *
+     * Get redirectKind
      * @return string|null
      */
     public function getRedirectKind()
@@ -150,10 +148,8 @@ class ExceptionChecker
     }
 
     /**
-     * Set redirectData.
-     *
-     * @param string|null $redirectData
-     *
+     * Set redirectData
+     * @param string|null
      * @return ExceptionChecker
      */
     public function setRedirectData($redirectData = null)
@@ -164,8 +160,7 @@ class ExceptionChecker
     }
 
     /**
-     * Get redirectData.
-     *
+     * Get redirectData
      * @return string|null
      */
     public function getRedirectData()
@@ -175,9 +170,7 @@ class ExceptionChecker
 
     /**
      * Set creation
-     *
-     * @param datetime $creation
-     *
+     * @param \DateTime
      * @return ExceptionChecker
      */
     public function setCreation($creation)
@@ -189,12 +182,10 @@ class ExceptionChecker
 
     /**
      * Get creation
-     *
      * @return \DateTime
      */
     public function getCreation()
     {
         return $this->creation;
     }
-
 }

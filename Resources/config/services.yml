@@ -12,6 +12,9 @@ services:
         bind:
             $roleNeeded: '%c975_l_exception_checker.roleNeeded%'
 
+    c975L\ExceptionCheckerBundle\Service\:
+        resource: '../../Service/*'
+
     c975L\ExceptionCheckerBundle\Listener\ExceptionListener:
         tags:
             - { name: kernel.event_listener, event: kernel.exception }

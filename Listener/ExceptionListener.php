@@ -9,34 +9,81 @@
 
 namespace c975L\ExceptionCheckerBundle\Listener;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * ExceptionListener to catch Exception launch
+ *
+ * - Catches the Exception,
+ * - Checks if it's a supported one,
+ * - Searches in DB if registered ExceptionChecker
+ * - Updates Response for "redirected" (Data defined in ExceptionChecker) and "excluded" (Route defined in config)
+ * - Throws a "GoneHttpException" for "deleted"
+ * - Otherwise adds a message + link to the logger to easily add the ExceptionChecker to the DB
+ *
+ * Supported Exceptions
+ *
+ * - HttpException
+ * - MethodNotAllowedHttpException
+ * - NotAcceptableHttpException
+ * - NotFoundHttpException
+ *
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2017 975L <contact@975l.com>
+ */
 class ExceptionListener
 {
+    /**
+     * Stores Container
+     * @var ContainerInterface
+     */
     private $container;
+
+    /**
+     * Stores EntityManager
+     * @var EntityManagerInterface
+     */
     private $em;
+
+    /**
+     * Stores Logger
+     * @var LoggerInterface
+     */
     private $logger;
+
+    /**
+     * Stores Router
+     * @var RouterInterface
+     */
     private $router;
 
     public function __construct(
-        \Symfony\Component\DependencyInjection\ContainerInterface $container,
-        \Doctrine\ORM\EntityManagerInterface $em,
-        \Psr\Log\LoggerInterface $logger,
-        \Symfony\Component\Routing\RouterInterface $router
-        ) {
+        ContainerInterface $container,
+        EntityManagerInterface $em,
+        LoggerInterface $logger,
+        RouterInterface $router
+    )
+    {
         $this->container = $container;
         $this->em = $em;
         $this->logger = $logger;
         $this->router = $router;
     }
 
+    /**
+     * Catches the Exception
+     */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        //Gets exception
+        //Gets Exception
         $exception = $event->getException();
 
         //Checks if Exception is supported
@@ -55,24 +102,22 @@ class ExceptionListener
         }
 
         //Exception is supported
-        if ($exceptionContinue === true) {
+        if (true === $exceptionContinue) {
             //Gets url requested
             $url = $event->getRequest()->getPathInfo();
 
-            if ($url !== null) {
-                //Gets repository
+            if (null !== $url) {
+                //Gets the ExceptionChecker
                 $repository = $this->em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
-
-                //Gets the exceptionChecker
                 $exceptionChecker = $repository->findByUrl($url);
 
                 //Checks with wildcards if not found
-                if ($exceptionChecker === null) {
+                if (null === $exceptionChecker) {
                     $exceptionCheckersWildcard = $repository->findWildcard();
 
-                    if ($exceptionCheckersWildcard !== null) {
+                    if (null !== $exceptionCheckersWildcard) {
                         foreach ($exceptionCheckersWildcard as $exceptionCheckerWildcard) {
-                            if (stripos($url, str_replace('*', '', $exceptionCheckerWildcard->getUrl())) !== false) {
+                            if (false !== stripos($url, str_replace('*', '', $exceptionCheckerWildcard->getUrl()))) {
                                 $exceptionChecker = $exceptionCheckerWildcard;
                                 break;
                             }
@@ -81,23 +126,23 @@ class ExceptionListener
                 }
 
                 //ExceptionChecker has been found
-                if ($exceptionChecker !== null) {
-                    //Deleted
-                    if ($exceptionChecker->getKind() == 'deleted') {
+                if (null !== $exceptionChecker) {
+                    //Deleted - Throws GoneHttpException
+                    if ('deleted' == $exceptionChecker->getKind()) {
                         $event->setException(new GoneHttpException($url));
-                    //Excluded
-                    } elseif ($exceptionChecker->getKind() == 'excluded') {
+                    //Excluded - Redirects to defined Route
+                    } elseif ('excluded' == $exceptionChecker->getKind()) {
                         $redirectUrl = $this->router->generate($this->container->getParameter('c975_l_exception_checker.redirectExcluded'));
-                    //Redirected
-                    } elseif ($exceptionChecker->getKind() == 'redirected') {
+                    //Redirected - Redirects to defined redirection
+                    } elseif ('redirected' == $exceptionChecker->getKind()) {
                         //Asset
-                        if ($exceptionChecker->getRedirectKind() == 'Asset') {
+                        if ('Asset' == $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = str_replace('/app_dev.php', '', $this->router->getContext()->getBaseUrl()) . $exceptionChecker->getRedirectData();
                         //Url
-                        } elseif ($exceptionChecker->getRedirectKind() == 'Url') {
+                        } elseif ('Url' == $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = $exceptionChecker->getRedirectData();
                         //Route
-                        } elseif ($exceptionChecker->getRedirectKind() == 'Route') {
+                        } elseif ('Route' == $exceptionChecker->getRedirectKind()) {
                             //Gets Route parameters
                             $parameters = array();
                             $parametersFinal = array();

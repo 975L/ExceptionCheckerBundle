@@ -15,16 +15,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Translation\Translator;
+use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Knp\Component\Pager\PaginatorInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerType;
+use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
+/**
+ * Main Controller class
+ * @author Laurent Marquet <laurent.marquet@laposte.net>
+ * @copyright 2018 975L <contact@975l.com>
+ */
 class ExceptionCheckerController extends Controller
 {
+    /**
+     * Stores ExceptionCheckerService
+     * @var ExceptionCheckerServiceInterface
+     */
+    private $exceptionCheckerService;
+
+    public function __construct(ExceptionCheckerServiceInterface $exceptionCheckerService)
+    {
+        $this->exceptionCheckerService = $exceptionCheckerService;
+    }
+
 //DASHBOARD
     /**
+     * Displays the dashboard
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/exception-checker/dashboard",
      *      name="exceptionchecker_dashboard")
      * @Method({"GET", "HEAD"})
@@ -33,27 +55,23 @@ class ExceptionCheckerController extends Controller
     {
         $this->denyAccessUnlessGranted('dashboard', null);
 
-        //Gets the exceptionCheckers
-        $exceptionCheckers = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')
-            ->findAll();
-
-        //Pagination
-        $pagination = $paginator->paginate(
-            $exceptionCheckers,
+        //Renders the dashboard
+        $exceptionCheckers = $paginator->paginate(
+            $this->exceptionCheckerService->getExceptionCheckerAll(),
             $request->query->getInt('p', 1),
             25
         );
-
-        //Renders the dashboard
         return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
-            'exceptionCheckers' => $pagination,
+            'exceptionCheckers' => $exceptionCheckers,
         ));
     }
 
 //DISPLAY
     /**
+     * Displays the ExceptionChecker using its unique id
+     * @return Response
+     * @throws NotFoundHttpException
+     *
      * @Route("/exception-checker/{id}",
      *      name="exceptionchecker_display",
      *      requirements={
@@ -73,6 +91,10 @@ class ExceptionCheckerController extends Controller
 
 //CREATE
     /**
+     * Creates the ExceptionChecker
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/exception-checker/create",
      *      name="exceptionchecker_create")
      * @Method({"GET", "HEAD", "POST"})
@@ -91,18 +113,10 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Adds data
-            $exceptionChecker->setCreation(new \DateTime());
-            if ('' == $exceptionChecker->getRedirectKind()) {
-                $exceptionChecker->setRedirectKind(null);
-            }
+            //Registers the ExceptionChecker
+            $this->exceptionCheckerService->register($exceptionChecker);
 
-            //Persists data in DB
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($exceptionChecker);
-            $em->flush();
-
-            //Redirects to the exceptionChecker
+            //Redirects to the ExceptionChecker
             return $this->redirectToRoute('exceptionchecker_display', array(
                 'id' => $exceptionChecker->getId(),
             ));
@@ -114,8 +128,12 @@ class ExceptionCheckerController extends Controller
         ));
     }
 
-//CREATE FROM URL CALL
+//ADD FROM URL CALL
     /**
+     * Creates the ExceptionChecker from url call (mainly from link sent in email built with Monolog)
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/ec-add/{kind}",
      *      name="exceptionchecker_create_from_url",
      *      requirements={
@@ -123,14 +141,15 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function addFromUrl(Request $request, Translator $translator, AuthorizationCheckerInterface $authChecker, $kind)
+    public function addFromUrl(Request $request, $kind)
     {
-        //Defines form
         $exceptionChecker = new ExceptionChecker();
         $exceptionChecker
             ->setKind($kind)
             ->setUrl($request->get('u'))
         ;
+
+        //Defines form
         $exceptionCheckerConfig = array(
             'action' => 'add',
             'user' => $this->getUser(),
@@ -139,36 +158,9 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Adds url if user has rights
-            if (true === $authChecker->isGranted($this->getParameter('c975_l_exception_checker.roleNeeded')) ||
-                $form->get('secret')->getData() == $this->getParameter('exceptionCheckerSecret')) {
-                //Checks if exceptionChecker already exists
-                $em = $this->getDoctrine()->getManager();
-                $existingExceptionChecker = $em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker')->findOneByUrl($request->get('u'));
-
-                //ExceptionChecker url doesn't exist
-                if (null === $existingExceptionChecker) {
-                    //Adds data
-                    $exceptionChecker->setCreation(new \DateTime());
-
-                    //Persists data in DB
-                    $em->persist($exceptionChecker);
-                    $em->flush();
-                }
-
-                //Creates flash
-                $request->getSession()
-                    ->getFlashBag()
-                    ->add('success', $translator->trans('text.exception_checker_added', array('%url%' => $exceptionChecker->getUrl()), 'exceptionChecker'));
-
-                //Redirects to the ExceptionChecker
+            //Registers the ExceptionChecker
+            if ($this->exceptionCheckerService->registerViaUrl($exceptionChecker, $form)) {
                 return $this->redirectToRoute($this->getParameter('c975_l_exception_checker.redirectExcluded'));
-            //Wrong secret code
-            } elseif ($form->get('secret')->getData() != $this->getParameter('exceptionCheckerSecret')) {
-                //Creates flash
-                $request->getSession()
-                    ->getFlashBag()
-                    ->add('danger', $translator->trans('text.wrong_secret_code', array(), 'exceptionChecker'));
             }
 
             //Access is denied
@@ -176,13 +168,18 @@ class ExceptionCheckerController extends Controller
         }
 
         //Renders the add form
-        return $this->render('@c975LExceptionChecker/forms/add.html.twig', array(
+        return $this->render('@c975LExceptionChecker/forms/create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
 
 //MODIFY
     /**
+     * Modifies the ExceptionChecker using its unique id
+     * @return Response
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
+     *
      * @Route("/exception-checker/modify/{id}",
      *      name="exceptionchecker_modify",
      *      requirements={
@@ -203,17 +200,8 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Adds data
-            $exceptionChecker->setCreation(new \DateTime());
-            if ($exceptionChecker->getRedirectKind() == '') {
-                $exceptionChecker->setRedirectKind(null);
-                $exceptionChecker->setRedirectData(null);
-            }
-
-            //Persists data in DB
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($exceptionChecker);
-            $em->flush();
+            //Registers the ExceptionChecker
+            $this->exceptionCheckerService->register($exceptionChecker);
 
             //Redirects to the exceptionChecker
             return $this->redirectToRoute('exceptionchecker_display', array(
@@ -230,6 +218,11 @@ class ExceptionCheckerController extends Controller
 
 //DUPLICATE
     /**
+     * Duplicates the ExceptionChecker using its unique id
+     * @return Response
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
+     *
      * @Route("/exception-checker/duplicate/{id}",
      *      name="exceptionchecker_duplicate",
      *      requirements={
@@ -251,21 +244,12 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Adds data
-            $exceptionChecker->setCreation(new \DateTime());
-            if ($exceptionChecker->getRedirectKind() == '') {
-                $exceptionChecker->setRedirectKind(null);
-                $exceptionChecker->setRedirectData(null);
-            }
-
-            //Persists data in DB
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($exceptionCheckerClone);
-            $em->flush();
+            //Registers the ExceptionChecker
+            $this->exceptionCheckerService->register($exceptionCheckerClone);
 
             //Redirects to the exceptionChecker
             return $this->redirectToRoute('exceptionchecker_display', array(
-                'id' => $exceptionChecker->getId(),
+                'id' => $exceptionCheckerClone->getId(),
             ));
         }
 
@@ -278,6 +262,11 @@ class ExceptionCheckerController extends Controller
 
 //DELETE
     /**
+     * Deletes the ExceptionChecker using its unique id
+     * @return Response
+     * @throws AccessDeniedException
+     * @throws NotFoundHttpException
+     *
      * @Route("/exception-checker/delete/{id}",
      *      name="exceptionchecker_delete",
      *      requirements={
@@ -298,10 +287,8 @@ class ExceptionCheckerController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Persists data in DB
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($exceptionChecker);
-            $em->flush();
+            //Deletes the ExceptionChecker
+            $this->exceptionCheckerService->delete($exceptionChecker);
 
             //Redirects to the dashboard
             return $this->redirectToRoute('exceptionchecker_dashboard');
@@ -316,6 +303,10 @@ class ExceptionCheckerController extends Controller
 
 //HELP
     /**
+     * Displays the help
+     * @return Response
+     * @throws AccessDeniedException
+     *
      * @Route("/exception-checker/help",
      *      name="exceptionchecker_help")
      * @Method({"GET", "HEAD"})
