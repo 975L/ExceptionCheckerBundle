@@ -44,7 +44,7 @@ class ExceptionCheckerTools implements ExceptionCheckerToolsInterface
     /**
      * {@inheritdoc}
      */
-    public function createFlash($object, $url = null)
+    public function createFlash(string $object, $url = null)
     {
         $style = 'success';
         $options = array();
@@ -54,6 +54,11 @@ class ExceptionCheckerTools implements ExceptionCheckerToolsInterface
             case 'exception_checker_added':
                 $flash = 'text.exception_checker_added';
                 $options = array('%url%' => $url);
+                break;
+            //ExceptionChecker deleted
+            case 'exception_checker_deleted':
+                $flash = 'text.exception_checker_deleted';
+                $style = 'warning';
                 break;
             //Wrong secret code
             case 'wrong_secret_code':

@@ -19,5 +19,5 @@ interface ExceptionCheckerToolsInterface
     /**
      * Creates flash message
      */
-    public function createFlash($object);
+    public function createFlash(string $object);
 }

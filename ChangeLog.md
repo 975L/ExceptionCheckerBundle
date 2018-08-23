@@ -1,5 +1,11 @@
 # Changelog
 
+v1.9.1
+------
+- Removed ID display in dashboard (23/08/2018)
+- Added missing type in ExceptionCheckerToolsInterface (23/08/2018)
+- Added flash on deletion (23/08/2018)
+
 v1.9
 ----
 - Added link to BuyMeCoffee (22/08/2018)

@@ -54,6 +54,10 @@
                 <source>text.info_url</source>
                 <target><![CDATA[Las URLs como "/wp-login.php" se emparejarán también con "/wp-login".<br/>Use el comodín para hacer coincidir un conjunto de URLs: "/wp*" para que coincida con "/wp-login", "/wp-admin.php", etc.]]></target>
             </trans-unit>
+            <trans-unit id="14">
+                <source>text.exception_checker_deleted</source>
+                <target>El ExceptionChecker ha sido bien eliminado</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

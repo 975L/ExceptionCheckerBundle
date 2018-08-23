@@ -69,6 +69,9 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         //Persists data in DB
         $this->em->remove($exceptionChecker);
         $this->em->flush();
+
+        //Creates flash
+        $this->exceptionCheckerTools->createFlash('exception_checker_deleted');
     }
 
     /**
