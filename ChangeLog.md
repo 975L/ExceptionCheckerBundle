@@ -1,5 +1,9 @@
 # Changelog
 
+v1.9.2
+------
+- Replaced links in dashboard by buttons (25/08/2018)
+
 v1.9.1
 ------
 - Removed ID display in dashboard (23/08/2018)

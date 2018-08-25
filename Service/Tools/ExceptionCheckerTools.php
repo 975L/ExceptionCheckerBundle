@@ -65,6 +65,8 @@ class ExceptionCheckerTools implements ExceptionCheckerToolsInterface
                 $flash = 'text.wrong_secret_code';
                 $style = 'danger';
                 break;
+            default:
+                break;
         }
 
         if(isset($flash)) {

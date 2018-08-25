@@ -24,19 +24,19 @@
                     <tr>
 {# Url #}
                         <td class="text-left">
-                            <a href="{{ path('exceptionchecker_display', {'id': exceptionChecker.id}) }}" title="{{ 'label.display'|trans({}, 'toolbar') }}">{{ exceptionChecker.url }}</a>
+                            {{ toolbar_button_text(path('exceptionchecker_display', {'id': exceptionChecker.id}), 'display', 'sm', 'true', 'right', exceptionChecker.url) }}
                         </td>
 {# Modify #}
                         <td class="text-center">
-                            <a href="{{ path('exceptionchecker_modify', {'id': exceptionChecker.id}) }}" title="{{ 'label.modify'|trans({}, 'toolbar') }}">{{ 'label.modify'|trans({}, 'toolbar') }}</a>
+                            {{ toolbar_button_text(path('exceptionchecker_modify', {'id': exceptionChecker.id}), 'modify', 'sm') }}
                         </td>
 {# Duplicate #}
                         <td class="text-center">
-                            <a href="{{ path('exceptionchecker_duplicate', {'id': exceptionChecker.id}) }}" title="{{ 'label.duplicate'|trans({}, 'toolbar') }}">{{ 'label.duplicate'|trans({}, 'toolbar') }}</a>
+                            {{ toolbar_button_text(path('exceptionchecker_duplicate', {'id': exceptionChecker.id}), 'duplicate', 'sm') }}
                         </td>
 {# Delete #}
                         <td class="text-center">
-                            <a href="{{ path('exceptionchecker_delete', {'id': exceptionChecker.id}) }}" title="{{ 'label.delete'|trans({}, 'toolbar') }}" class="text-danger">{{ 'label.delete'|trans({}, 'toolbar') }}</a>
+                            {{ toolbar_button_text(path('exceptionchecker_delete', {'id': exceptionChecker.id}), 'delete', 'sm') }}
                         </td>
                     </tr>
                 {% endfor %}
