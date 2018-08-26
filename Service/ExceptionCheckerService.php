@@ -13,9 +13,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
-use c975L\ExceptionCheckerBundle\Service\Tools\ExceptionCheckerToolsInterface;
 
 /**
  * Main services related to Events
@@ -25,40 +25,40 @@ use c975L\ExceptionCheckerBundle\Service\Tools\ExceptionCheckerToolsInterface;
 class ExceptionCheckerService implements ExceptionCheckerServiceInterface
 {
     /**
-     * Stores AuthorizationChecker
+     * Stores AuthorizationCheckerInterface
      * @var AuthorizationCheckerInterface
      */
     private $authChecker;
 
     /**
-     * Stores container
+     * Stores ContainerInterface
      * @var ContainerInterface
      */
     private $container;
 
     /**
-     * Stores EntityManager
+     * Stores EntityManagerInterface
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * Stores ExceptionCheckerTools
-     * @var ExceptionCheckerToolsInterface
+     * Stores ServiceToolsInterface
+     * @var ServiceToolsInterface
      */
-    private $exceptionCheckerTools;
+    private $serviceTools;
 
     public function __construct(
         AuthorizationCheckerInterface $authChecker,
         ContainerInterface $container,
         EntityManagerInterface $em,
-        ExceptionCheckerToolsInterface $exceptionCheckerTools
+        ServiceToolsInterface $serviceTools
     )
     {
         $this->authChecker = $authChecker;
         $this->container = $container;
         $this->em = $em;
-        $this->exceptionCheckerTools = $exceptionCheckerTools;
+        $this->serviceTools = $serviceTools;
     }
 
     /**
@@ -71,7 +71,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         $this->em->flush();
 
         //Creates flash
-        $this->exceptionCheckerTools->createFlash('exception_checker_deleted');
+        $this->serviceTools->createFlash('exceptionChecker', 'text.exception_checker_deleted');
     }
 
     /**
@@ -111,7 +111,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         }
 
         //Creates flash
-        $this->exceptionCheckerTools->createFlash('exception_checker_added', $exceptionChecker->getUrl());
+        $this->serviceTools->createFlash('exceptionChecker', 'text.exception_checker_added', 'success', array('%url%' => $exceptionChecker->getUrl()));
     }
 
     /**
@@ -120,7 +120,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
     public function registerViaUrl(ExceptionChecker $exceptionChecker, Form $form)
     {
         //Checks User rights
-        if (true === $this->authChecker->isGranted($this->container->getParameter('c975_l_exception_checker.roleNeeded')) ||
+        if ($this->authChecker->isGranted($this->container->getParameter('c975_l_exception_checker.roleNeeded')) ||
             $form->get('secret')->getData() == $this->container->getParameter('exceptionCheckerSecret')) {
             //Registers the ExceptionChecker
             $this->register($exceptionChecker);
@@ -128,7 +128,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
             return true;
         //Wrong secret code
         } elseif ($form->get('secret')->getData() != $this->getParameter('exceptionCheckerSecret')) {
-            $this->exceptionCheckerTools->createFlash('wrong_secret_code');
+            $this->serviceTools->createFlash('exceptionChecker', 'text.wrong_secret_code', 'danger');
         }
 
         return false;

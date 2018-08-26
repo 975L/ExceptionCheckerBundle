@@ -102,7 +102,7 @@ class ExceptionListener
         }
 
         //Exception is supported
-        if (true === $exceptionContinue) {
+        if ($exceptionContinue) {
             //Gets url requested
             $url = $event->getRequest()->getPathInfo();
 
