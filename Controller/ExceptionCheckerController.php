@@ -20,7 +20,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Knp\Component\Pager\PaginatorInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
-use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerType;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
 /**
@@ -105,11 +104,7 @@ class ExceptionCheckerController extends Controller
         $this->denyAccessUnlessGranted('create', $exceptionChecker);
 
         //Defines form
-        $exceptionCheckerConfig = array(
-            'action' => 'create',
-            'user' => $this->getUser(),
-        );
-        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form = $this->exceptionCheckerService->createForm('create', $exceptionChecker, $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -123,7 +118,7 @@ class ExceptionCheckerController extends Controller
         }
 
         //Renders the new form
-        return $this->render('@c975LExceptionChecker/forms/add.html.twig', array(
+        return $this->render('@c975LExceptionChecker/forms/create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
@@ -150,11 +145,7 @@ class ExceptionCheckerController extends Controller
         ;
 
         //Defines form
-        $exceptionCheckerConfig = array(
-            'action' => 'add',
-            'user' => $this->getUser(),
-        );
-        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form = $this->exceptionCheckerService->createForm('add', $exceptionChecker, $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -192,11 +183,7 @@ class ExceptionCheckerController extends Controller
         $this->denyAccessUnlessGranted('modify', $exceptionChecker);
 
         //Defines form
-        $exceptionCheckerConfig = array(
-            'action' => 'modify',
-            'user' => $this->getUser(),
-        );
-        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form = $this->exceptionCheckerService->createForm('modify', $exceptionChecker, $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -235,12 +222,8 @@ class ExceptionCheckerController extends Controller
         $this->denyAccessUnlessGranted('duplicate', $exceptionChecker);
 
         //Defines form
-        $exceptionCheckerClone = clone $exceptionChecker;
-        $exceptionCheckerConfig = array(
-            'action' => 'duplicate',
-            'user' => $this->getUser(),
-        );
-        $form = $this->createForm(ExceptionCheckerType::class, $exceptionCheckerClone, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $exceptionCheckerClone = $this->exceptionCheckerService->cloneObject($exceptionCheckerClone);
+        $form = $this->exceptionCheckerService->createForm('duplicate', $exceptionCheckerClone, $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -279,11 +262,7 @@ class ExceptionCheckerController extends Controller
         $this->denyAccessUnlessGranted('delete', $exceptionChecker);
 
         //Defines form
-        $exceptionCheckerConfig = array(
-            'action' => 'delete',
-            'user' => $this->getUser(),
-        );
-        $form = $this->createForm(ExceptionCheckerType::class, $exceptionChecker, array('exceptionCheckerConfig' => $exceptionCheckerConfig));
+        $form = $this->exceptionCheckerService->createForm('delete', $exceptionChecker, $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

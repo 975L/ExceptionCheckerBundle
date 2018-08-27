@@ -15,6 +15,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
+use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
 /**
@@ -43,6 +44,12 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
     private $em;
 
     /**
+     * Stores ExceptionCheckerFormFactoryInterface
+     * @var ExceptionCheckerFormFactoryInterface
+     */
+    private $exceptionCheckerFormFactory;
+
+    /**
      * Stores ServiceToolsInterface
      * @var ServiceToolsInterface
      */
@@ -52,13 +59,33 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         AuthorizationCheckerInterface $authChecker,
         ContainerInterface $container,
         EntityManagerInterface $em,
+        ExceptionCheckerFormFactoryInterface $exceptionCheckerFormFactory,
         ServiceToolsInterface $serviceTools
     )
     {
         $this->authChecker = $authChecker;
         $this->container = $container;
         $this->em = $em;
+        $this->exceptionCheckerFormFactory = $exceptionCheckerFormFactory;
         $this->serviceTools = $serviceTools;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function cloneObject(ExceptionChecker $exceptionChecker)
+    {
+        $exceptionCheckerClone = clone $exceptionChecker;
+
+        return $exceptionCheckerClone;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createForm(string $name, ExceptionChecker $exceptionChecker, $user)
+    {
+        return $this->exceptionCheckerFormFactory->create($name, $exceptionChecker, $user);
     }
 
     /**

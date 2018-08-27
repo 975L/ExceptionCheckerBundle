@@ -2,7 +2,7 @@
 
 {% spaceless %}
 {# Dashboard #}
-{{ toolbar_button(path('exceptionchecker_dashboard'), 'dashboard', 'label.exceptionchecker'|trans) }}
+{{ toolbar_button(path('exceptionchecker_dashboard'), 'dashboard', 'md', 'label.exceptionchecker'|trans) }}
 
 {# Display #}
 {% if type != 'dashboard' and type != 'display' and type != 'help' and type != 'create' %}

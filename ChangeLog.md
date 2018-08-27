@@ -1,5 +1,10 @@
 # Changelog
 
+v1.9.4
+------
+- Added ExceptionCheckerFormFactory + Interface (27/08/2018)
+- Corrected template call for "create" Route (27/08/2018)
+
 v1.9.3
 ------
 - Removed 'true ===' as not needed (25/08/2018)

@@ -7,6 +7,9 @@ services:
     c975L\ExceptionCheckerBundle\Controller\:
         resource: '../../Controller/*'
 
+    c975L\ExceptionCheckerBundle\Form\:
+        resource: '../../Form/*'
+
     c975L\ExceptionCheckerBundle\Security\:
         resource: '../../Security/*'
         bind:

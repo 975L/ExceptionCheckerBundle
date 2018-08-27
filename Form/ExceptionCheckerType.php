@@ -25,9 +25,9 @@ class ExceptionCheckerType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $disabled = $options['exceptionCheckerConfig']['action'] == 'delete' ? true : false;
-        $addAction = $options['exceptionCheckerConfig']['action'] == 'create' ? true : false;
-        $user = isset($options['exceptionCheckerConfig']['user']) ? $options['exceptionCheckerConfig']['user'] : false;
+        $disabled = $options['config']['action'] == 'delete' ? true : false;
+        $addAction = $options['config']['action'] == 'create' ? true : false;
+        $user = isset($options['config']['user']) ? $options['config']['user'] : false;
 
         $builder
             ->add('url', TextType::class, array(
@@ -70,7 +70,7 @@ class ExceptionCheckerType extends AbstractType
                 )))
                 ;
         //Creation
-        if ($options['exceptionCheckerConfig']['action'] == 'modify' || $options['exceptionCheckerConfig']['action'] == 'delete') {
+        if ($options['config']['action'] == 'modify' || $options['config']['action'] == 'delete') {
             $builder
                 ->add('creation', DateTimeType::class, array(
                     'label' => 'label.creation',
@@ -103,6 +103,6 @@ class ExceptionCheckerType extends AbstractType
             'translation_domain' => 'exceptionChecker',
         ));
 
-        $resolver->setRequired('exceptionCheckerConfig');
+        $resolver->setRequired('config');
     }
 }

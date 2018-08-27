@@ -20,6 +20,18 @@ use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 interface ExceptionCheckerServiceInterface
 {
     /**
+     * Clones the object
+     * @return Event
+     */
+    public function cloneObject(ExceptionChecker $exceptionChecker);
+
+    /**
+     * Shortcut to call ExceptionCheckerFormFactory to create Form
+     * @return Form
+     */
+    public function createForm(string $name, ExceptionChecker $exceptionChecker, $user);
+
+    /**
      * Deletes the ExceptionChecker
      */
     public function delete(ExceptionChecker $exceptionChecker);
