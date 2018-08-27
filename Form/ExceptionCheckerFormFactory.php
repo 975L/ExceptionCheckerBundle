@@ -38,10 +38,21 @@ class ExceptionCheckerFormFactory implements ExceptionCheckerFormFactoryInterfac
      */
     public function create(string $name, ExceptionChecker $exceptionChecker, $user)
     {
-        $config = array(
-            'action' => $name,
-            'user' => $user,
-        );
+        switch ($name) {
+            case 'create':
+            case 'add':
+            case 'modify':
+            case 'duplicate':
+            case 'delete':
+                $config = array(
+                    'action' => $name
+                    'user' => $user,
+                );
+                break;
+            default:
+                $config = array();
+                break;
+        }
 
         return $this->formFactory->create(ExceptionCheckerType::class, $exceptionChecker, array('config' => $config));
     }
