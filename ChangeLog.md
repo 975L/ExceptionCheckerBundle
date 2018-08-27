@@ -1,5 +1,9 @@
 # Changelog
 
+v1.9.4.2
+--------
+- Corrected missing comma (27/08/2018)
+
 v1.9.4.1
 --------
 - Used a `switch()` for the FormFactory more readable (27/08/2018)

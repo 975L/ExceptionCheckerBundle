@@ -45,7 +45,7 @@ class ExceptionCheckerFormFactory implements ExceptionCheckerFormFactoryInterfac
             case 'duplicate':
             case 'delete':
                 $config = array(
-                    'action' => $name
+                    'action' => $name,
                     'user' => $user,
                 );
                 break;
