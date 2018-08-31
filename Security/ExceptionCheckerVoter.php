@@ -36,43 +36,43 @@ class ExceptionCheckerVoter extends Voter
      * Used for access to create an ExecptionChecker
      * @var string
      */
-    public const CREATE = 'create';
+    public const CREATE = 'c975LExceptionChecker-create';
 
     /**
      * Used for access to dashboard
      * @var string
      */
-    public const DASHBOARD = 'dashboard';
+    public const DASHBOARD = 'c975LExceptionChecker-dashboard';
 
     /**
      * Used for access to delete an ExecptionChecker
      * @var string
      */
-    public const DELETE = 'delete';
+    public const DELETE = 'c975LExceptionChecker-delete';
 
     /**
      * Used for access to display an ExecptionChecker
      * @var string
      */
-    public const DISPLAY = 'display';
+    public const DISPLAY = 'c975LExceptionChecker-display';
 
     /**
      * Used for access to duplicate an ExecptionChecker
      * @var string
      */
-    public const DUPLICATE = 'duplicate';
+    public const DUPLICATE = 'c975LExceptionChecker-duplicate';
 
     /**
      * Used for access to help
      * @var string
      */
-    public const HELP = 'help';
+    public const HELP = 'c975LExceptionChecker-help';
 
     /**
      * Used for access to modify an ExecptionChecker
      * @var string
      */
-    public const MODIFY = 'modify';
+    public const MODIFY = 'c975LExceptionChecker-modify';
 
     /**
      * Contains all the available attributes to check with in supports()
@@ -124,6 +124,7 @@ class ExceptionCheckerVoter extends Voter
             case self::HELP:
             case self::MODIFY:
                 return $this->decisionManager->decide($token, array($this->roleNeeded));
+                break;
         }
 
         throw new \LogicException('Invalid attribute: ' . $attribute);

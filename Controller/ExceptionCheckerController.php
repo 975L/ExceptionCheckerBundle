@@ -52,7 +52,7 @@ class ExceptionCheckerController extends Controller
      */
     public function dashboard(Request $request, PaginatorInterface $paginator)
     {
-        $this->denyAccessUnlessGranted('dashboard', null);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-dashboard', null);
 
         //Renders the dashboard
         $exceptionCheckers = $paginator->paginate(
@@ -80,7 +80,7 @@ class ExceptionCheckerController extends Controller
      */
     public function display(ExceptionChecker $exceptionChecker)
     {
-        $this->denyAccessUnlessGranted('display', $exceptionChecker);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-display', $exceptionChecker);
 
         //Renders the ExceptionChecker
         return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
@@ -101,7 +101,7 @@ class ExceptionCheckerController extends Controller
     public function create(Request $request)
     {
         $exceptionChecker = new ExceptionChecker();
-        $this->denyAccessUnlessGranted('create', $exceptionChecker);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-create', $exceptionChecker);
 
         //Defines form
         $form = $this->exceptionCheckerService->createForm('create', $exceptionChecker, $this->getUser());
@@ -180,7 +180,7 @@ class ExceptionCheckerController extends Controller
      */
     public function modify(Request $request, ExceptionChecker $exceptionChecker)
     {
-        $this->denyAccessUnlessGranted('modify', $exceptionChecker);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-modify', $exceptionChecker);
 
         //Defines form
         $form = $this->exceptionCheckerService->createForm('modify', $exceptionChecker, $this->getUser());
@@ -219,7 +219,7 @@ class ExceptionCheckerController extends Controller
      */
     public function duplicate(Request $request, ExceptionChecker $exceptionChecker)
     {
-        $this->denyAccessUnlessGranted('duplicate', $exceptionChecker);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-duplicate', $exceptionChecker);
 
         //Defines form
         $exceptionCheckerClone = $this->exceptionCheckerService->cloneObject($exceptionCheckerClone);
@@ -259,7 +259,7 @@ class ExceptionCheckerController extends Controller
      */
     public function delete(Request $request, ExceptionChecker $exceptionChecker)
     {
-        $this->denyAccessUnlessGranted('delete', $exceptionChecker);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-delete', $exceptionChecker);
 
         //Defines form
         $form = $this->exceptionCheckerService->createForm('delete', $exceptionChecker, $this->getUser());
@@ -292,7 +292,7 @@ class ExceptionCheckerController extends Controller
      */
     public function help()
     {
-        $this->denyAccessUnlessGranted('help', null);
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-help', null);
 
         //Renders the help
         return $this->render('@c975LExceptionChecker/pages/help.html.twig');
