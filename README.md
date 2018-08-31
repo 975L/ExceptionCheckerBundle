@@ -50,8 +50,8 @@ class AppKernel extends Kernel
 }
 ```
 
-Step 3: Configure the Bundles
------------------------------
+Step 3: Configure the Bundle
+----------------------------
 Check dependencies for their configuration:
 - [Doctrine](https://github.com/doctrine/DoctrineBundle)
 - [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
