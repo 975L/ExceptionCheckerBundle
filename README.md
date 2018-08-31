@@ -52,11 +52,13 @@ class AppKernel extends Kernel
 
 Step 3: Configure the Bundles
 -----------------------------
-Check [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle) for its specific configuration.
+Check dependencies for their configuration:
+- [Doctrine](https://github.com/doctrine/DoctrineBundle)
+- [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
 
 v2.0+ of c975LExceptionCheckerBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/exception-checker/config" with the proper user role to modify them.
 
-**Upgrading from v1.x? Check UPGRADE.md.**
+**Upgrading from v1.x? Check [UPGRADE.md](UPGRADE.md).**
 
 Step 4: Enable the Routes
 -------------------------
