@@ -12,8 +12,6 @@ services:
 
     c975L\ExceptionCheckerBundle\Security\:
         resource: '../../Security/*'
-        bind:
-            $roleNeeded: '%c975_l_exception_checker.roleNeeded%'
 
     c975L\ExceptionCheckerBundle\Service\:
         resource: '../../Service/*'

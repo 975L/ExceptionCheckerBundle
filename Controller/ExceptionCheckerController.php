@@ -19,6 +19,7 @@ use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Knp\Component\Pager\PaginatorInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
@@ -136,7 +137,7 @@ class ExceptionCheckerController extends Controller
      *      })
      * @Method({"GET", "HEAD", "POST"})
      */
-    public function addFromUrl(Request $request, $kind)
+    public function addFromUrl(Request $request, ConfigServiceInterface $configService, $kind)
     {
         $exceptionChecker = new ExceptionChecker();
         $exceptionChecker
@@ -151,7 +152,7 @@ class ExceptionCheckerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             //Registers the ExceptionChecker
             if ($this->exceptionCheckerService->registerViaUrl($exceptionChecker, $form)) {
-                return $this->redirectToRoute($this->getParameter('c975_l_exception_checker.redirectExcluded'));
+                return $this->redirectToRoute($configService->getParameter('c975LlExceptionChecker.redirectExcluded'));
             }
 
             //Access is denied
@@ -277,6 +278,39 @@ class ExceptionCheckerController extends Controller
         return $this->render('@c975LExceptionChecker/forms/delete.html.twig', array(
             'form' => $form->createView(),
             'exceptionChecker' => $exceptionChecker,
+        ));
+    }
+
+//CONFIG
+    /**
+     * Displays the configuration
+     * @return Response
+     * @throws AccessDeniedException
+     *
+     * @Route("/exception-checker/config",
+     *      name="exceptionchecker_config")
+     * @Method({"GET", "HEAD", "POST"})
+     */
+    public function config(Request $request, ConfigServiceInterface $configService)
+    {
+        $this->denyAccessUnlessGranted('c975LExceptionChecker-config', null);
+
+        //Defines form
+        $form = $configService->createForm('c975l/exceptionchecker-bundle');
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Validates config
+            $configService->setConfig($form);
+
+            //Redirects
+            return $this->redirectToRoute('exceptionchecker_dashboard');
+        }
+
+        //Renders the config form
+        return $this->render('@c975LConfig/forms/config.html.twig', array(
+            'form' => $form->createView(),
+            'toolbar' => '@c975LExceptionChecker',
         ));
     }
 

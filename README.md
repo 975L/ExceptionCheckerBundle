@@ -54,26 +54,9 @@ Step 3: Configure the Bundles
 -----------------------------
 Check [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle) for its specific configuration.
 
-Then, in the `app/config.yml` file of your project, define the following:
+v2.0+ of c975LExceptionCheckerBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/exception-checker/config" with the proper user role to modify them.
 
-```yml
-c975_l_exception_checker:
-    #User's role needed to enable access to the edition of page
-    roleNeeded: 'ROLE_ADMIN' #default 'ROLE-ADMIN'
-    #The Route where the excluded Urls will be redirected to
-    redirectExcluded: 'pageedit_home' #We advise you to redirect to your homepage
-```
-
-If you wish to be able to add urls with an url call (see below), you need to add `exceptionCheckerSecret` parameter in `app/config/parameters.yml` file, like this:
-```yml
-parameters:
-    exceptionCheckerSecret: YOUR_SECRET_CODE
-```
-And in `app/config/parameters.yml.dist`:
-```yml
-parameters:
-    exceptionCheckerSecret: ~
-```
+**Upgrading from v1.x? Check UPGRADE.md.**
 
 Step 4: Enable the Routes
 -------------------------

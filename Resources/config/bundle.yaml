@@ -1,0 +1,16 @@
+c975LExceptionChecker:
+    roleNeeded:
+        type: string
+        required: true
+        default: ROLE_ADMIN
+        info: "User's role needed to enable access to data linked to ExceptionCheckerBundle: i.e. ROLE_ADMIN (default)"
+    redirectExcluded:
+        type: string
+        required: true
+        default: null
+        info: "The Route where the excluded Urls will be redirected to (we advise you to redirect to your homepage): i.e. pageedit_home"
+    exceptionCheckerSecret:
+        type: string
+        required: false
+        default: null
+        info: "Your secret code that you want to use when adding new ExceptionChecker from url call"

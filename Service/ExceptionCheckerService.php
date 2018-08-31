@@ -10,9 +10,9 @@
 namespace c975L\ExceptionCheckerBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ServicesBundle\Service\ServiceToolsInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
@@ -32,10 +32,10 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
     private $authChecker;
 
     /**
-     * Stores ContainerInterface
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     /**
      * Stores EntityManagerInterface
@@ -57,14 +57,14 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
 
     public function __construct(
         AuthorizationCheckerInterface $authChecker,
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         EntityManagerInterface $em,
         ExceptionCheckerFormFactoryInterface $exceptionCheckerFormFactory,
         ServiceToolsInterface $serviceTools
     )
     {
         $this->authChecker = $authChecker;
-        $this->container = $container;
+        $this->configService = $configService;
         $this->em = $em;
         $this->exceptionCheckerFormFactory = $exceptionCheckerFormFactory;
         $this->serviceTools = $serviceTools;
@@ -147,14 +147,14 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
     public function registerViaUrl(ExceptionChecker $exceptionChecker, Form $form)
     {
         //Checks User rights
-        if ($this->authChecker->isGranted($this->container->getParameter('c975_l_exception_checker.roleNeeded')) ||
-            $form->get('secret')->getData() == $this->container->getParameter('exceptionCheckerSecret')) {
+        if ($this->authChecker->isGranted($this->configService->getParameter('c975LExceptionChecker.roleNeeded')) ||
+            $form->get('secret')->getData() == $this->configService->getParameter('c975LExceptionChecker.exceptionCheckerSecret')) {
             //Registers the ExceptionChecker
             $this->register($exceptionChecker);
 
             return true;
         //Wrong secret code
-        } elseif ($form->get('secret')->getData() != $this->getParameter('exceptionCheckerSecret')) {
+        } elseif ($form->get('secret')->getData() != $this->configService->getParameter('c975LExceptionChecker.exceptionCheckerSecret')) {
             $this->serviceTools->createFlash('exceptionChecker', 'text.wrong_secret_code', 'danger');
         }
 

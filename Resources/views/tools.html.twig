@@ -5,7 +5,7 @@
 {{ toolbar_button(path('exceptionchecker_dashboard'), 'dashboard', 'md', 'label.exceptionchecker'|trans) }}
 
 {# Display #}
-{% if type != 'dashboard' and type != 'display' and type != 'help' and type != 'create' %}
+{% if type != 'dashboard' and type != 'display' and type != 'help' and type != 'create' and type != 'config' %}
     {{ toolbar_button(path('exceptionchecker_display', {'id': object.id}), 'display') }}
 {% endif %}
 
@@ -15,7 +15,7 @@
 {% endif %}
 
 {# Modify #}
-{% if type != 'dashboard' and type != 'modify' and type != 'help' and type != 'create' %}
+{% if type != 'dashboard' and type != 'modify' and type != 'help' and type != 'create' and type != 'config' %}
     {{ toolbar_button(path('exceptionchecker_modify', {'id': object.id}), 'modify') }}
 {% endif %}
 
@@ -30,8 +30,13 @@
 {% endif %}
 
 {# Delete #}
-{% if type != 'dashboard' and type != 'delete' and type != 'help' and type != 'create' %}
+{% if type != 'dashboard' and type != 'delete' and type != 'help' and type != 'create' and type != 'config' %}
     {{ toolbar_button(path('exceptionchecker_delete', {'id': object.id}), 'delete') }}
+{% endif %}
+
+{# Config #}
+{% if type != 'config' %}
+    {{ toolbar_button(path('exceptionchecker_config'), 'config') }}
 {% endif %}
 
 {# Help #}

@@ -12,6 +12,7 @@ namespace c975L\ExceptionCheckerBundle\Security;
 use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 
 /**
@@ -22,15 +23,22 @@ use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 class ExceptionCheckerVoter extends Voter
 {
     /**
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
+     */
+    private $configService;
+
+    /**
+     * Stores AccessDecisionManagerInterface
      * @var AccessDecisionManagerInterface
      */
     private $decisionManager;
 
     /**
-     * The role needed to be allowed access (defined in config)
+     * Used for access to config
      * @var string
      */
-    private $roleNeeded;
+    public const CONFIG = 'c975LExceptionChecker-config';
 
     /**
      * Used for access to create an ExecptionChecker
@@ -79,6 +87,7 @@ class ExceptionCheckerVoter extends Voter
      * @var array
      */
     private const ATTRIBUTES = array(
+        self::CONFIG,
         self::CREATE,
         self::DASHBOARD,
         self::DELETE,
@@ -88,10 +97,13 @@ class ExceptionCheckerVoter extends Voter
         self::MODIFY,
     );
 
-    public function __construct(AccessDecisionManagerInterface $decisionManager, string $roleNeeded)
+    public function __construct(
+        AccessDecisionManagerInterface $decisionManager,
+        ConfigServiceInterface $configService
+    )
     {
+        $this->configService = $configService;
         $this->decisionManager = $decisionManager;
-        $this->roleNeeded = $roleNeeded;
     }
 
     /**
@@ -116,6 +128,7 @@ class ExceptionCheckerVoter extends Voter
     {
         //Defines access rights
         switch ($attribute) {
+            case self::CONFIG:
             case self::CREATE:
             case self::DASHBOARD:
             case self::DELETE:
@@ -123,7 +136,7 @@ class ExceptionCheckerVoter extends Voter
             case self::DUPLICATE:
             case self::HELP:
             case self::MODIFY:
-                return $this->decisionManager->decide($token, array($this->roleNeeded));
+                return $this->decisionManager->decide($token, array($this->configService->getParameter('c975LExceptionChecker.roleNeeded', 'c975l/exceptionchecker-bundle')));
                 break;
         }
 

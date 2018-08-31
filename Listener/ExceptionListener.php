@@ -11,13 +11,13 @@ namespace c975L\ExceptionCheckerBundle\Listener;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
 
 /**
  * ExceptionListener to catch Exception launch
@@ -42,37 +42,37 @@ use Symfony\Component\Routing\RouterInterface;
 class ExceptionListener
 {
     /**
-     * Stores Container
-     * @var ContainerInterface
+     * Stores ConfigServiceInterface
+     * @var ConfigServiceInterface
      */
-    private $container;
+    private $configService;
 
     /**
-     * Stores EntityManager
+     * Stores EntityManagerInterface
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * Stores Logger
+     * Stores LoggerInterface
      * @var LoggerInterface
      */
     private $logger;
 
     /**
-     * Stores Router
+     * Stores RouterInterface
      * @var RouterInterface
      */
     private $router;
 
     public function __construct(
-        ContainerInterface $container,
+        ConfigServiceInterface $configService,
         EntityManagerInterface $em,
         LoggerInterface $logger,
         RouterInterface $router
     )
     {
-        $this->container = $container;
+        $this->configService = $configService;
         $this->em = $em;
         $this->logger = $logger;
         $this->router = $router;
@@ -132,7 +132,7 @@ class ExceptionListener
                         $event->setException(new GoneHttpException($url));
                     //Excluded - Redirects to defined Route
                     } elseif ('excluded' == $exceptionChecker->getKind()) {
-                        $redirectUrl = $this->router->generate($this->container->getParameter('c975_l_exception_checker.redirectExcluded'));
+                        $redirectUrl = $this->router->generate($this->configService->getParameter('c975LExceptionChecker.redirectExcluded'));
                     //Redirected - Redirects to defined redirection
                     } elseif ('redirected' == $exceptionChecker->getKind()) {
                         //Asset
