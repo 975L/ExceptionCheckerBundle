@@ -223,7 +223,7 @@ class ExceptionCheckerController extends Controller
         $this->denyAccessUnlessGranted('c975LExceptionChecker-duplicate', $exceptionChecker);
 
         //Defines form
-        $exceptionCheckerClone = $this->exceptionCheckerService->cloneObject($exceptionCheckerClone);
+        $exceptionCheckerClone = $this->exceptionCheckerService->cloneObject($exceptionChecker);
         $form = $this->exceptionCheckerService->createForm('duplicate', $exceptionCheckerClone, $this->getUser());
         $form->handleRequest($request);
 

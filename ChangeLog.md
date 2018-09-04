@@ -1,8 +1,11 @@
 # Changelog
 
+v2.0.1
+------
 - Updated `README.md` (31/08/2018)
 - Updated `UPGRADE.md` (01/09/2018)
 - Updated composer.json (01/09/2018)
+- Corrected clone in `duplicate` (04/09/2018)
 
 v2.0
 ----
@@ -14,6 +17,10 @@ v2.0
 - Added `bundle.yaml` (31/08/2018)
 - Updated `README.md` (31/08/2018)
 - Added `UPGRADE.md` (31/08/2018)
+
+
+v1.x
+====
 
 v1.9.5
 ------

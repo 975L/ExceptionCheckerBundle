@@ -21,7 +21,7 @@ interface ExceptionCheckerServiceInterface
 {
     /**
      * Clones the object
-     * @return Event
+     * @return ExceptionChecker
      */
     public function cloneObject(ExceptionChecker $exceptionChecker);
 
