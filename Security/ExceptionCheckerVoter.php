@@ -98,8 +98,8 @@ class ExceptionCheckerVoter extends Voter
     );
 
     public function __construct(
-        AccessDecisionManagerInterface $decisionManager,
-        ConfigServiceInterface $configService
+        ConfigServiceInterface $configService,
+        AccessDecisionManagerInterface $decisionManager
     )
     {
         $this->configService = $configService;
