@@ -1,5 +1,7 @@
 # Changelog
 
+- Corrected `UPGRADE.md` for `php bin/console config:create` (03/12/2018)
+
 v2.0.1
 ------
 - Updated `README.md` (31/08/2018)

@@ -59,7 +59,7 @@ class ExceptionCheckerController extends Controller
         $exceptionCheckers = $paginator->paginate(
             $this->exceptionCheckerService->getExceptionCheckerAll(),
             $request->query->getInt('p', 1),
-            25
+            $request->query->getInt('s', 25)
         );
         return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
             'exceptionCheckers' => $exceptionCheckers,
