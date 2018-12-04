@@ -1,6 +1,9 @@
 # Changelog
 
+v2.0.2
+------
 - Corrected `UPGRADE.md` for `php bin/console config:create` (03/12/2018)
+- Corrected call for redirected Url (04/12/2018)
 
 v2.0.1
 ------
