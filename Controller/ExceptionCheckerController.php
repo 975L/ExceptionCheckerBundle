@@ -152,7 +152,7 @@ class ExceptionCheckerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             //Registers the ExceptionChecker
             if ($this->exceptionCheckerService->registerViaUrl($exceptionChecker, $form)) {
-                return $this->redirectToRoute($configService->getParameter('c975LlExceptionChecker.redirectExcluded'));
+                return $this->redirectToRoute($configService->getParameter('c975LExceptionChecker.redirectExcluded'));
             }
 
             //Access is denied
