@@ -9,6 +9,7 @@
 
 namespace c975L\ExceptionCheckerBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -68,12 +69,11 @@ class ExceptionChecker
 
     /**
      * DateTime of creation for ExceptionChecker
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="creation", type="datetime")
      */
     protected $creation;
-
 
     /**
      * Get id
@@ -170,7 +170,7 @@ class ExceptionChecker
 
     /**
      * Set creation
-     * @param \DateTime
+     * @param DateTime
      * @return ExceptionChecker
      */
     public function setCreation($creation)
@@ -182,7 +182,7 @@ class ExceptionChecker
 
     /**
      * Get creation
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreation()
     {

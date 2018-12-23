@@ -9,19 +9,17 @@
 
 namespace c975L\ExceptionCheckerBundle\Controller;
 
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
+use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Knp\Component\Pager\PaginatorInterface;
-use c975L\ConfigBundle\Service\ConfigServiceInterface;
-use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
-use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
 /**
  * Main Controller class
@@ -42,6 +40,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //DASHBOARD
+
     /**
      * Displays the dashboard
      * @return Response
@@ -67,6 +66,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //DISPLAY
+
     /**
      * Displays the ExceptionChecker using its unique id
      * @return Response
@@ -90,6 +90,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //CREATE
+
     /**
      * Creates the ExceptionChecker
      * @return Response
@@ -125,6 +126,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //ADD FROM URL CALL
+
     /**
      * Creates the ExceptionChecker from url call (mainly from link sent in email built with Monolog)
      * @return Response
@@ -166,6 +168,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //MODIFY
+
     /**
      * Modifies the ExceptionChecker using its unique id
      * @return Response
@@ -205,6 +208,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //DUPLICATE
+
     /**
      * Duplicates the ExceptionChecker using its unique id
      * @return Response
@@ -245,6 +249,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //DELETE
+
     /**
      * Deletes the ExceptionChecker using its unique id
      * @return Response
@@ -282,6 +287,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //CONFIG
+
     /**
      * Displays the configuration
      * @return Response
@@ -315,6 +321,7 @@ class ExceptionCheckerController extends Controller
     }
 
 //HELP
+
     /**
      * Displays the help
      * @return Response
