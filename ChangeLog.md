@@ -1,5 +1,9 @@
 # Changelog
 
+v2.0.4.1
+--------
+- Corrected code for other charcter case search (25/12/2018)
+
 v2.0.4
 ------
 - Added search and redirection for any kind of different character case (25/12/2018)

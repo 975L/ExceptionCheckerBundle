@@ -129,7 +129,10 @@ class ExceptionListener
 
                 //Checks if url exist with other character case
                 if (null === $exceptionChecker) {
-                    $folder = $event->getRequest()->server->get('DOCUMENT_ROOT') . $event->getRequest()->getBasePath();
+                    $rootPath = $event->getRequest()->server->get('DOCUMENT_ROOT');
+                    $basePath = $event->getRequest()->getBasePath();
+                    $folder = $rootPath . $basePath;
+
                     $finder = new Finder();
                     $finder
                         ->files()
@@ -139,14 +142,13 @@ class ExceptionListener
 
                     foreach ($finder as $file) {
                         $fileRealPath = $file->getRealPath();
-                        $basePath = $event->getRequest()->getBasePath();
                         $filePath = substr($fileRealPath, strrpos($fileRealPath, $basePath) + strlen($basePath));
-                        if (strtolower($url) === strtolower($filePath)) {
+                        if ($rootPath . strtolower($url) === strtolower($filePath)) {
                             $exceptionChecker = new ExceptionChecker();
                             $exceptionChecker
                                 ->setKind('redirected')
                                 ->setRedirectKind('Asset')
-                                ->setRedirectData($filePath)
+                                ->setRedirectData(str_replace($rootPath, '', $filePath))
                                 ;
                             break;
                         }
