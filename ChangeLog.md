@@ -1,5 +1,9 @@
 # Changelog
 
+v2.0.4
+------
+- Added search and redirection for any kind of different character case (25/12/2018)
+
 v2.0.3
 ------
 - Added rector to composer dev part (23/12/2018)

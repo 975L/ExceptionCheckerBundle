@@ -11,6 +11,7 @@ ExceptionCheckerBundle does the following:
 
 - Catches Symfony's exceptions and checks if the called url has been deleted or redirected or is an excluded one,
 - Allows to use **wildcards** to match urls,
+- Searches and redirects for any kind of different character case (i.e. https://example.com/YourFILe.html which should be https://example.com/YourFile.html)
 - Provides forms to create, modify, duplicate, delete the ExceptionCheckers,
 - Will reduce errors trigerred as if urls are registered, they will not be exception anymore (except for deleted urls which will throw GoneHttpException),
 - Integrates with your web design,
@@ -103,6 +104,8 @@ In `layout.html.twig`, it will mainly consist to extend your layout and define s
 
 How to use
 ==========
+ExceptionCheckerBundle can easily replace `excluded_404s` placed in Monolog to avoid being flooded by too many 404 errors, so you can remove this option from your `config_prod.yml`.
+
 Use the Route `exceptionchecker_dashboard` (url: "/exception-checker/dashboard") to access Dashboard. Then you can add urls.
 
 Matching of urls is made with `LIKE url%` so it means that if the searched url is the beginning of a checked url, the match will be met, i.e. `/wp-login.php` will be matched by `/wp-login`.
@@ -140,7 +143,5 @@ Excluded Urls
 Excluded Urls are the unwanted 404 HTTP errors, like when an attacker scans your app for some well-known application paths (e.g. /phpmyadmin).
 
 If the url is found, ExceptionCheckerBundle will redirect to the Route defined in the config value `redirectExcluded`. We advise you to redirect to your homepage.
-
-ExceptionCheckerBundle can easily replace `excluded_404s` placed in Monolog to avoid being flooded by too many 404 errors, so you can remove this option from your `config_prod.yml`.
 
 **If this project help you to reduce time to develop, you can [buy me a coffee](https://www.buymeacoffee.com/LaurentMarquet) :)**

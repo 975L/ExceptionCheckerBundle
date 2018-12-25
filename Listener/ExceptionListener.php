@@ -10,8 +10,10 @@
 namespace c975L\ExceptionCheckerBundle\Listener;
 
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -121,6 +123,32 @@ class ExceptionListener
                                 $exceptionChecker = $exceptionCheckerWildcard;
                                 break;
                             }
+                        }
+                    }
+                }
+
+                //Checks if url exist with other character case
+                if (null === $exceptionChecker) {
+                    $folder = $event->getRequest()->server->get('DOCUMENT_ROOT') . $event->getRequest()->getBasePath();
+                    $finder = new Finder();
+                    $finder
+                        ->files()
+                        ->in($folder)
+                        ->sortByName()
+                    ;
+
+                    foreach ($finder as $file) {
+                        $fileRealPath = $file->getRealPath();
+                        $basePath = $event->getRequest()->getBasePath();
+                        $filePath = substr($fileRealPath, strrpos($fileRealPath, $basePath) + strlen($basePath));
+                        if (strtolower($url) === strtolower($filePath)) {
+                            $exceptionChecker = new ExceptionChecker();
+                            $exceptionChecker
+                                ->setKind('redirected')
+                                ->setRedirectKind('Asset')
+                                ->setRedirectData($filePath)
+                                ;
+                            break;
                         }
                     }
                 }
