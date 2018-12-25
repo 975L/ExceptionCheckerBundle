@@ -9,14 +9,14 @@
 
 namespace c975L\ExceptionCheckerBundle\Service;
 
+use c975L\ConfigBundle\Service\ConfigServiceInterface;
+use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
+use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
+use c975L\ServicesBundle\Service\ServiceToolsInterface;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use c975L\ConfigBundle\Service\ConfigServiceInterface;
-use c975L\ServicesBundle\Service\ServiceToolsInterface;
-use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
-use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
-use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 
 /**
  * Main services related to Events
@@ -126,7 +126,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         //Adds data if ExceptionChecker doesn't exist
         if (null === $existingExceptionChecker) {
             //Adds data
-            $exceptionChecker->setCreation(new \DateTime());
+            $exceptionChecker->setCreation(new DateTime());
             if ('' == $exceptionChecker->getRedirectKind()) {
                 $exceptionChecker->setRedirectKind(null);
                 $exceptionChecker->setRedirectData(null);

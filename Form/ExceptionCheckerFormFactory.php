@@ -9,11 +9,8 @@
 
 namespace c975L\ExceptionCheckerBundle\Form;
 
-use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
-use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerType;
-use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * ExceptionCheckerFormFactory class

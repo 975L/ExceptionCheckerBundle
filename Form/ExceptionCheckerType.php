@@ -10,10 +10,10 @@
 namespace c975L\ExceptionCheckerBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -27,7 +27,7 @@ class ExceptionCheckerType extends AbstractType
     {
         $disabled = $options['config']['action'] == 'delete' ? true : false;
         $addAction = $options['config']['action'] == 'create' ? true : false;
-        $user = isset($options['config']['user']) ? $options['config']['user'] : false;
+        $user = $options['config']['user'] ?? false;
 
         $builder
             ->add('url', TextType::class, array(

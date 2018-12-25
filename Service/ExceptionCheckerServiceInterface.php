@@ -9,8 +9,8 @@
 
 namespace c975L\ExceptionCheckerBundle\Service;
 
-use Symfony\Component\Form\Form;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
+use Symfony\Component\Form\Form;
 
 /**
  * Interface to be called for DI for ContactForm Main related services
