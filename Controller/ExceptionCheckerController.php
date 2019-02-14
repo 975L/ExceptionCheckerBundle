@@ -13,9 +13,8 @@ use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -26,7 +25,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
-class ExceptionCheckerController extends Controller
+class ExceptionCheckerController extends AbstractController
 {
     /**
      * Stores ExceptionCheckerService
@@ -47,8 +46,8 @@ class ExceptionCheckerController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/exception-checker/dashboard",
-     *      name="exceptionchecker_dashboard")
-     * @Method({"GET", "HEAD"})
+     *    name="exceptionchecker_dashboard",
+     *    methods={"HEAD", "GET"})
      */
     public function dashboard(Request $request, PaginatorInterface $paginator)
     {
@@ -73,11 +72,9 @@ class ExceptionCheckerController extends Controller
      * @throws NotFoundHttpException
      *
      * @Route("/exception-checker/{id}",
-     *      name="exceptionchecker_display",
-     *      requirements={
-     *          "id": "^([0-9]+)"
-     *      })
-     * @Method({"GET", "HEAD"})
+     *    name="exceptionchecker_display",
+     *    requirements={"id": "^([0-9]+)"},
+     *    methods={"HEAD", "GET"})
      */
     public function display(ExceptionChecker $exceptionChecker)
     {
@@ -97,8 +94,8 @@ class ExceptionCheckerController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/exception-checker/create",
-     *      name="exceptionchecker_create")
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_create",
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function create(Request $request)
     {
@@ -133,11 +130,9 @@ class ExceptionCheckerController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/ec-add/{kind}",
-     *      name="exceptionchecker_create_from_url",
-     *      requirements={
-     *          "kind": "deleted|excluded"
-     *      })
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_create_from_url",
+     *    requirements={"kind": "deleted|excluded"},
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function addFromUrl(Request $request, ConfigServiceInterface $configService, $kind)
     {
@@ -176,11 +171,9 @@ class ExceptionCheckerController extends Controller
      * @throws NotFoundHttpException
      *
      * @Route("/exception-checker/modify/{id}",
-     *      name="exceptionchecker_modify",
-     *      requirements={
-     *          "id": "^([0-9]+)"
-     *      })
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_modify",
+     *    requirements={"id": "^([0-9]+)"},
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function modify(Request $request, ExceptionChecker $exceptionChecker)
     {
@@ -216,11 +209,9 @@ class ExceptionCheckerController extends Controller
      * @throws NotFoundHttpException
      *
      * @Route("/exception-checker/duplicate/{id}",
-     *      name="exceptionchecker_duplicate",
-     *      requirements={
-     *          "id": "^[0-9]+$"
-     *      })
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_duplicate",
+     *    requirements={"id": "^[0-9]+$"},
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function duplicate(Request $request, ExceptionChecker $exceptionChecker)
     {
@@ -257,11 +248,9 @@ class ExceptionCheckerController extends Controller
      * @throws NotFoundHttpException
      *
      * @Route("/exception-checker/delete/{id}",
-     *      name="exceptionchecker_delete",
-     *      requirements={
-     *          "id": "^([0-9]+)"
-     *      })
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_delete",
+     *    requirements={"id": "^([0-9]+)"},
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function delete(Request $request, ExceptionChecker $exceptionChecker)
     {
@@ -294,8 +283,8 @@ class ExceptionCheckerController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/exception-checker/config",
-     *      name="exceptionchecker_config")
-     * @Method({"GET", "HEAD", "POST"})
+     *    name="exceptionchecker_config",
+     *    methods={"HEAD", "GET", "POST"})
      */
     public function config(Request $request, ConfigServiceInterface $configService)
     {
@@ -328,8 +317,8 @@ class ExceptionCheckerController extends Controller
      * @throws AccessDeniedException
      *
      * @Route("/exception-checker/help",
-     *      name="exceptionchecker_help")
-     * @Method({"GET", "HEAD"})
+     *    name="exceptionchecker_help",
+     *    methods={"HEAD", "GET"})
      */
     public function help()
     {
