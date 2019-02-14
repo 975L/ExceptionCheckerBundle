@@ -1,5 +1,9 @@
 # Changelog
 
+v2.0.5.1
+--------
+- Corrected Dependencyinjection (14/02/2019)
+
 v2.0.5
 ------
 - Removed deprecations for @Method (13/02/2019)
