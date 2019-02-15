@@ -79,7 +79,7 @@ c975_l_exception_checker:
 
 Step 5: Create MySql table
 --------------------------
-Use `/Resources/sql/exception_checker.sql` to create the table `exception_checker`. The `DROP TABLE` is commented to avoid dropping by mistake.
+You can use `php bin/console make:migration` to create the migration file as documented in [Symfony's Doctrine docs](https://symfony.com/doc/current/doctrine.html) OR use `/Resources/sql/exception_checker.sql` to create the table `exception_checker`. The `DROP TABLE` is commented to avoid dropping by mistake.
 
 **As a bonus some well known tested links to be excluded are provided in the sql file, simply un-comment this part before running the sql file.**
 

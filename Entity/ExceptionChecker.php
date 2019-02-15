@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  *
- * @ORM\Table(name="exception_checker", indexes={@ORM\Index(name="un_exception_checker", columns={"name", "url"})})
+ * @ORM\Table(name="exception_checker", indexes={@ORM\Index(name="un_exception_checker", columns={"url"})})
  * @ORM\Entity(repositoryClass="c975L\ExceptionCheckerBundle\Repository\ExceptionCheckerRepository")
  */
 class ExceptionChecker
@@ -79,7 +79,7 @@ class ExceptionChecker
      * Get id
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -89,7 +89,7 @@ class ExceptionChecker
      * @param string
      * @return ExceptionChecker
      */
-    public function setUrl($url)
+    public function setUrl(?string $url)
     {
         $this->url = $url;
 
@@ -100,7 +100,7 @@ class ExceptionChecker
      * Get url
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): ?string
     {
         return $this->url;
     }
@@ -110,7 +110,7 @@ class ExceptionChecker
      * @param string
      * @return ExceptionChecker
      */
-    public function setKind($kind)
+    public function setKind(?string $kind)
     {
         $this->kind = $kind;
 
@@ -121,7 +121,7 @@ class ExceptionChecker
      * Get kind
      * @return string
      */
-    public function getKind()
+    public function getKind(): ?string
     {
         return $this->kind;
     }
@@ -131,7 +131,7 @@ class ExceptionChecker
      * @param string|null
      * @return ExceptionChecker
      */
-    public function setRedirectKind($redirectKind = null)
+    public function setRedirectKind(?string $redirectKind = null)
     {
         $this->redirectKind = $redirectKind;
 
@@ -142,7 +142,7 @@ class ExceptionChecker
      * Get redirectKind
      * @return string|null
      */
-    public function getRedirectKind()
+    public function getRedirectKind(): ?string
     {
         return $this->redirectKind;
     }
@@ -152,7 +152,7 @@ class ExceptionChecker
      * @param string|null
      * @return ExceptionChecker
      */
-    public function setRedirectData($redirectData = null)
+    public function setRedirectData(?string $redirectData = null)
     {
         $this->redirectData = $redirectData;
 
@@ -163,7 +163,7 @@ class ExceptionChecker
      * Get redirectData
      * @return string|null
      */
-    public function getRedirectData()
+    public function getRedirectData(): ?string
     {
         return $this->redirectData;
     }
@@ -173,7 +173,7 @@ class ExceptionChecker
      * @param DateTime
      * @return ExceptionChecker
      */
-    public function setCreation($creation)
+    public function setCreation(?DateTime $creation)
     {
         $this->creation = $creation;
 
@@ -184,7 +184,7 @@ class ExceptionChecker
      * Get creation
      * @return DateTime
      */
-    public function getCreation()
+    public function getCreation(): ?DateTime
     {
         return $this->creation;
     }

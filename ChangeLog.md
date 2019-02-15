@@ -1,5 +1,11 @@
 # Changelog
 
+v2.1
+----
+- Corrected index values for Entity (15/02/2019)
+- Modified Entity to use typehint (15/02/2019)
+- Documented the possibility to use `php bin/console make:migration` (15/02/2019)
+
 v2.0.5.1
 --------
 - Corrected Dependencyinjection (14/02/2019)
