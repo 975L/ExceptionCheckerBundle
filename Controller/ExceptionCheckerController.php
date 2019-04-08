@@ -13,11 +13,11 @@ use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Service\ExceptionCheckerServiceInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -39,7 +39,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //DASHBOARD
-
     /**
      * Displays the dashboard
      * @return Response
@@ -65,7 +64,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //DISPLAY
-
     /**
      * Displays the ExceptionChecker using its unique id
      * @return Response
@@ -87,7 +85,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //CREATE
-
     /**
      * Creates the ExceptionChecker
      * @return Response
@@ -123,7 +120,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //ADD FROM URL CALL
-
     /**
      * Creates the ExceptionChecker from url call (mainly from link sent in email built with Monolog)
      * @return Response
@@ -163,7 +159,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //MODIFY
-
     /**
      * Modifies the ExceptionChecker using its unique id
      * @return Response
@@ -201,7 +196,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //DUPLICATE
-
     /**
      * Duplicates the ExceptionChecker using its unique id
      * @return Response
@@ -240,7 +234,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //DELETE
-
     /**
      * Deletes the ExceptionChecker using its unique id
      * @return Response
@@ -276,7 +269,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //CONFIG
-
     /**
      * Displays the configuration
      * @return Response
@@ -310,7 +302,6 @@ class ExceptionCheckerController extends AbstractController
     }
 
 //HELP
-
     /**
      * Displays the help
      * @return Response

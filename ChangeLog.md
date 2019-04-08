@@ -1,5 +1,9 @@
 # Changelog
 
+v2.1.0.1
+--------
+- Changed Github's author reference url (08/04/2019)
+
 v2.1
 ----
 - Corrected index values for Entity (15/02/2019)
