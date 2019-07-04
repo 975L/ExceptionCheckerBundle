@@ -5,11 +5,11 @@ ExceptionCheckerBundle
 
 With `ExceptionCheckerBundle`, excluding and redirect to your homepage, or wherever you want, a bad url call is **as easy as clicking on a link!**.
 
-A link is provided in the log file sent by email, this link will lead to a form where you need to enter your defined secret code (secret code is not needed if you're logged in), and that's it! The url is excluded and redirected!
+A link is provided in the log file sent by email, this link will lead to a form where you need to enter your defined secret code (secret code is not needed if you're logged in), and that's it! The url is excluded and redirected! You can use the form to change the kind and data, before submitting it.
 
 ExceptionCheckerBundle does the following:
 
-- Catches Symfony's exceptions and checks if the called url has been deleted or redirected or is an excluded one,
+- Catches Symfony's exceptions and checks if the called url has been deleted or redirected or is an excluded or ignored one,
 - Allows to use **wildcards** to match urls,
 - Searches and redirects for any kind of different character case (i.e. https://example.com/YourFILe.html which should be https://example.com/YourFile.html)
 - Provides forms to create, modify, duplicate, delete the ExceptionCheckers,
@@ -137,6 +137,10 @@ Redirected Urls can redirect to an `Asset`, a `Route` or an `Url`. You will need
 - Route with multiple parameters: `route_name['param_key' => 'param_value', 'another_param_key' => 'another_param_value']`
 
 If the url is found, ExceptionCheckerBundle will update Event Response to redirect to the defined url.
+
+Ignored Urls
+------------
+If the url is found, ExceptionCheckerBundle will throw a `BadRequestHttpException`.
 
 Excluded Urls
 -------------

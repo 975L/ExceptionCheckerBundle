@@ -58,6 +58,10 @@
                 <source>text.exception_checker_deleted</source>
                 <target>El ExceptionChecker ha sido bien eliminado</target>
             </trans-unit>
+            <trans-unit id="15">
+                <source>label.ignored</source>
+                <target>Ignorado</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

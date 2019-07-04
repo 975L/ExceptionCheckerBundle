@@ -42,11 +42,11 @@ class ExceptionChecker
     protected $url;
 
     /**
-     * Kind (deleted, excluded, redirected) of ExceptionChecker
+     * Kind (deleted, excluded, ignored, redirected) of ExceptionChecker
      * @var string
      *
      * @ORM\Column(name="kind", type="string", length=24)
-     * @Assert\Choice(choices = {"deleted", "excluded", "redirected"})
+     * @Assert\Choice(choices = {"deleted", "excluded", "ignored", "redirected"})
      */
     protected $kind;
 
@@ -55,7 +55,7 @@ class ExceptionChecker
      * @var string|null
      *
      * @ORM\Column(name="redirect_kind", type="string", length=24, nullable=true)
-     * @Assert\Choice(choices = {null, "Asset", "Route", "Url"})
+     * @Assert\Choice(choices = {null, "", "Asset", "Route", "Url"})
      */
     protected $redirectKind;
 

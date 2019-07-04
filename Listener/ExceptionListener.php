@@ -17,6 +17,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -29,6 +30,7 @@ use Symfony\Component\Routing\RouterInterface;
  * - Searches in DB if registered ExceptionChecker
  * - Updates Response for "redirected" (Data defined in ExceptionChecker) and "excluded" (Route defined in config)
  * - Throws a "GoneHttpException" for "deleted"
+ * - Throws a "BadRequestHttpException" for "ignored"
  * - Otherwise adds a message + link to the logger to easily add the ExceptionChecker to the DB
  *
  * Supported Exceptions
@@ -161,18 +163,21 @@ class ExceptionListener
                     if ('deleted' == $exceptionChecker->getKind()) {
                         $event->setException(new GoneHttpException($url));
                     //Excluded - Redirects to defined Route
-                    } elseif ('excluded' == $exceptionChecker->getKind()) {
+                    } elseif ('excluded' === $exceptionChecker->getKind()) {
                         $redirectUrl = $this->router->generate($this->configService->getParameter('c975LExceptionChecker.redirectExcluded'));
+                    //Ignored - Throws BadRequestHttpException
+                    } elseif ('ignored' == $exceptionChecker->getKind()) {
+                        $event->setException(new BadRequestHttpException($url));
                     //Redirected - Redirects to defined redirection
-                    } elseif ('redirected' == $exceptionChecker->getKind()) {
+                    } elseif ('redirected' === $exceptionChecker->getKind()) {
                         //Asset
-                        if ('Asset' == $exceptionChecker->getRedirectKind()) {
+                        if ('Asset' === $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = str_replace('/app_dev.php', '', $this->router->getContext()->getBaseUrl()) . $exceptionChecker->getRedirectData();
                         //Url
-                        } elseif ('Url' == $exceptionChecker->getRedirectKind()) {
+                        } elseif ('Url' === $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = $exceptionChecker->getRedirectData();
                         //Route
-                        } elseif ('Route' == $exceptionChecker->getRedirectKind()) {
+                        } elseif ('Route' === $exceptionChecker->getRedirectKind()) {
                             //Gets Route parameters
                             $parameters = array();
                             $parametersFinal = array();

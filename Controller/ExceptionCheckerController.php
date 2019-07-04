@@ -127,7 +127,7 @@ class ExceptionCheckerController extends AbstractController
      *
      * @Route("/ec-add/{kind}",
      *    name="exceptionchecker_create_from_url",
-     *    requirements={"kind": "deleted|excluded"},
+     *    requirements={"kind": "deleted|excluded|ignored|redirected"},
      *    methods={"HEAD", "GET", "POST"})
      */
     public function addFromUrl(Request $request, ConfigServiceInterface $configService, $kind)

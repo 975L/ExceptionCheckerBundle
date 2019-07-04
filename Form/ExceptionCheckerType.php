@@ -45,6 +45,7 @@ class ExceptionCheckerType extends AbstractType
                     'label.kind' => '',
                     'label.deleted' => 'deleted',
                     'label.excluded' => 'excluded',
+                    'label.ignored' => 'ignored',
                     'label.redirected' => 'redirected',
                 ),
                 ))
