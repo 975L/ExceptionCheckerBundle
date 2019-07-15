@@ -1,5 +1,9 @@
 # Changelog
 
+v2.1.2
+------
+- Made use of KnpPagnigatorBundle v4 (15/07/2019)
+
 v2.1.1
 ------
 - Added "ignored" case (04/07/2019)
