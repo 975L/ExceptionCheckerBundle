@@ -1,6 +1,6 @@
 {% trans_default_domain 'toolbar' %}
 
-{% spaceless %}
+{% apply spaceless %}
 {# Dashboard #}
 {{ toolbar_button(path('exceptionchecker_dashboard'), 'dashboard', 'md', 'label.exceptionchecker'|trans) }}
 
@@ -49,4 +49,4 @@
 
 {# Other dashboards #}
 {{ toolbar_dashboards('md') }}
-{% endspaceless %}
+{% endapply %}
