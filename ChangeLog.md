@@ -1,5 +1,9 @@
 # Changelog
 
+v2.2.1
+------
+- Updated README.md (06/08/2019)
+
 v2.2
 ----
 - Made use of apply spaceless (05/08/2019)

@@ -33,25 +33,7 @@ Use [Composer](https://getcomposer.org) to install the library
     composer require c975l/exceptionchecker-bundle
 ```
 
-Step 2: Enable the Bundle
--------------------------
-Then, enable the bundle by adding it to the list of registered bundles in the `app/AppKernel.php` file of your project:
-
-```php
-<?php
-class AppKernel extends Kernel
-{
-    public function registerBundles()
-    {
-        $bundles = [
-            // ...
-            new c975L\ExceptionCheckerBundle\c975LExceptionCheckerBundle(),
-        ];
-    }
-}
-```
-
-Step 3: Configure the Bundle
+Step 2: Configure the Bundle
 ----------------------------
 Check dependencies for their configuration:
 - [Doctrine](https://github.com/doctrine/DoctrineBundle)
@@ -61,7 +43,7 @@ v2.0+ of c975LExceptionCheckerBundle uses [c975L/ConfigBundle](https://github.co
 
 **Upgrading from v1.x? Check [UPGRADE.md](UPGRADE.md).**
 
-Step 4: Enable the Routes
+Step 3: Enable the Routes
 -------------------------
 Then, enable the routes by adding them to the `app/config/routing.yml` file of your project:
 
@@ -77,13 +59,13 @@ c975_l_exception_checker:
     #    _locale: en|fr|es
 ```
 
-Step 5: Create MySql table
+Step 4: Create MySql table
 --------------------------
 You can use `php bin/console make:migration` to create the migration file as documented in [Symfony's Doctrine docs](https://symfony.com/doc/current/doctrine.html) OR use `/Resources/sql/exception_checker.sql` to create the table `exception_checker`. The `DROP TABLE` is commented to avoid dropping by mistake.
 
 **As a bonus some well known tested links to be excluded are provided in the sql file, simply un-comment this part before running the sql file.**
 
-Step 6: Integration with your website
+Step 5: Integration with your website
 -------------------------------------
 It is strongly recommended to use the [Override Templates from Third-Party Bundles feature](http://symfony.com/doc/current/templating/overriding.html) to integrate fully with your site.
 
