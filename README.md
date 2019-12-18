@@ -45,7 +45,7 @@ v2.0+ of c975LExceptionCheckerBundle uses [c975L/ConfigBundle](https://github.co
 
 Step 3: Enable the Routes
 -------------------------
-Then, enable the routes by adding them to the `app/config/routing.yml` file of your project:
+Then, enable the routes by adding them to the `/config/routes.yaml` file of your project:
 
 ```yml
 c975_l_exception_checker:
@@ -69,7 +69,7 @@ Step 5: Integration with your website
 -------------------------------------
 It is strongly recommended to use the [Override Templates from Third-Party Bundles feature](http://symfony.com/doc/current/templating/overriding.html) to integrate fully with your site.
 
-For this, simply, create the following structure `app/Resources/c975LExceptionCheckerBundle/views/` in your app and then duplicate the file `layout.html.twig` in it, to override the existing Bundle file, then apply your needed changes, such as language, etc.
+For this, simply, create the following structure `/templates/bundles/c975LExceptionCheckerBundle/` in your app and then duplicate the file `layout.html.twig` in it, to override the existing Bundle file, then apply your needed changes, such as language, etc.
 
 In `layout.html.twig`, it will mainly consist to extend your layout and define specific variables, i.e. :
 ```twig
@@ -102,7 +102,7 @@ Imagine, you receive a new email (from Monolog i.e.), saying "No Route found for
 
 i.e. `http://example.com/ec-add/excluded?u=/js/mage/cookies.js`.
 
-**You need to have set `exceptionCheckerSecret` in `app/config/parameters.yml` to be able to add urls without having to sign in.**
+**You need to have set `exceptionCheckerSecret` in `/config/config_bundles.yaml` or with c975L/ConfigBundle, by using the Route "/exception-checker/config", to be able to add urls without having to sign in.**
 
 Deleted Urls
 ------------

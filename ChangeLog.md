@@ -1,5 +1,9 @@
 # Changelog
 
+v2.3
+----
+- Changed doctrine-bundle version (18/12/2019)
+
 v2.2.1
 ------
 - Updated README.md (06/08/2019)

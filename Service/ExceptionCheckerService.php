@@ -19,7 +19,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * Main services related to Events
+ * Main services related to ExceptionChecker
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2017 975L <contact@975l.com>
  */

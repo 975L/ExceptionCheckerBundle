@@ -13,7 +13,7 @@ use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use Symfony\Component\Form\Form;
 
 /**
- * Interface to be called for DI for ContactForm Main related services
+ * Interface to be called for DI for ExceptionChecker Main related services
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
  */
