@@ -1,5 +1,9 @@
 # Changelog
 
+v2.4
+----
+- Made use of `getThrowable()` instead of `getException` as it's deprecated since SF 4.4 (05/02/2020)
+
 v2.3
 ----
 - Changed doctrine-bundle version (18/12/2019)
