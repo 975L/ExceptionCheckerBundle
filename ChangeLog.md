@@ -1,5 +1,9 @@
 # Changelog
 
+v2.5
+----
+- Removed use of symplify/easy-coding-standard as abandonned (19/02/2020)
+
 v2.4
 ----
 - Made use of `getThrowable()` instead of `getException` as it's deprecated since SF 4.4 (05/02/2020)
