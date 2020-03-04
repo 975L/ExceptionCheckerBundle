@@ -61,8 +61,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         EntityManagerInterface $em,
         ExceptionCheckerFormFactoryInterface $exceptionCheckerFormFactory,
         ServiceToolsInterface $serviceTools
-    )
-    {
+    ) {
         $this->authChecker = $authChecker;
         $this->configService = $configService;
         $this->em = $em;

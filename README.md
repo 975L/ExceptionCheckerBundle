@@ -1,5 +1,4 @@
-ExceptionCheckerBundle
-======================
+# ExceptionCheckerBundle
 
 **Imagine...** There's a bad request on your Symfony website, which leads Monolog to send you an email (action level set to error). Then, you simply just delete the email OR set the action level to critical (and then lose all warnings about real links problems that should be solved!).
 
@@ -11,7 +10,7 @@ ExceptionCheckerBundle does the following:
 
 - Catches Symfony's exceptions and checks if the called url has been deleted or redirected or is an excluded or ignored one,
 - Allows to use **wildcards** to match urls,
-- Searches and redirects for any kind of different character case (i.e. https://example.com/YourFILe.html which should be https://example.com/YourFile.html)
+- Searches and redirects for any kind of different character case (i.e. `https://example.com/YourFILe.html` which should be `https://example.com/YourFile.html`)
 - Provides forms to create, modify, duplicate, delete the ExceptionCheckers,
 - Will reduce errors trigerred as if urls are registered, they will not be exception anymore (except for deleted urls which will throw GoneHttpException),
 - Integrates with your web design,
@@ -23,28 +22,29 @@ This Bundle relies on the use of [jQuery](https://jquery.com/) and [Bootstrap](h
 
 [ExceptionCheckerBundle API documentation](https://975l.com/apidoc/c975L/ExceptionCheckerBundle.html).
 
-Bundle installation
-===================
+## Bundle installation
 
-Step 1: Download the Bundle
----------------------------
+### Step 1: Download the Bundle
+
 Use [Composer](https://getcomposer.org) to install the library
+
 ```bash
     composer require c975l/exceptionchecker-bundle
 ```
 
-Step 2: Configure the Bundle
-----------------------------
+### Step 2: Configure the Bundle
+
 Check dependencies for their configuration:
+
 - [Doctrine](https://github.com/doctrine/DoctrineBundle)
 - [KnpPaginatorBundle](https://github.com/KnpLabs/KnpPaginatorBundle)
 
 v2.0+ of c975LExceptionCheckerBundle uses [c975L/ConfigBundle](https://github.com/975L/ConfigBundle) to manage configuration parameters. Use the Route "/exception-checker/config" with the proper user role to modify them.
 
-**Upgrading from v1.x? Check [UPGRADE.md](UPGRADE.md).**
+Upgrading from v1.x? Check **UPGRADE.md**
 
-Step 3: Enable the Routes
--------------------------
+### Step 3: Enable the Routes
+
 Then, enable the routes by adding them to the `/config/routes.yaml` file of your project:
 
 ```yml
@@ -59,19 +59,20 @@ c975_l_exception_checker:
     #    _locale: en|fr|es
 ```
 
-Step 4: Create MySql table
---------------------------
+### Step 4: Create MySql table
+
 You can use `php bin/console make:migration` to create the migration file as documented in [Symfony's Doctrine docs](https://symfony.com/doc/current/doctrine.html) OR use `/Resources/sql/exception_checker.sql` to create the table `exception_checker`. The `DROP TABLE` is commented to avoid dropping by mistake.
 
 **As a bonus some well known tested links to be excluded are provided in the sql file, simply un-comment this part before running the sql file.**
 
-Step 5: Integration with your website
--------------------------------------
+### Step 5: Integration with your website
+
 It is strongly recommended to use the [Override Templates from Third-Party Bundles feature](http://symfony.com/doc/current/templating/overriding.html) to integrate fully with your site.
 
 For this, simply, create the following structure `/templates/bundles/c975LExceptionCheckerBundle/` in your app and then duplicate the file `layout.html.twig` in it, to override the existing Bundle file, then apply your needed changes, such as language, etc.
 
 In `layout.html.twig`, it will mainly consist to extend your layout and define specific variables, i.e. :
+
 ```twig
 {% extends 'layout.html.twig' %}
 
@@ -84,8 +85,8 @@ In `layout.html.twig`, it will mainly consist to extend your layout and define s
 {% endblock %}
 ```
 
-How to use
-==========
+### How to use
+
 ExceptionCheckerBundle can easily replace `excluded_404s` placed in Monolog to avoid being flooded by too many 404 errors, so you can remove this option from your `config_prod.yml`.
 
 Use the Route `exceptionchecker_dashboard` (url: "/exception-checker/dashboard") to access Dashboard. Then you can add urls.
@@ -94,8 +95,8 @@ Matching of urls is made with `LIKE url%` so it means that if the searched url i
 
 **You can use wildcards, to match a set of urls, by adding `*` at the end of the url, i.e. url `/wp*` will be matched by `/wp-login`, `/wp-admin`, `/wp-login.php`, etc.**
 
-Add deleted or excluded via url call
-------------------------------------
+### Add deleted or excluded via url call
+
 This bundle provides a great feature to add deleted|excluded url easily and fastly!
 
 Imagine, you receive a new email (from Monolog i.e.), saying "No Route found for...". To add this url to ExceptionCheckerBundle, simply indicate {kind} (deleted or excluded) and copy/paste the requested {url} in `http://example.com/ec-add/{kind}?u={url}` (this will use the Route `exceptionchecker_add`). Type your secret code (if you're not signed in) and the url is added!
@@ -104,12 +105,12 @@ i.e. `http://example.com/ec-add/excluded?u=/js/mage/cookies.js`.
 
 **You need to have set `exceptionCheckerSecret` in `/config/config_bundles.yaml` or with c975L/ConfigBundle, by using the Route "/exception-checker/config", to be able to add urls without having to sign in.**
 
-Deleted Urls
-------------
+### Deleted Urls
+
 If the url is found, ExceptionCheckerBundle will throw a `GoneHttpException`.
 
-Redirected Urls
----------------
+### Redirected Urls
+
 Redirected Urls can redirect to an `Asset`, a `Route` or an `Url`. You will need to enter the following type of data
 
 - Asset: path to your asset, i.e. `/path_to_asset`
@@ -120,14 +121,14 @@ Redirected Urls can redirect to an `Asset`, a `Route` or an `Url`. You will need
 
 If the url is found, ExceptionCheckerBundle will update Event Response to redirect to the defined url.
 
-Ignored Urls
-------------
+### Ignored Urls
+
 If the url is found, ExceptionCheckerBundle will throw a `BadRequestHttpException`.
 
-Excluded Urls
--------------
+### Excluded Urls
+
 Excluded Urls are the unwanted 404 HTTP errors, like when an attacker scans your app for some well-known application paths (e.g. /phpmyadmin).
 
 If the url is found, ExceptionCheckerBundle will redirect to the Route defined in the config value `redirectExcluded`. We advise you to redirect to your homepage.
 
-**If this project help you to reduce time to develop, you can [buy me a coffee](https://www.buymeacoffee.com/LaurentMarquet) :)**
+If this project **help you to reduce time to develop**, you can sponsor me via the "Sponsor" button at the top :)

@@ -23,10 +23,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ExceptionCheckerType extends AbstractType
 {
+    /**
+     * {@inheritdoc}
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $disabled = $options['config']['action'] == 'delete' ? true : false;
-        $addAction = $options['config']['action'] == 'create' ? true : false;
         $user = $options['config']['user'] ?? false;
 
         $builder

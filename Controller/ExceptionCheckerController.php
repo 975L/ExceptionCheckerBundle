@@ -58,9 +58,11 @@ class ExceptionCheckerController extends AbstractController
             $request->query->getInt('p', 1),
             $request->query->getInt('s', 25)
         );
-        return $this->render('@c975LExceptionChecker/pages/dashboard.html.twig', array(
-            'exceptionCheckers' => $exceptionCheckers,
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/pages/dashboard.html.twig',
+            array(
+                'exceptionCheckers' => $exceptionCheckers,
+            ));
     }
 
 //DISPLAY
@@ -79,9 +81,11 @@ class ExceptionCheckerController extends AbstractController
         $this->denyAccessUnlessGranted('c975LExceptionChecker-display', $exceptionChecker);
 
         //Renders the ExceptionChecker
-        return $this->render('@c975LExceptionChecker/pages/display.html.twig', array(
-            'exceptionChecker' => $exceptionChecker,
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/pages/display.html.twig',
+            array(
+                'exceptionChecker' => $exceptionChecker,
+            ));
     }
 
 //CREATE
@@ -108,15 +112,19 @@ class ExceptionCheckerController extends AbstractController
             $this->exceptionCheckerService->register($exceptionChecker);
 
             //Redirects to the ExceptionChecker
-            return $this->redirectToRoute('exceptionchecker_display', array(
-                'id' => $exceptionChecker->getId(),
-            ));
+            return $this->redirectToRoute(
+                'exceptionchecker_display',
+                array(
+                    'id' => $exceptionChecker->getId(),
+                ));
         }
 
         //Renders the new form
-        return $this->render('@c975LExceptionChecker/forms/create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/forms/create.html.twig',
+            array(
+                'form' => $form->createView(),
+            ));
     }
 
 //ADD FROM URL CALL
@@ -153,9 +161,11 @@ class ExceptionCheckerController extends AbstractController
         }
 
         //Renders the add form
-        return $this->render('@c975LExceptionChecker/forms/create.html.twig', array(
-            'form' => $form->createView(),
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/forms/create.html.twig',
+            array(
+                'form' => $form->createView(),
+            ));
     }
 
 //MODIFY
@@ -183,16 +193,20 @@ class ExceptionCheckerController extends AbstractController
             $this->exceptionCheckerService->register($exceptionChecker);
 
             //Redirects to the exceptionChecker
-            return $this->redirectToRoute('exceptionchecker_display', array(
-                'id' => $exceptionChecker->getId(),
-            ));
+            return $this->redirectToRoute(
+                'exceptionchecker_display',
+                array(
+                    'id' => $exceptionChecker->getId(),
+                ));
         }
 
         //Renders the modify form
-        return $this->render('@c975LExceptionChecker/forms/modify.html.twig', array(
-            'form' => $form->createView(),
-            'exceptionChecker' => $exceptionChecker,
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/forms/modify.html.twig',
+            array(
+                'form' => $form->createView(),
+                'exceptionChecker' => $exceptionChecker,
+            ));
     }
 
 //DUPLICATE
@@ -221,16 +235,20 @@ class ExceptionCheckerController extends AbstractController
             $this->exceptionCheckerService->register($exceptionCheckerClone);
 
             //Redirects to the exceptionChecker
-            return $this->redirectToRoute('exceptionchecker_display', array(
-                'id' => $exceptionCheckerClone->getId(),
-            ));
+            return $this->redirectToRoute(
+                'exceptionchecker_display',
+                array(
+                    'id' => $exceptionCheckerClone->getId(),
+                ));
         }
 
         //Renders the duplicate  form
-        return $this->render('@c975LExceptionChecker/forms/duplicate.html.twig', array(
-            'form' => $form->createView(),
-            'exceptionChecker' => $exceptionCheckerClone,
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/forms/duplicate.html.twig',
+            array(
+                'form' => $form->createView(),
+                'exceptionChecker' => $exceptionCheckerClone,
+            ));
     }
 
 //DELETE
@@ -262,10 +280,12 @@ class ExceptionCheckerController extends AbstractController
         }
 
         //Renders the delete form
-        return $this->render('@c975LExceptionChecker/forms/delete.html.twig', array(
-            'form' => $form->createView(),
-            'exceptionChecker' => $exceptionChecker,
-        ));
+        return $this->render(
+            '@c975LExceptionChecker/forms/delete.html.twig',
+            array(
+                'form' => $form->createView(),
+                'exceptionChecker' => $exceptionChecker,
+            ));
     }
 
 //CONFIG
@@ -295,10 +315,12 @@ class ExceptionCheckerController extends AbstractController
         }
 
         //Renders the config form
-        return $this->render('@c975LConfig/forms/config.html.twig', array(
-            'form' => $form->createView(),
-            'toolbar' => '@c975LExceptionChecker',
-        ));
+        return $this->render(
+            '@c975LConfig/forms/config.html.twig',
+            array(
+                'form' => $form->createView(),
+                'toolbar' => '@c975LExceptionChecker',
+            ));
     }
 
 //HELP
