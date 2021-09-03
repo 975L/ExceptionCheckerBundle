@@ -1,5 +1,9 @@
 # Changelog
 
+## v2.6
+
+- Removed versions constraints in composer (03/09/2021)
+
 ## v2.5.1
 
 - Cosmetic changes due to Codacy review (04/03/2020)
