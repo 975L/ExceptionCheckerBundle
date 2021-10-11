@@ -27,7 +27,8 @@
         "doctrine/orm": "*",
         "knplabs/knp-paginator-bundle": "*",
         "symfony/form": "*",
-        "symfony/security": "*"
+        "symfony/security": "*",
+        "twig/intl-extra": "*"
     },
     "require-dev": {
         "phpstan/phpstan": "*",

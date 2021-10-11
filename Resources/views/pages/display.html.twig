@@ -24,7 +24,7 @@
         </p>
 {# Creation #}
         <p>
-            {{ 'label.creation'|trans }} : <strong>{{ exceptionChecker.creation|localizeddate('medium', 'medium') }}</strong>
+            {{ 'label.creation'|trans }} : <strong>{{ exceptionChecker.creation|format_datetime('medium', 'medium') }}</strong>
         </p>
     </div>
 {% endblock %}
