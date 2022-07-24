@@ -88,7 +88,7 @@ class ExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         //Gets Exception
-        $exception = $event->getThrowable();
+        $exception = $event->getException();
 
         //Checks if Exception is supported
         $exceptionContinue = false;

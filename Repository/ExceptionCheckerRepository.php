@@ -9,8 +9,8 @@
 
 namespace c975L\ExceptionCheckerBundle\Repository;
 
-use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use Doctrine\ORM\EntityRepository;
+use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 
 /**
  * Repository for ExceptionChecker Entity

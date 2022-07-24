@@ -1,5 +1,9 @@
 # Changelog
 
+## v3.0.1
+
+- Corrected return types (24/07/2022)
+
 ## v3.0
 
 - Changed `localizeddate` to `format_datetime` (11/10/2021)
