@@ -15,8 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -85,10 +84,11 @@ class ExceptionListener
     /**
      * Catches the Exception
      */
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
+    // public function onKernelException(GetResponseForExceptionEvent $event)
     {
         //Gets Exception
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
 
         //Checks if Exception is supported
         $exceptionContinue = false;
