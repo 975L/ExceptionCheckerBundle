@@ -24,87 +24,70 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class ExceptionCheckerVoter extends Voter
 {
     /**
-     * Stores ConfigServiceInterface
-     * @var ConfigServiceInterface
-     */
-    private $configService;
-
-    /**
-     * Stores AccessDecisionManagerInterface
-     * @var AccessDecisionManagerInterface
-     */
-    private $decisionManager;
-
-    /**
      * Used for access to config
      * @var string
      */
-    public const CONFIG = 'c975LExceptionChecker-config';
+    final public const CONFIG = 'c975LExceptionChecker-config';
 
     /**
      * Used for access to create an ExecptionChecker
      * @var string
      */
-    public const CREATE = 'c975LExceptionChecker-create';
+    final public const CREATE = 'c975LExceptionChecker-create';
 
     /**
      * Used for access to dashboard
      * @var string
      */
-    public const DASHBOARD = 'c975LExceptionChecker-dashboard';
+    final public const DASHBOARD = 'c975LExceptionChecker-dashboard';
 
     /**
      * Used for access to delete an ExecptionChecker
      * @var string
      */
-    public const DELETE = 'c975LExceptionChecker-delete';
+    final public const DELETE = 'c975LExceptionChecker-delete';
 
     /**
      * Used for access to display an ExecptionChecker
      * @var string
      */
-    public const DISPLAY = 'c975LExceptionChecker-display';
+    final public const DISPLAY = 'c975LExceptionChecker-display';
 
     /**
      * Used for access to duplicate an ExecptionChecker
      * @var string
      */
-    public const DUPLICATE = 'c975LExceptionChecker-duplicate';
+    final public const DUPLICATE = 'c975LExceptionChecker-duplicate';
 
     /**
      * Used for access to help
      * @var string
      */
-    public const HELP = 'c975LExceptionChecker-help';
+    final public const HELP = 'c975LExceptionChecker-help';
 
     /**
      * Used for access to modify an ExecptionChecker
      * @var string
      */
-    public const MODIFY = 'c975LExceptionChecker-modify';
+    final public const MODIFY = 'c975LExceptionChecker-modify';
 
     /**
      * Contains all the available attributes to check with in supports()
      * @var array
      */
-    private const ATTRIBUTES = array(
-        self::CONFIG,
-        self::CREATE,
-        self::DASHBOARD,
-        self::DELETE,
-        self::DISPLAY,
-        self::DUPLICATE,
-        self::HELP,
-        self::MODIFY,
-    );
+    private const ATTRIBUTES = [self::CONFIG, self::CREATE, self::DASHBOARD, self::DELETE, self::DISPLAY, self::DUPLICATE, self::HELP, self::MODIFY];
 
     public function __construct(
-        ConfigServiceInterface $configService,
-        AccessDecisionManagerInterface $decisionManager
+        /**
+         * Stores ConfigServiceInterface
+         */
+        private readonly ConfigServiceInterface $configService,
+        /**
+         * Stores AccessDecisionManagerInterface
+         */
+        private readonly AccessDecisionManagerInterface $decisionManager
     )
     {
-        $this->configService = $configService;
-        $this->decisionManager = $decisionManager;
     }
 
     /**
@@ -124,20 +107,9 @@ class ExceptionCheckerVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        //Defines access rights
-        switch ($attribute) {
-            case self::CONFIG:
-            case self::CREATE:
-            case self::DASHBOARD:
-            case self::DELETE:
-            case self::DISPLAY:
-            case self::DUPLICATE:
-            case self::HELP:
-            case self::MODIFY:
-                return $this->decisionManager->decide($token, array($this->configService->getParameter('c975LExceptionChecker.roleNeeded', 'c975l/exceptionchecker-bundle')));
-                break;
-        }
-
-        throw new LogicException('Invalid attribute: ' . $attribute);
+        return match ($attribute) {
+            self::CONFIG, self::CREATE, self::DASHBOARD, self::DELETE, self::DISPLAY, self::DUPLICATE, self::HELP, self::MODIFY => $this->decisionManager->decide($token, [$this->configService->getParameter('c975LExceptionChecker.roleNeeded', 'c975l/exceptionchecker-bundle')]),
+            default => throw new LogicException('Invalid attribute: ' . $attribute),
+        };
     }
 }

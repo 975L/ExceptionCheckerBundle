@@ -1,5 +1,11 @@
 # Changelog
 
+## v4.0
+
+- Changed compatibility to PHP 8 (25/07/2022)
+
+Upgrading from v3.x? **Check UPGRADE.md**
+
 ## v3.0.3
 
 - Made use of ExceptionEvent (24/07/2022)

@@ -77,7 +77,6 @@ class ExceptionChecker
 
     /**
      * Get id
-     * @return int
      */
     public function getId(): int
     {
@@ -140,7 +139,6 @@ class ExceptionChecker
 
     /**
      * Get redirectKind
-     * @return string|null
      */
     public function getRedirectKind(): ?string
     {
@@ -161,7 +159,6 @@ class ExceptionChecker
 
     /**
      * Get redirectData
-     * @return string|null
      */
     public function getRedirectData(): ?string
     {

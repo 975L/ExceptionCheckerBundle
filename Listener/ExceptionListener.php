@@ -44,41 +44,25 @@ use Symfony\Component\Routing\RouterInterface;
  */
 class ExceptionListener
 {
-    /**
-     * Stores ConfigServiceInterface
-     * @var ConfigServiceInterface
-     */
-    private $configService;
-
-    /**
-     * Stores EntityManagerInterface
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
-     * Stores LoggerInterface
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * Stores RouterInterface
-     * @var RouterInterface
-     */
-    private $router;
-
     public function __construct(
-        ConfigServiceInterface $configService,
-        EntityManagerInterface $em,
-        LoggerInterface $logger,
-        RouterInterface $router
+        /**
+         * Stores ConfigServiceInterface
+         */
+        private readonly ConfigServiceInterface $configService,
+        /**
+         * Stores EntityManagerInterface
+         */
+        private readonly EntityManagerInterface $em,
+        /**
+         * Stores LoggerInterface
+         */
+        private readonly LoggerInterface $logger,
+        /**
+         * Stores RouterInterface
+         */
+        private readonly RouterInterface $router
     )
     {
-        $this->configService = $configService;
-        $this->em = $em;
-        $this->logger = $logger;
-        $this->router = $router;
     }
 
     /**
@@ -92,12 +76,12 @@ class ExceptionListener
 
         //Checks if Exception is supported
         $exceptionContinue = false;
-        $supportedExceptions = array(
-            'Symfony\Component\HttpKernel\Exception\HttpException',
-            'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException',
-            'Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException',
-            'Symfony\Component\HttpKernel\Exception\NotFoundHttpException',
-        );
+        $supportedExceptions = [
+            \Symfony\Component\HttpKernel\Exception\HttpException::class,
+            \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException::class,
+            \Symfony\Component\HttpKernel\Exception\NotAcceptableHttpException::class,
+            \Symfony\Component\HttpKernel\Exception\NotFoundHttpException::class
+        ];
         foreach ($supportedExceptions as $supportedException) {
             if ($exception instanceof $supportedException) {
                 $exceptionContinue = true;
@@ -112,7 +96,7 @@ class ExceptionListener
 
             if (null !== $url) {
                 //Gets the ExceptionChecker
-                $repository = $this->em->getRepository('c975LExceptionCheckerBundle:ExceptionChecker');
+                $repository = $this->em->getRepository(ExceptionChecker::class);
                 $exceptionChecker = $repository->findByUrl($url);
 
                 //Checks with wildcards if not found
@@ -121,7 +105,7 @@ class ExceptionListener
 
                     if (null !== $exceptionCheckersWildcard) {
                         foreach ($exceptionCheckersWildcard as $exceptionCheckerWildcard) {
-                            if (false !== stripos($url, str_replace('*', '', $exceptionCheckerWildcard->getUrl()))) {
+                            if (false !== stripos($url, (string) str_replace('*', '', (string) $exceptionCheckerWildcard->getUrl()))) {
                                 $exceptionChecker = $exceptionCheckerWildcard;
                                 break;
                             }
@@ -179,21 +163,21 @@ class ExceptionListener
                         //Route
                         } elseif ('Route' === $exceptionChecker->getRedirectKind()) {
                             //Gets Route parameters
-                            $parameters = array();
-                            $parametersFinal = array();
-                            if (strpos($exceptionChecker->getRedirectData(), '[') !== false) {
-                                preg_match('/\[.*\]/s', $exceptionChecker->getRedirectData(), $parameters);
-                                $parametersData = str_replace(array('[', ']'), '', $parameters[0]);
+                            $parameters = [];
+                            $parametersFinal = [];
+                            if (str_contains((string) $exceptionChecker->getRedirectData(), '[')) {
+                                preg_match('/\[.*\]/s', (string) $exceptionChecker->getRedirectData(), $parameters);
+                                $parametersData = str_replace(['[', ']'], '', (string) $parameters[0]);
                                 $parametersAll = explode(',', $parametersData);
                                 foreach ($parametersAll as $parameter) {
                                     $paramData = explode('=>', $parameter);
-                                    $key = trim(str_replace(array('"', "'"), '', $paramData[0]));
-                                    $value = trim(str_replace(array('"', "'"), '', $paramData[1]));
+                                    $key = trim(str_replace(['"', "'"], '', $paramData[0]));
+                                    $value = trim(str_replace(['"', "'"], '', $paramData[1]));
                                     $parametersFinal[$key] = $value;
                                 }
                             }
 
-                            $redirectUrl = $this->router->generate(str_replace($parameters, '', $exceptionChecker->getRedirectData()), $parametersFinal);
+                            $redirectUrl = $this->router->generate(str_replace($parameters, '', (string) $exceptionChecker->getRedirectData()), $parametersFinal);
                         }
                     }
 
@@ -204,7 +188,7 @@ class ExceptionListener
                     }
                 //Adds link to exclude to log (useful if log is sent by email)
                 } else {
-                    $exceptionAddUrl = $this->router->generate('exceptionchecker_create_from_url', array('kind' => 'excluded'), UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
+                    $exceptionAddUrl = $this->router->generate('exceptionchecker_create_from_url', ['kind' => 'excluded'], UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
                     $this->logger->info('-----> Add to ExceptionChecker? Use ' . $exceptionAddUrl . ' with your secret code!');
                 }
             }

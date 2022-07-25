@@ -32,79 +32,28 @@ class ExceptionCheckerType extends AbstractType
         $user = $options['config']['user'] ?? false;
 
         $builder
-            ->add('url', TextType::class, array(
-                'label' => 'label.url',
-                'disabled' => $disabled,
-                'required' => true,
-                'attr' => array(
-                    'placeholder' => 'label.url',
-                )))
-            ->add('kind', ChoiceType::class, array(
-                'label' => 'label.kind',
-                'disabled' => $disabled,
-                'required' => true,
-                'choices' => array(
-                    'label.kind' => '',
-                    'label.deleted' => 'deleted',
-                    'label.excluded' => 'excluded',
-                    'label.ignored' => 'ignored',
-                    'label.redirected' => 'redirected',
-                ),
-                ))
-            ->add('redirectKind', ChoiceType::class, array(
-                'label' => 'label.redirect_kind',
-                'disabled' => $disabled,
-                'required' => false,
-                'choices' => array(
-                    'label.redirect_kind' => '',
-                    'Asset' => 'Asset',
-                    'Route' => 'Route',
-                    'Url' => 'Url',
-                ),
-                'attr' => array(
-                    'placeholder' => 'label.redirect_kind',
-                )))
-            ->add('redirectData', TextType::class, array(
-                'label' => 'label.redirect_data',
-                'disabled' => $disabled,
-                'required' => false,
-                'attr' => array(
-                    'placeholder' => 'label.redirect_data',
-                )))
+            ->add('url', TextType::class, ['label' => 'label.url', 'disabled' => $disabled, 'required' => true, 'attr' => ['placeholder' => 'label.url']])
+            ->add('kind', ChoiceType::class, ['label' => 'label.kind', 'disabled' => $disabled, 'required' => true, 'choices' => ['label.kind' => '', 'label.deleted' => 'deleted', 'label.excluded' => 'excluded', 'label.ignored' => 'ignored', 'label.redirected' => 'redirected']])
+            ->add('redirectKind', ChoiceType::class, ['label' => 'label.redirect_kind', 'disabled' => $disabled, 'required' => false, 'choices' => ['label.redirect_kind' => '', 'Asset' => 'Asset', 'Route' => 'Route', 'Url' => 'Url'], 'attr' => ['placeholder' => 'label.redirect_kind']])
+            ->add('redirectData', TextType::class, ['label' => 'label.redirect_data', 'disabled' => $disabled, 'required' => false, 'attr' => ['placeholder' => 'label.redirect_data']])
                 ;
         //Creation
         if ($options['config']['action'] == 'modify' || $options['config']['action'] == 'delete') {
             $builder
-                ->add('creation', DateTimeType::class, array(
-                    'label' => 'label.creation',
-                    'disabled' => true,
-                    'required' => false,
-                    'widget' => 'single_text',
-                    'format' => 'dd-MM-yyyy',
-                    'html5' => false,
-                    ))
+                ->add('creation', DateTimeType::class, ['label' => 'label.creation', 'disabled' => true, 'required' => false, 'widget' => 'single_text', 'format' => 'dd-MM-yyyy', 'html5' => false])
                 ;
             }
         //Secret code
         if ($user === false) {
             $builder
-                ->add('secret', TextType::class, array(
-                    'label' => 'label.secret_code',
-                    'mapped' => false,
-                    'disabled' => false,
-                    'required' => true,
-                    ))
+                ->add('secret', TextType::class, ['label' => 'label.secret_code', 'mapped' => false, 'disabled' => false, 'required' => true])
             ;
         }
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => 'c975L\ExceptionCheckerBundle\Entity\ExceptionChecker',
-            'intention'  => 'exceptionCheckerForm',
-            'translation_domain' => 'exceptionChecker',
-        ));
+        $resolver->setDefaults(['data_class' => \c975L\ExceptionCheckerBundle\Entity\ExceptionChecker::class, 'intention'  => 'exceptionCheckerForm', 'translation_domain' => 'exceptionChecker']);
 
         $resolver->setRequired('config');
     }

@@ -25,48 +25,29 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 class ExceptionCheckerService implements ExceptionCheckerServiceInterface
 {
-    /**
-     * Stores AuthorizationCheckerInterface
-     * @var AuthorizationCheckerInterface
-     */
-    private $authChecker;
-
-    /**
-     * Stores ConfigServiceInterface
-     * @var ConfigServiceInterface
-     */
-    private $configService;
-
-    /**
-     * Stores EntityManagerInterface
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    /**
-     * Stores ExceptionCheckerFormFactoryInterface
-     * @var ExceptionCheckerFormFactoryInterface
-     */
-    private $exceptionCheckerFormFactory;
-
-    /**
-     * Stores ServiceToolsInterface
-     * @var ServiceToolsInterface
-     */
-    private $serviceTools;
-
     public function __construct(
-        AuthorizationCheckerInterface $authChecker,
-        ConfigServiceInterface $configService,
-        EntityManagerInterface $em,
-        ExceptionCheckerFormFactoryInterface $exceptionCheckerFormFactory,
-        ServiceToolsInterface $serviceTools
-    ) {
-        $this->authChecker = $authChecker;
-        $this->configService = $configService;
-        $this->em = $em;
-        $this->exceptionCheckerFormFactory = $exceptionCheckerFormFactory;
-        $this->serviceTools = $serviceTools;
+        /**
+         * Stores AuthorizationCheckerInterface
+         */
+        private readonly AuthorizationCheckerInterface $authChecker,
+        /**
+         * Stores ConfigServiceInterface
+         */
+        private readonly ConfigServiceInterface $configService,
+        /**
+         * Stores EntityManagerInterface
+         */
+        private readonly EntityManagerInterface $em,
+        /**
+         * Stores ExceptionCheckerFormFactoryInterface
+         */
+        private readonly ExceptionCheckerFormFactoryInterface $exceptionCheckerFormFactory,
+        /**
+         * Stores ServiceToolsInterface
+         */
+        private readonly ServiceToolsInterface $serviceTools
+    )
+    {
     }
 
     /**
@@ -97,7 +78,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         $this->em->flush();
 
         //Creates flash
-        $this->serviceTools->createFlash('exceptionChecker', 'text.exception_checker_deleted');
+        $this->serviceTools->createFlash('text.exception_checker_deleted', 'exceptionChecker');
     }
 
     /**
@@ -137,7 +118,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
         }
 
         //Creates flash
-        $this->serviceTools->createFlash('exceptionChecker', 'text.exception_checker_added', 'success', array('%url%' => $exceptionChecker->getUrl()));
+        $this->serviceTools->createFlash('text.exception_checker_added', 'exceptionChecker', 'success', ['%url%' => $exceptionChecker->getUrl()]);
     }
 
     /**
@@ -154,7 +135,7 @@ class ExceptionCheckerService implements ExceptionCheckerServiceInterface
             return true;
         //Wrong secret code
         } elseif ($form->get('secret')->getData() != $this->configService->getParameter('c975LExceptionChecker.exceptionCheckerSecret')) {
-            $this->serviceTools->createFlash('exceptionChecker', 'text.wrong_secret_code', 'danger');
+            $this->serviceTools->createFlash('text.wrong_secret_code', 'exceptionChecker', 'danger');
         }
 
         return false;

@@ -19,15 +19,13 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 class ExceptionCheckerFormFactory implements ExceptionCheckerFormFactoryInterface
 {
-    /**
-     * Stores FormFactoryInterface
-     * @var FormFactoryInterface
-     */
-    private $formFactory;
-
-    public function __construct(FormFactoryInterface $formFactory)
+    public function __construct(
+        /**
+         * Stores FormFactoryInterface
+         */
+        private readonly FormFactoryInterface $formFactory
+    )
     {
-        $this->formFactory = $formFactory;
     }
 
     /**
@@ -41,16 +39,13 @@ class ExceptionCheckerFormFactory implements ExceptionCheckerFormFactoryInterfac
             case 'modify':
             case 'duplicate':
             case 'delete':
-                $config = array(
-                    'action' => $name,
-                    'user' => $user,
-                );
+                $config = ['action' => $name, 'user' => $user];
                 break;
             default:
-                $config = array();
+                $config = [];
                 break;
         }
 
-        return $this->formFactory->create(ExceptionCheckerType::class, $exceptionChecker, array('config' => $config));
+        return $this->formFactory->create(ExceptionCheckerType::class, $exceptionChecker, ['config' => $config]);
     }
 }
