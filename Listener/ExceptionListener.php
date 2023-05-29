@@ -69,12 +69,11 @@ class ExceptionListener
      * Catches the Exception
      */
     public function onKernelException(ExceptionEvent $event)
-    // public function onKernelException(GetResponseForExceptionEvent $event)
     {
-        //Gets Exception
+        // Gets Exception
         $exception = $event->getThrowable();
 
-        //Checks if Exception is supported
+        // Checks if Exception is supported
         $exceptionContinue = false;
         $supportedExceptions = [
             \Symfony\Component\HttpKernel\Exception\HttpException::class,
@@ -89,17 +88,17 @@ class ExceptionListener
             }
         }
 
-        //Exception is supported
+        // Exception is supported
         if ($exceptionContinue) {
-            //Gets url requested
+            // Gets url requested
             $url = $event->getRequest()->getPathInfo();
 
             if (null !== $url) {
-                //Gets the ExceptionChecker
+                // Gets the ExceptionChecker
                 $repository = $this->em->getRepository(ExceptionChecker::class);
                 $exceptionChecker = $repository->findByUrl($url);
 
-                //Checks with wildcards if not found
+                // Checks with wildcards if not found
                 if (null === $exceptionChecker) {
                     $exceptionCheckersWildcard = $repository->findWildcard();
 
@@ -113,56 +112,68 @@ class ExceptionListener
                     }
                 }
 
-                //Checks if url exist with other character case
+                // Checks if url exist with other character case
                 if (null === $exceptionChecker) {
                     $rootPath = $event->getRequest()->server->get('DOCUMENT_ROOT');
                     $basePath = $event->getRequest()->getBasePath();
                     $folder = $rootPath . $basePath;
 
-                    $finder = new Finder();
-                    $finder
-                        ->files()
-                        ->in($folder)
-                        ->sortByName()
-                    ;
+                    if ('' !== $folder) {
+                        $finder = new Finder();
+                        $finder
+                            ->files()
+                            ->in($folder)
+                            ->sortByName()
+                        ;
 
-                    foreach ($finder as $file) {
-                        $fileRealPath = $file->getRealPath();
-                        $filePath = substr($fileRealPath, strrpos($fileRealPath, $basePath) + strlen($basePath));
-                        if ($rootPath . strtolower($url) === strtolower($filePath)) {
-                            $exceptionChecker = new ExceptionChecker();
-                            $exceptionChecker
-                                ->setKind('redirected')
-                                ->setRedirectKind('Asset')
-                                ->setRedirectData(str_replace($rootPath, '', $filePath))
+                        foreach ($finder as $file) {
+                            $fileRealPath = $file->getRealPath();
+                            $filePath = substr($fileRealPath, strrpos($fileRealPath, $basePath) + strlen($basePath));
+                            if ($rootPath . strtolower($url) === strtolower($filePath)) {
+                                $exceptionChecker = new ExceptionChecker();
+                                $exceptionChecker
+                                    ->setKind('redirected')
+                                    ->setRedirectKind('Asset')
+                                    ->setRedirectData(str_replace($rootPath, '', $filePath))
                                 ;
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
 
-                //ExceptionChecker has been found
+                // Checks if url has a trailing slash
+                if (null === $exceptionChecker && '/' === substr($url, -1)) {
+                    $exceptionChecker = new ExceptionChecker();
+                    $exceptionChecker
+                        ->setKind('redirected')
+                        ->setRedirectKind('Url')
+                        ->setRedirectData(substr($url, 0, strlen($url) - 1));
+                    ;
+                }
+
+                // ExceptionChecker has been found
                 if (null !== $exceptionChecker) {
-                    //Deleted - Throws GoneHttpException
+                    // Deleted - Throws GoneHttpException
                     if ('deleted' == $exceptionChecker->getKind()) {
                         $event->setException(new GoneHttpException($url));
-                    //Excluded - Redirects to defined Route
+                    // Excluded - Redirects to defined Route
                     } elseif ('excluded' === $exceptionChecker->getKind()) {
                         $redirectUrl = $this->router->generate($this->configService->getParameter('c975LExceptionChecker.redirectExcluded'));
-                    //Ignored - Throws BadRequestHttpException
+                    // Ignored - Throws BadRequestHttpException
                     } elseif ('ignored' == $exceptionChecker->getKind()) {
                         $event->setException(new BadRequestHttpException($url));
-                    //Redirected - Redirects to defined redirection
+                    // Redirected - Redirects to defined redirection
                     } elseif ('redirected' === $exceptionChecker->getKind()) {
-                        //Asset
+                        // Asset
                         if ('Asset' === $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = str_replace('/app_dev.php', '', $this->router->getContext()->getBaseUrl()) . $exceptionChecker->getRedirectData();
-                        //Url
+                        // Url
                         } elseif ('Url' === $exceptionChecker->getRedirectKind()) {
                             $redirectUrl = $exceptionChecker->getRedirectData();
-                        //Route
+                        // Route
                         } elseif ('Route' === $exceptionChecker->getRedirectKind()) {
-                            //Gets Route parameters
+                            // Gets Route parameters
                             $parameters = [];
                             $parametersFinal = [];
                             if (str_contains((string) $exceptionChecker->getRedirectData(), '[')) {
@@ -181,12 +192,12 @@ class ExceptionListener
                         }
                     }
 
-                    //Updates Response
+                    // Updates Response
                     if (isset($redirectUrl)) {
                         $response = new RedirectResponse($redirectUrl);
                         $event->setResponse($response);
                     }
-                //Adds link to exclude to log (useful if log is sent by email)
+                // Adds link to exclude to log (useful if log is sent by email)
                 } else {
                     $exceptionAddUrl = $this->router->generate('exceptionchecker_create_from_url', ['kind' => 'excluded'], UrlGeneratorInterface::ABSOLUTE_URL) . '?u=' . $url;
                     $this->logger->info('-----> Add to ExceptionChecker? Use ' . $exceptionAddUrl . ' with your secret code!');
