@@ -41,11 +41,12 @@ class ExceptionCheckerController extends AbstractController
      * Displays the dashboard
      * @return Response
      * @throws AccessDeniedException
-     *
-     * @Route("/exception-checker/dashboard",
-     *    name="exceptionchecker_dashboard",
-     *    methods={"HEAD", "GET"})
      */
+    #[Route(
+        '/exception-checker/dashboard',
+        name: 'exceptionchecker_dashboard',
+        methods: ['GET']
+    )]
     public function dashboard(Request $request, PaginatorInterface $paginator)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-dashboard', null);
@@ -66,12 +67,13 @@ class ExceptionCheckerController extends AbstractController
      * Displays the ExceptionChecker using its unique id
      * @return Response
      * @throws NotFoundHttpException
-     *
-     * @Route("/exception-checker/{id}",
-     *    name="exceptionchecker_display",
-     *    requirements={"id": "^([0-9]+)"},
-     *    methods={"HEAD", "GET"})
      */
+    #[Route(
+        '/exception-checker/{id}',
+        name: 'exceptionchecker_display',
+        requirements: ['id' => '^([0-9]+)'],
+        methods: ['GET']
+    )]
     public function display(ExceptionChecker $exceptionChecker)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-display', $exceptionChecker);
@@ -87,11 +89,12 @@ class ExceptionCheckerController extends AbstractController
      * Creates the ExceptionChecker
      * @return Response
      * @throws AccessDeniedException
-     *
-     * @Route("/exception-checker/create",
-     *    name="exceptionchecker_create",
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/exception-checker/create',
+        name: 'exceptionchecker_create',
+        methods: ['GET', 'POST']
+    )]
     public function create(Request $request)
     {
         $exceptionChecker = new ExceptionChecker();
@@ -122,12 +125,13 @@ class ExceptionCheckerController extends AbstractController
      * Creates the ExceptionChecker from url call (mainly from link sent in email built with Monolog)
      * @return Response
      * @throws AccessDeniedException
-     *
-     * @Route("/ec-add/{kind}",
-     *    name="exceptionchecker_create_from_url",
-     *    requirements={"kind": "deleted|excluded|ignored|redirected"},
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/ec-add/{kind}',
+        name: 'exceptionchecker_create_from_url',
+        requirements: ['kind' => 'deleted|excluded|ignored|redirected'],
+        methods: ['GET', 'POST']
+    )]
     public function addFromUrl(Request $request, ConfigServiceInterface $configService, $kind)
     {
         $exceptionChecker = new ExceptionChecker();
@@ -162,12 +166,13 @@ class ExceptionCheckerController extends AbstractController
      * @return Response
      * @throws AccessDeniedException
      * @throws NotFoundHttpException
-     *
-     * @Route("/exception-checker/modify/{id}",
-     *    name="exceptionchecker_modify",
-     *    requirements={"id": "^([0-9]+)"},
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/exception-checker/modify/{id}',
+        name: 'exceptionchecker_modify',
+        requirements: ['id' => '^([0-9]+)'],
+        methods: ['GET', 'POST']
+    )]
     public function modify(Request $request, ExceptionChecker $exceptionChecker)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-modify', $exceptionChecker);
@@ -198,12 +203,13 @@ class ExceptionCheckerController extends AbstractController
      * @return Response
      * @throws AccessDeniedException
      * @throws NotFoundHttpException
-     *
-     * @Route("/exception-checker/duplicate/{id}",
-     *    name="exceptionchecker_duplicate",
-     *    requirements={"id": "^[0-9]+$"},
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/exception-checker/duplicate/{id}',
+        name: 'exceptionchecker_duplicate',
+        requirements: ['id' => '^[0-9]+$'],
+        methods: ['GET', 'POST']
+    )]
     public function duplicate(Request $request, ExceptionChecker $exceptionChecker)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-duplicate', $exceptionChecker);
@@ -235,12 +241,13 @@ class ExceptionCheckerController extends AbstractController
      * @return Response
      * @throws AccessDeniedException
      * @throws NotFoundHttpException
-     *
-     * @Route("/exception-checker/delete/{id}",
-     *    name="exceptionchecker_delete",
-     *    requirements={"id": "^([0-9]+)"},
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/exception-checker/delete/{id}',
+        name: 'exceptionchecker_delete',
+        requirements: ['id' => '^[0-9]+$'],
+        methods: ['GET', 'POST']
+    )]
     public function delete(Request $request, ExceptionChecker $exceptionChecker)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-delete', $exceptionChecker);
@@ -268,11 +275,12 @@ class ExceptionCheckerController extends AbstractController
      * Displays the configuration
      * @return Response
      * @throws AccessDeniedException
-     *
-     * @Route("/exception-checker/config",
-     *    name="exceptionchecker_config",
-     *    methods={"HEAD", "GET", "POST"})
      */
+    #[Route(
+        '/exception-checker/config',
+        name: 'exceptionchecker_config',
+        methods: ['GET', 'POST']
+    )]
     public function config(Request $request, ConfigServiceInterface $configService)
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-config', null);
@@ -300,11 +308,12 @@ class ExceptionCheckerController extends AbstractController
      * Displays the help
      * @return Response
      * @throws AccessDeniedException
-     *
-     * @Route("/exception-checker/help",
-     *    name="exceptionchecker_help",
-     *    methods={"HEAD", "GET"})
      */
+    #[Route(
+        '/exception-checker/help',
+        name: 'exceptionchecker_help',
+        methods: ['GET']
+    )]
     public function help()
     {
         $this->denyAccessUnlessGranted('c975LExceptionChecker-help', null);

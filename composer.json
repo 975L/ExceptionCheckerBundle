@@ -35,7 +35,7 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "c975L\\ExceptionCheckerBundle\\": ""
+            "c975L\\ExceptionCheckerBundle\\": "src/"
         }
     },
     "config": {

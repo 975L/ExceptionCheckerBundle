@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.0
+
+- Changed to new recomended bundle SF 7 structure (15/02/2024)
+- Converted Routes to attributes (15/02/2024)
+
+Upgrading from v5.x? **Check UPGRADE.md**
+
 ## v4.1
 
 - Added trailing slash redirection (29/05/2023)
