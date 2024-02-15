@@ -12,67 +12,64 @@ namespace c975L\ExceptionCheckerBundle\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use c975L\ExceptionCheckerBundle\Repository\ExceptionCheckerRepository;
+
+use function PHPSTORM_META\type;
 
 /**
  * Entity ExceptionChecker (linked to DB table `exception_checker`)
  * @author Laurent Marquet <laurent.marquet@laposte.net>
  * @copyright 2018 975L <contact@975l.com>
- *
- * @ORM\Table(name="exception_checker", indexes={@ORM\Index(name="un_exception_checker", columns={"url"})})
- * @ORM\Entity(repositoryClass="c975L\ExceptionCheckerBundle\Repository\ExceptionCheckerRepository")
  */
+#[ORM\Table(name: 'exception_checker')]
+#[ORM\Index(name: "exception_checker_url_idx", columns: ["url"])]
+#[ORM\Entity(repositoryClass: ExceptionCheckerRepository::class)]
 class ExceptionChecker
 {
     /**
      * ExceptionChecker unique id
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
     protected $id;
 
     /**
      * Url for the ExceptionChecker
      * @var string
-     *
-     * @ORM\Column(name="url", type="string", length=255, unique=true)
      */
+    #[ORM\Column(length: 255, type: 'string', unique: true)]
     protected $url;
 
     /**
      * Kind (deleted, excluded, ignored, redirected) of ExceptionChecker
      * @var string
-     *
-     * @ORM\Column(name="kind", type="string", length=24)
-     * @Assert\Choice(choices = {"deleted", "excluded", "ignored", "redirected"})
      */
+    #[ORM\Column(length: 24, type: 'string')]
+    #[Assert\Choice(['deleted', 'excluded', 'ignored', 'redirected'])]
     protected $kind;
 
     /**
      * Kind of redirect (Asset, Route, Url) for ExceptionChecker
      * @var string|null
-     *
-     * @ORM\Column(name="redirect_kind", type="string", length=24, nullable=true)
-     * @Assert\Choice(choices = {null, "", "Asset", "Route", "Url"})
      */
+    #[ORM\Column(length: 24, type: 'string')]
+    #[Assert\Choice(['null', 'Asset', 'Route', 'Url'])]
     protected $redirectKind;
 
     /**
      * RedirectData needed by redirectKind (Route, Url, parameters, etc.)
      * @var string|null
-     *
-     * @ORM\Column(name="redirect_data", type="string", length=255, nullable=true)
      */
+    #[ORM\Column(length: 255, type: 'string', nullable: true)]
     protected $redirectData;
 
     /**
      * DateTime of creation for ExceptionChecker
      * @var DateTime
-     *
-     * @ORM\Column(name="creation", type="datetime")
      */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $creation;
 
     /**

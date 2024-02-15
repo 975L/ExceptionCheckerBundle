@@ -1,5 +1,9 @@
 # Changelog
 
+## v5.1
+
+- Converted entity to attributes (15/02/2024)
+
 ## v5.0
 
 - Changed to new recomended bundle SF 7 structure (15/02/2024)
