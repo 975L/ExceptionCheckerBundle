@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.1.1
+
+- Added missing void (19/02/2024)
+
 ## v5.1
 
 - Converted entity to attributes (15/02/2024)

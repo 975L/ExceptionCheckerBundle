@@ -26,7 +26,7 @@ class ExceptionCheckerType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $disabled = $options['config']['action'] == 'delete' ? true : false;
         $user = $options['config']['user'] ?? false;
@@ -122,7 +122,7 @@ class ExceptionCheckerType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => \c975L\ExceptionCheckerBundle\Entity\ExceptionChecker::class,
