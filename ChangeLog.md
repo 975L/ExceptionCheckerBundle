@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.2
+
+- Added type integer for id (14/03/2024)
+
 ## 5.1.1
 
 - Added missing void (19/02/2024)

@@ -31,8 +31,8 @@ class ExceptionChecker
      * @var int
      */
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: "integer")]
     protected $id;
 
     /**
