@@ -54,7 +54,7 @@ class ExceptionChecker
      * Kind of redirect (Asset, Route, Url) for ExceptionChecker
      * @var string|null
      */
-    #[ORM\Column(length: 24, type: 'string')]
+    #[ORM\Column(length: 24, type: 'string', nullable: true)]
     #[Assert\Choice(['null', 'Asset', 'Route', 'Url'])]
     protected $redirectKind;
 
