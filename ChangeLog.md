@@ -1,14 +1,18 @@
 # Changelog
 
-## 5.2.1
+## v 5.2.2
+
+- Changed DependencyInjection Extension (10/09/2024)
+
+## v5.2.1
 
 - Added nullable: true for redirectKind (14/03/2024)
 
-## 5.2
+## v5.2
 
 - Added type integer for id (14/03/2024)
 
-## 5.1.1
+## v5.1.1
 
 - Added missing void (19/02/2024)
 
