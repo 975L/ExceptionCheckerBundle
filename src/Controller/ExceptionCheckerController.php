@@ -59,7 +59,8 @@ class ExceptionCheckerController extends AbstractController
         );
         return $this->render(
             '@c975LExceptionChecker/pages/dashboard.html.twig',
-            ['exceptionCheckers' => $exceptionCheckers]);
+            ['exceptionCheckers' => $exceptionCheckers]
+        )->setMaxAge(3600);
     }
 
 //DISPLAY
@@ -81,7 +82,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the ExceptionChecker
         return $this->render(
             '@c975LExceptionChecker/pages/display.html.twig',
-            ['exceptionChecker' => $exceptionChecker]);
+            ['exceptionChecker' => $exceptionChecker]
+        )->setMaxAge(3600);
     }
 
 //CREATE
@@ -117,7 +119,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the new form
         return $this->render(
             '@c975LExceptionChecker/forms/create.html.twig',
-            ['form' => $form->createView()]);
+            ['form' => $form->createView()]
+        )->setMaxAge(3600);
     }
 
 //ADD FROM URL CALL
@@ -157,7 +160,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the add form
         return $this->render(
             '@c975LExceptionChecker/forms/create.html.twig',
-            ['form' => $form->createView()]);
+            ['form' => $form->createView()]
+        )->setMaxAge(3600);
     }
 
 //MODIFY
@@ -194,7 +198,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the modify form
         return $this->render(
             '@c975LExceptionChecker/forms/modify.html.twig',
-            ['form' => $form->createView(), 'exceptionChecker' => $exceptionChecker]);
+            ['form' => $form->createView(), 'exceptionChecker' => $exceptionChecker]
+        )->setMaxAge(3600);
     }
 
 //DUPLICATE
@@ -232,7 +237,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the duplicate  form
         return $this->render(
             '@c975LExceptionChecker/forms/duplicate.html.twig',
-            ['form' => $form->createView(), 'exceptionChecker' => $exceptionCheckerClone]);
+            ['form' => $form->createView(), 'exceptionChecker' => $exceptionCheckerClone]
+        )->setMaxAge(3600);
     }
 
 //DELETE
@@ -267,7 +273,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the delete form
         return $this->render(
             '@c975LExceptionChecker/forms/delete.html.twig',
-            ['form' => $form->createView(), 'exceptionChecker' => $exceptionChecker]);
+            ['form' => $form->createView(), 'exceptionChecker' => $exceptionChecker]
+        )->setMaxAge(3600);
     }
 
 //CONFIG
@@ -300,7 +307,8 @@ class ExceptionCheckerController extends AbstractController
         //Renders the config form
         return $this->render(
             '@c975LConfig/forms/config.html.twig',
-            ['form' => $form->createView(), 'toolbar' => '@c975LExceptionChecker']);
+            ['form' => $form->createView(), 'toolbar' => '@c975LExceptionChecker']
+        )->setMaxAge(3600);
     }
 
 //HELP
@@ -319,6 +327,6 @@ class ExceptionCheckerController extends AbstractController
         $this->denyAccessUnlessGranted('c975LExceptionChecker-help', null);
 
         //Renders the help
-        return $this->render('@c975LExceptionChecker/pages/help.html.twig');
+        return $this->render('@c975LExceptionChecker/pages/help.html.twig')->setMaxAge(3600);
     }
 }
