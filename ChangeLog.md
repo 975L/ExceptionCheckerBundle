@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.4.1
+
+- Added conditions to avoid errors on $redirectUrl (26/11/2024)
+- Replaced setException with setThrowable (26/11/2024)
+
 ## v5.4
 
 - Added ->setMaxAge(3600) to controllers (15/09/2024)

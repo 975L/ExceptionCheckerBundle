@@ -156,13 +156,13 @@ class ExceptionListener
                 if (null !== $exceptionChecker) {
                     // Deleted - Throws GoneHttpException
                     if ('deleted' == $exceptionChecker->getKind()) {
-                        $event->setException(new GoneHttpException($url));
+                        $event->setThrowable(new GoneHttpException($url));
                     // Excluded - Redirects to defined Route
                     } elseif ('excluded' === $exceptionChecker->getKind()) {
                         $redirectUrl = $this->router->generate($this->configService->getParameter('c975LExceptionChecker.redirectExcluded'));
                     // Ignored - Throws BadRequestHttpException
                     } elseif ('ignored' == $exceptionChecker->getKind()) {
-                        $event->setException(new BadRequestHttpException($url));
+                        $event->setThrowable(new BadRequestHttpException($url));
                     // Redirected - Redirects to defined redirection
                     } elseif ('redirected' === $exceptionChecker->getKind()) {
                         // Asset
@@ -192,8 +192,8 @@ class ExceptionListener
                         }
                     }
 
-                    // Updates Response
-                    if (isset($redirectUrl)) {
+                    // Updates Response if $redirectUrl not empty
+                    if (isset($redirectUrl) && null !== $redirectUrl && '' !== $redirectUrl && !empty($redirectUrl)) {
                         $response = new RedirectResponse($redirectUrl);
                         $event->setResponse($response);
                     }
