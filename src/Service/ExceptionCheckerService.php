@@ -12,7 +12,7 @@ namespace c975L\ExceptionCheckerBundle\Service;
 use c975L\ConfigBundle\Service\ConfigServiceInterface;
 use c975L\ExceptionCheckerBundle\Entity\ExceptionChecker;
 use c975L\ExceptionCheckerBundle\Form\ExceptionCheckerFormFactoryInterface;
-use c975L\ServicesBundle\Service\ServiceToolsInterface;
+use c975L\SiteBundle\Service\ServiceToolsInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Form;

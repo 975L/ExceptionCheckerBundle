@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.5
+
+- Removed use of`c975L/ServicesBundle` and replaced by `c975L/SiteBundle` (09/03/2025)
+- Removed use of`c975L/IncludeLibraryBundle` (09/03/2025)
+
 ## v5.4.1
 
 - Added conditions to avoid errors on $redirectUrl (26/11/2024)
