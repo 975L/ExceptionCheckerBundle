@@ -1,10 +1,8 @@
 {% extends "@c975LExceptionChecker/layout.html.twig" %}
 {% trans_default_domain 'exceptionChecker' %}
-{% set title = 'label.display'|trans({}, 'toolbar') ~ ': ' ~ exceptionChecker.id %}
+{% set title = 'label.display'|trans({}, 'site') ~ ': ' ~ exceptionChecker.id %}
 
 {% block exceptionchecker_content %}
-{# Toolbar #}
-    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'display', 'md', exceptionChecker) }}
     <div>
 {# Url #}
         <p>

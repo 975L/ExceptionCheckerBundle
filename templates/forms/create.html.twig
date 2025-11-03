@@ -1,12 +1,8 @@
 {% extends "@c975LExceptionChecker/layout.html.twig" %}
 {% trans_default_domain 'exceptionChecker' %}
-{% set title = 'label.create'|trans({}, 'toolbar') %}
+{% set title = 'label.create'|trans({}, 'site') %}
 
 {% block exceptionchecker_content %}
-{# Toolbar #}
-    {% if app.user != null %}
-        {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'create', 'md') }}
-    {% endif %}
 {# Info #}
     <p class="text-center">{{ 'text.info_url'|trans|raw }}</p>
 {# Form #}
@@ -14,8 +10,8 @@
         {{ form_widget(form) }}
 {# Submit #}
             <div class="form-group">
-                <button type="submit" name="submit" title="{{ 'label.validate'|trans({}, 'toolbar') }}" class="btn btn-lg btn-primary btn-block">
-                    {{ 'label.validate'|trans({}, 'toolbar') }}
+                <button type="submit" name="submit" title="{{ 'label.validate'|trans({}, 'site') }}" class="btn btn-lg btn-primary btn-block">
+                    {{ 'label.validate'|trans({}, 'site') }}
                 </button>
             </div>
     {{ form_end(form) }}

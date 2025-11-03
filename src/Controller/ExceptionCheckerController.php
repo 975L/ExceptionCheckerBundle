@@ -36,33 +36,6 @@ class ExceptionCheckerController extends AbstractController
     {
     }
 
-//DASHBOARD
-    /**
-     * Displays the dashboard
-     * @return Response
-     * @throws AccessDeniedException
-     */
-    #[Route(
-        '/exception-checker/dashboard',
-        name: 'exceptionchecker_dashboard',
-        methods: ['GET']
-    )]
-    public function dashboard(Request $request, PaginatorInterface $paginator)
-    {
-        $this->denyAccessUnlessGranted('c975LExceptionChecker-dashboard', null);
-
-        //Renders the dashboard
-        $exceptionCheckers = $paginator->paginate(
-            $this->exceptionCheckerService->getExceptionCheckerAll(),
-            $request->query->getInt('p', 1),
-            $request->query->getInt('s', 25)
-        );
-        return $this->render(
-            '@c975LExceptionChecker/pages/dashboard.html.twig',
-            ['exceptionCheckers' => $exceptionCheckers]
-        )->setMaxAge(3600);
-    }
-
 //DISPLAY
     /**
      * Displays the ExceptionChecker using its unique id
@@ -275,58 +248,5 @@ class ExceptionCheckerController extends AbstractController
             '@c975LExceptionChecker/forms/delete.html.twig',
             ['form' => $form->createView(), 'exceptionChecker' => $exceptionChecker]
         )->setMaxAge(3600);
-    }
-
-//CONFIG
-    /**
-     * Displays the configuration
-     * @return Response
-     * @throws AccessDeniedException
-     */
-    #[Route(
-        '/exception-checker/config',
-        name: 'exceptionchecker_config',
-        methods: ['GET', 'POST']
-    )]
-    public function config(Request $request, ConfigServiceInterface $configService)
-    {
-        $this->denyAccessUnlessGranted('c975LExceptionChecker-config', null);
-
-        //Defines form
-        $form = $configService->createForm('c975l/exceptionchecker-bundle');
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            //Validates config
-            $configService->setConfig($form);
-
-            //Redirects
-            return $this->redirectToRoute('exceptionchecker_dashboard');
-        }
-
-        //Renders the config form
-        return $this->render(
-            '@c975LConfig/forms/config.html.twig',
-            ['form' => $form->createView(), 'toolbar' => '@c975LExceptionChecker']
-        )->setMaxAge(3600);
-    }
-
-//HELP
-    /**
-     * Displays the help
-     * @return Response
-     * @throws AccessDeniedException
-     */
-    #[Route(
-        '/exception-checker/help',
-        name: 'exceptionchecker_help',
-        methods: ['GET']
-    )]
-    public function help()
-    {
-        $this->denyAccessUnlessGranted('c975LExceptionChecker-help', null);
-
-        //Renders the help
-        return $this->render('@c975LExceptionChecker/pages/help.html.twig')->setMaxAge(3600);
     }
 }

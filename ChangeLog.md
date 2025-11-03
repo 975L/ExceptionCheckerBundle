@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.7
+
+- Removed use of c975L/ToolbarBundle (03/11/2025)
+- Removed config, help and dashboard Routes (03/11/2025)
+
 ## v5.6
 
 - Replaced Symfony\Component\Routing\Annotation\Route by Symfony\Component\Routing\Attribute\Route (09/10/2025)

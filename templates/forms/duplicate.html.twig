@@ -1,17 +1,15 @@
 {% extends "@c975LExceptionChecker/layout.html.twig" %}
 {% trans_default_domain 'exceptionChecker' %}
-{% set title = 'label.duplicate'|trans({}, 'toolbar') ~ ': ' ~ exceptionChecker.id %}
+{% set title = 'label.duplicate'|trans({}, 'site') ~ ': ' ~ exceptionChecker.id %}
 
 {% block exceptionchecker_content %}
-{# Toolbar #}
-    {{ toolbar_display('@c975LExceptionChecker/tools.html.twig', 'duplicate', 'md', exceptionChecker) }}
 {# Form #}
     {{ form_start(form) }}
         {{ form_widget(form) }}
 {# Submit #}
         <div class="form-group">
-            <button type="submit" name="submit" title="{{ 'label.validate'|trans({}, 'toolbar') }}" class="btn btn-lg btn-primary btn-block">
-                {{ 'label.validate'|trans({}, 'toolbar') }}
+            <button type="submit" name="submit" title="{{ 'label.validate'|trans({}, 'site') }}" class="btn btn-lg btn-primary btn-block">
+                {{ 'label.validate'|trans({}, 'site') }}
             </button>
         </div>
     {{ form_end(form) }}
